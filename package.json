@@ -10,7 +10,8 @@
     "express": "^4.15.3",
     "jsonfile": "^3.0.0",
     "superagent": "^3.5.2",
-    "traverson": "^6.0.3"
+    "traverson": "^6.0.3",
+    "traverson-hal": "^6.0.0"
   },
   "devDependencies": {},
   "scripts": {
