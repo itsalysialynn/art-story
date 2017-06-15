@@ -12,6 +12,7 @@ const traverson = require('traverson'),
     JsonHalAdapter = require('traverson-hal'),
     xappToken = process.env.ARTSY_TOLKEN;
 
+
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
 const api = traverson.from('https://api.artsy.net/api').jsonHal();
 
