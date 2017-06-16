@@ -1,6 +1,7 @@
 "use strict";
 
-require("dotenv").load();
+ require("dotenv").load();
+
 const ENV = process.env.ENV || "development";
 const PORT = process.env.PORT || 3000;
 
@@ -8,9 +9,9 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 
-const traverson = require("traverson"),
-  JsonHalAdapter = require("traverson-hal"),
-  xappToken = process.env.ARTSY_TOLKEN;
+const traverson = require('traverson'),
+    JsonHalAdapter = require('traverson-hal'),
+    xappToken = process.env.ARTSY_TOLKEN;
 
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
 const api = traverson.from("https://api.artsy.net/api").jsonHal();
