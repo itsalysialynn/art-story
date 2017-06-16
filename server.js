@@ -24,13 +24,14 @@ api
     }
   })
   .withTemplateParameters({ id: "andy-warhol" })
-  .getResource(function(error, andyWarhol) {
+  .getResource(function(error, artistName) {
+    console.log(artistName);
     console.log(
-      andyWarhol.name +
+      artistName.name +
         "was born in " +
-        andyWarhol.birthday +
+        artistName.birthday +
         " in " +
-        andyWarhol.hometown
+        artistName.hometown
     );
   });
 
