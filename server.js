@@ -1,5 +1,7 @@
 "use strict";
+
  require("dotenv").load();
+
 const ENV = process.env.ENV || "development";
 const PORT = process.env.PORT || 3000;
 
@@ -25,16 +27,17 @@ api
   })
   .withTemplateParameters({ id: "andy-warhol" })
   .getResource(function(error, andyWarhol) {
-    console.log(
-      andyWarhol.name +
-        "was born in " +
-        andyWarhol.birthday +
-        " in " +
-        andyWarhol.hometown
-    );
+    // console.log(
+    //   andyWarhol.name +
+    //     "was born in " +
+    //     andyWarhol.birthday +
+    //     " in " +
+    //     andyWarhol.hometown
+    // );
   });
 
 app.set("view engine", "ejs");
+app.use(express.static("public"));
 
 app.get("/", function(req, res) {
   res.render("index");
