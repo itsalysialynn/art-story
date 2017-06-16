@@ -24,16 +24,43 @@ api
     }
   })
   .withTemplateParameters({ id: "andy-warhol" })
-  .getResource(function(error, artistName) {
-    console.log(artistName);
+  .getResource(function(error, artist) {
     console.log(
-      artistName.name +
+      artist.name +
         "was born in " +
-        artistName.birthday +
+        artist.birthday +
         " in " +
-        artistName.hometown
+        artist.hometown
     );
   });
+
+app.get('/search', (req, res) =>{
+
+  const artist = (req.query.search).split(" ").join("-").toLowerCase();
+  // artist.split(" ").join("-");
+  console.log(artist);
+
+  api
+    .newRequest()
+    .follow("artist")
+    .withRequestOptions({
+      headers: {
+        "X-Xapp-Token": xappToken,
+        Accept: "application/vnd.artsy-v2+json"
+      }
+    })
+
+    .withTemplateParameters({id: artist})
+
+
+    .getResource(function(error, artist) {
+    console.log(artist)
+     res.render('results', {artist});
+
+
+    });
+  // res.send(req.query.search);
+})
 
 app.set("view engine", "ejs");
 
