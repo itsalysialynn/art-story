@@ -25,6 +25,8 @@ api
   })
   .withTemplateParameters({ id: "andy-warhol" })
   .getResource(function(error, artist) {
+    // console.log(artist);
+    console.log(artist._links.similar_artists.href)
     console.log(
       artist.name +
         "was born in " +
@@ -37,7 +39,6 @@ api
 app.get('/search', (req, res) =>{
 
   const artist = (req.query.search).split(" ").join("-").toLowerCase();
-  // artist.split(" ").join("-");
   console.log(artist);
 
   api
@@ -54,13 +55,15 @@ app.get('/search', (req, res) =>{
 
 
     .getResource(function(error, artist) {
-    console.log(artist)
+
+    console.log(artist);
      res.render('results', {artist});
 
-
     });
-  // res.send(req.query.search);
+
 })
+
+
 
 app.set("view engine", "ejs");
 
