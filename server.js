@@ -1,5 +1,7 @@
 "use strict";
+
  require("dotenv").load();
+
 const ENV = process.env.ENV || "development";
 const PORT = process.env.PORT || 3000;
 
@@ -24,9 +26,9 @@ api
     }
   })
   .withTemplateParameters({ id: "andy-warhol" })
+
   .getResource(function(error, artist) {
     // console.log(artist);
-    console.log(artist._links.similar_artists.href)
     console.log(
       artist.name +
         "was born in " +
@@ -66,6 +68,9 @@ app.get('/search', (req, res) =>{
 
 
 app.set("view engine", "ejs");
+app.use(express.static("public"));
+
+app.use(express.static('public'));
 
 app.get("/", function(req, res) {
   res.render("index");
