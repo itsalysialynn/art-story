@@ -25,16 +25,18 @@ api
   })
   .withTemplateParameters({ id: "andy-warhol" })
   .getResource(function(error, andyWarhol) {
-    console.log(
-      andyWarhol.name +
-        "was born in " +
-        andyWarhol.birthday +
-        " in " +
-        andyWarhol.hometown
-    );
+    // console.log(
+    //   andyWarhol.name +
+    //     "was born in " +
+    //     andyWarhol.birthday +
+    //     " in " +
+    //     andyWarhol.hometown
+    // );
   });
 
 app.set("view engine", "ejs");
+
+app.use(express.static('public'));
 
 app.get("/", function(req, res) {
   res.render("index");
