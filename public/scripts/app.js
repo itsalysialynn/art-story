@@ -24,7 +24,7 @@ $(document).ready(function() {
           response(
             $.map(data, function(item) {
               return {
-                label: `${item.display} (${item.label})`,
+                label: `${item.display} `,
                 value: item.id
               };
             })
