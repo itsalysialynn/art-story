@@ -9,20 +9,29 @@
 
     <!-- Place favicon.ico in the root directory -->
 
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="/styles/main.css">
 </head>
 
 <body>
-<% include partials/_search.ejs %>
+
+
+  <% include partials/_search.ejs %>
 
 
     <p>Hello World</p>
+    <img class="artist-photo" src="https://userscontent2.emaze.com/images/7659c4c0-1ac4-462c-9bfb-26c1c18e6ed2/7f58b05e2d51ad0824e983f3b12fd5ac.jpg" height=300px>
+    <p class="artist-text">Sherman grew up in Huntington, New York on Long Island.  Sherman works in series, typically photographing herself in a range of costumes. For example, in her landmark 69 photograph series, the Complete Untitled Film Stills, (1977-1980) Sherman appeared as B-movie, foreign film and film noir style actresses. Sherman’s most recent series, dated 2003, features her as clowns. Although Sherman does not consider her work feminist, many of her photo-series, like the 1981 “Centerfolds,” call attention to the stereotyping of women in films, television and magazines.</p>
 
-    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-    <script>
-        window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')
-    </script>
-    <script src="js/main.js"></script>
+    <img class="artist-timeline-photo" src="http://www.arthistoryarchive.com/arthistory/photography/images/CindySherman-Untitled-Film-Still-34-1979.jpg" height=300px />
+    <img class="artist-timeline-photo" src="http://www.arthistoryarchive.com/arthistory/photography/images/CindySherman-Untitled-Film-Still-35-1979.jpg" height=300px />
+    <img class="artist-timeline-photo" src="http://www.arthistoryarchive.com/arthistory/photography/images/CindySherman-Untitled-Film-Still-36-1979.jpg" height=300px />
+    <img class="artist-timeline-photo" src="http://www.arthistoryarchive.com/arthistory/photography/images/CindySherman-Untitled-Film-Still-43-1979.jpg" height=300px />
+
+    <% include partials/_art-movement-timeline.ejs %>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+    <script src="/scripts/app.js"></script>
 </body>
 
 </html>
