@@ -1,7 +1,2 @@
- <%=artist.name%>
- <img src="<%=artist._links.thumbnail.href%>">
- <%=artist.birthday%>
+ <%=JSON.stringify(filtered_results)%>
 
-<%=similarArtists%>
-
-<a href="<%=artist._links.similar_artists.href%>">Similar Artists</a>
