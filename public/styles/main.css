@@ -3,6 +3,7 @@
 .container > form > ul > li > label {
   overflow: hidden;
 
+<<<<<<< HEAD
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -125,4 +126,13 @@
 
 .container > form > ul > li > div p {
   font-size: 11px;
+=======
+/*hides auto-fill default messages*/
+.ui-helper-hidden-accessible {
+  display: none;
+}
+
+.art-movement-image {
+  width: 20%;
+>>>>>>> b5a241c202d79f1618df1dc34838d36e33824a4c
 }
