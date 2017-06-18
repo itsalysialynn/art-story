@@ -60,7 +60,7 @@ app.get('/search', (req, res) =>{
 
         .getResource(function(filtered_error, filtered_results) {
 
-        console.log(filtered_error, "filtered_results", JSON.stringify(filtered_results))
+        console.log(filtered_error, "filtered_results", filtered_results)
         res.render('results', {filtered_results});
         });
     // console.log(results)
