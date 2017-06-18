@@ -15,7 +15,7 @@
 /* height of the accordion */
 .horizontal-accordion > form > ul,
 .horizontal-accordion > form > ul > li > div {
-  height: 400px;
+  height: 2em;
 }
 
 .horizontal-accordion,
@@ -114,7 +114,7 @@
 
 .horizontal-accordion > form > ul > li > input:checked ~ div {
   width: 500px; /* the width of the expanded panel */
-  height: 400px;
+  height: 300px;
   padding: 8px;
   overflow: auto;
   opacity: 1;
@@ -133,12 +133,13 @@
 }
 
 .horizontal-accordion > form > ul > li > div img {
-  height: 16em;
+  height: 13em;
 }
 
 .horizontal-accordion > form > ul > li > div p {
   font-size: 11px;
   padding-left: 1em;
+  height: 1em;
 }
 
 div.art-movement-image-and-description {

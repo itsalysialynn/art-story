@@ -102,13 +102,14 @@ app.get("/search", (req, res) => {
 //     });
 // });
 
-// app.set("view engine", "ejs");
+app.set("view engine", "ejs");
+app.use(express.static("public"));
 
-// app.use(express.static("public"));
+app.use(express.static("public"));
 
-// app.get("/", function(req, res) {
-//   res.render("index");
-// });
+app.get("/", function(req, res) {
+  res.render("index");
+});
 
 app.listen(PORT, () => {
   console.log("Listening on port " + PORT);
