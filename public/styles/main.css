@@ -1,58 +1,62 @@
-.container,
-.container > form > ul > li > div,
-.container > form > ul > li > label {
-  overflow: hidden;
-
-<<<<<<< HEAD
+.acidjs-horizontal-accordion,
+.acidjs-horizontal-accordion > form > ul > li > div,
+.acidjs-horizontal-accordion > form > ul > li > label {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-.container > form > ul, .container > form > ul > * {
+.acidjs-horizontal-accordion > form > ul,
+.acidjs-horizontal-accordion > form > ul > * {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.container > form > ul, .container > form > ul > li > div {
-  height: 159px; /* height of the accordion */
+.acidjs-horizontal-accordion > form > ul,
+.acidjs-horizontal-accordion > form > ul > li > div {
+  height: 400px; /* height of the accordion */
 }
 
-.container, .container > form > ul > li > input:checked + label {
-  background: #2f343a;
+.acidjs-horizontal-accordion,
+.acidjs-horizontal-accordion > form > ul > li > div > input:checked + label {
+  background: white;
 }
 
-.container > form > ul > li > input, .container > form > ul > li > label {
+.acidjs-horizontal-accordion > form > ul > li > input,
+.acidjs-horizontal-accordion > form > ul > li > label {
   position: absolute;
 }
 
-.container > form > ul > li, .container > form > ul > li:last-child {
-  border: solid 1px rgba(255, 255, 255, .75);
+.acidjs-horizontal-accordion > form > ul > li,
+.acidjs-horizontal-accordion > form > ul > li:last-child {
 }
 
-.container > form > ul > li > div, .container > form > ul > li > input {
+.acidjs-horizontal-accordion > form > ul > li > div,
+.acidjs-horizontal-accordion > form > ul > li > input {
   opacity: 0; /* we hide the radio button with opacity and position: absolute in order to preserve the keyboard arrow navigation */
 }
 
-.container {
-  width: 964px;
+.acidjs-horizontal-accordion {
+  width: 2000px;
+  left: 0;
+  right: 0;
   font-family: Arial, Helvetica, Sans-serif;
   padding: 1px;
   cursor: default;
 }
 
-.container > form > ul > li > label {
+.acidjs-horizontal-accordion > form > ul > li > label {
   display: block;
-  width: 159px; /* height of the accordion button */
+  width: 203px; /* height of the accordion button */
   padding: 0 8px;
   letter-spacing: 1px;
   font: bold 14px/32px "Arial Rounded MT", Arial, Helvetica, Sans-serif;
-  background: #e74c3c;
-  color: #fff;
+  background: white;
+  border: solid, 1px, black;
+  color: black;
   text-align: right;
   cursor: pointer;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, .5);
   text-overflow: ellipsis;
   white-space: nowrap;
 
@@ -79,22 +83,27 @@
   user-select: none;
 }
 
-.container > form > ul > li > input:not(:checked) + label:hover {
+.acidjs-horizontal-accordion
+  > form
+  > ul
+  > li
+  > input:not(:checked)
+  + label:hover {
   background: #e02f1c;
 }
 
-.container > form > ul > li > input:checked + label {
+.acidjs-horizontal-accordion > form > ul > li > input:checked + label {
   border-bottom-color: transparent;
-  color: rgba(255, 255, 255, .5);
+  color: black;
 }
 
-.container > form > ul > li {
+.acidjs-horizontal-accordion > form > ul > li {
   float: left;
   padding: 0 32px 0 0;
   border-right: 0;
 }
 
-.container > form > ul > li > div {
+.acidjs-horizontal-accordion > form > ul > li > div {
   width: 0;
   font-size: 10px;
   color: #fff;
@@ -107,32 +116,39 @@
   transition: all .3s cubic-bezier(.09, .11, .24, .91);
 }
 
-.container > form > ul > li > input:checked ~ div {
-  width: 763px; /* the width of the expanded panel */
+.acidjs-horizontal-accordion > form > ul > li > input:checked ~ div {
+  width: 500px; /* the width of the expanded panel */
+  height: 400px;
   padding: 8px;
   overflow: auto;
   opacity: 1;
 }
 
-.container > form > ul > li > div h3 {
+.acidjs-horizontal-accordion > form > ul > li > div h3 {
   font: inherit;
   font-size: 14px;
   border: 0;
 }
 
-.container > form > ul > li > div h3, .container > form > ul > li > div p {
-  color: #fff;
+.acidjs-horizontal-accordion > form > ul > li > div h3,
+.acidjs-horizontal-accordion > form > ul > li > div p {
+  color: black;
+  margin: 0;
 }
 
-.container > form > ul > li > div p {
+.acidjs-horizontal-accordion > form > ul > li > div img {
+  height: 16em;
+}
+
+.acidjs-horizontal-accordion > form > ul > li > div p {
   font-size: 11px;
-=======
-/*hides auto-fill default messages*/
-.ui-helper-hidden-accessible {
-  display: none;
+  padding-left: 1em;
 }
 
-.art-movement-image {
-  width: 20%;
->>>>>>> b5a241c202d79f1618df1dc34838d36e33824a4c
+div.art-movement-image-and-description {
+  display: flex;
+  margin-top: 1em;
+}
+a {
+  flex-wrap: wrap;
 }
