@@ -62,9 +62,8 @@ app.get("/search", (req, res) => {
     });
 });
 
-// app.get('/search', (req, res) =>{
-
-//   const artwork = (req.query.search).split(" ").join("-").toLowerCase();
+// app.get("/search", (req, res) => {
+//   const artwork = req.query.search.split(" ").join("-").toLowerCase();
 //   console.log(artwork);
 
 //   api
@@ -76,19 +75,15 @@ app.get("/search", (req, res) => {
 //         Accept: "application/vnd.artsy-v2+json"
 //       }
 //     })
-
-//     .withTemplateParameters({id: artwork})
-
+//     .withTemplateParameters({ id: artwork })
 //     .getResource(function(error, artwork) {
-//     console.log(artwork)
-//      res.render('results', {artwork});
-
+//       console.log(artwork);
+//       res.render("results", { artwork });
 //     });
-// })
+// });
 
-// app.get('/search', (req, res) =>{
-
-//   const gene = (req.query.search).split(" ").join("-").toLowerCase();
+// app.get("/search", (req, res) => {
+//   const gene = req.query.search.split(" ").join("-").toLowerCase();
 //   console.log(gene);
 
 //   api
@@ -100,24 +95,20 @@ app.get("/search", (req, res) => {
 //         Accept: "application/vnd.artsy-v2+json"
 //       }
 //     })
-
-//     .withTemplateParameters({id: gene})
-
+//     .withTemplateParameters({ id: gene })
 //     .getResource(function(error, gene) {
-//     console.log(gene)
-//      res.render('results', {gene});
-
+//       console.log(gene);
+//       res.render("results", { gene });
 //     });
-// })
+// });
 
-app.set("view engine", "ejs");
-app.use(express.static("public"));
+// app.set("view engine", "ejs");
 
-app.use(express.static("public"));
+// app.use(express.static("public"));
 
-app.get("/", function(req, res) {
-  res.render("index");
-});
+// app.get("/", function(req, res) {
+//   res.render("index");
+// });
 
 app.listen(PORT, () => {
   console.log("Listening on port " + PORT);
