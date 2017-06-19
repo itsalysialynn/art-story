@@ -101,12 +101,18 @@ function getSimilarArtists(results) {
       })
 
     .getResource((error, similar_artists)=> {
-      var similar_artist = similar_artists._embedded.artists[1].name;
-      console.log(similar_artist);
+
+      var topThreeSimilar = [];
+      topThreeSimilar.push(similar_artists._embedded.artists[1].name);
+      topThreeSimilar.push(similar_artists._embedded.artists[2].name);
+      topThreeSimilar.push(similar_artists._embedded.artists[3].name);
+      // var similar_artist = similar_artists._embedded.artists[1].name;
+      // console.log(similar_artist);
       if(error) {
         reject(error);
       } else {
-        resolve(similar_artist);
+        resolve(topThreeSimilar);
+        // resolve(similar_artist);
       }
     });
   });
