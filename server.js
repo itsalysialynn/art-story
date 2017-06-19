@@ -61,65 +61,21 @@ app.get('/search', (req, res) =>{
         .getResource(function(filtered_error, filtered_results) {
 
         console.log(filtered_error, "filtered_results", filtered_results)
-        res.render('results', {filtered_results});
+        res.render('results', {filtered_results: map_filtered_results(filtered_results)});
         });
-    // console.log(results)
 
     });
 })
 
+function map_filtered_results(filtered_results){
+  if (!Array.isArray(filtered_results)){
+    filtered_results = [filtered_results]
+  }
+ return filtered_results.map(function(x){
+  return   {id: x.id, content: x.name, start: x.birthday}
+ })
+}
 
-
-// app.get('/search', (req, res) =>{
-
-//   const artwork = (req.query.search).split(" ").join("-").toLowerCase();
-//   console.log(artwork);
-
-//   api
-//     .newRequest()
-//     .follow("artwork")
-//     .withRequestOptions({
-//       headers: {
-//         "X-Xapp-Token": xappToken,
-//         Accept: "application/vnd.artsy-v2+json"
-//       }
-//     })
-
-//     .withTemplateParameters({id: artwork})
-
-
-//     .getResource(function(error, artwork) {
-//     console.log(artwork)
-//      res.render('results', {artwork});
-
-//     });
-// })
-
-// app.get('/search', (req, res) =>{
-
-//   const gene = (req.query.search).split(" ").join("-").toLowerCase();
-//   console.log(gene);
-
-//   api
-//     .newRequest()
-//     .follow("gene")
-//     .withRequestOptions({
-//       headers: {
-//         "X-Xapp-Token": xappToken,
-//         Accept: "application/vnd.artsy-v2+json"
-//       }
-//     })
-
-//     .withTemplateParameters({id: gene})
-
-
-//     .getResource(function(error, gene) {
-//     console.log(gene)
-//      res.render('results', {gene});
-
-
-//     });
-// })
 
 
 app.set("view engine", "ejs");
