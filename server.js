@@ -60,12 +60,34 @@ app.get('/search', (req, res) =>{
 
         .getResource(function(filtered_error, filtered_results) {
 
+
         console.log(filtered_error, "filtered_results", filtered_results)
         res.render('results', {filtered_results: map_filtered_results(filtered_results)});
         });
 
     });
 })
+
+// app.get('/search', (req, res) =>{
+//    api
+//     .newRequest()
+//     .follow("artworks")
+
+//     .withRequestOptions({
+//       headers: {
+//         "X-Xapp-Token": xappToken,
+//         Accept: "application/vnd.artsy-v2+json"
+//       }
+//     })
+
+//     .withTemplateParameters({id: "516dfb9ab31e2b2270000c45"})
+
+
+//     .getResource(function(err, res) {
+//       console.log("result", res)
+//        res.render("res")
+//     });
+//   });
 
 function map_filtered_results(filtered_results){
   if (!Array.isArray(filtered_results)){
