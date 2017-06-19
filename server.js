@@ -72,7 +72,7 @@ function map_filtered_results(filtered_results){
     filtered_results = [filtered_results]
   }
  return filtered_results.map(function(x){
-  return   {id: x.id, content: x.name, start: x.birthday}
+  return   {id: x.id, content: x.name || x.title, start: x.birthday || x.date.substring(0,4)}
  })
 }
 
