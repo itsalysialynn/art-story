@@ -34,7 +34,6 @@ function search(searchQuery) {
       }
     })
     .withTemplateParameters({q: searchQuery})
-
     .getResource((error, results) => {
       if(error) {
         reject(error);
@@ -114,7 +113,6 @@ function getSimilarArtists(results) {
   });
 }
 
-
 //get request to the api using the search bar (1st request)
 app.get('/search', (req, res) => {
   search(req.query.search)
@@ -126,16 +124,33 @@ app.get('/search', (req, res) => {
     })
     .then(([info, similarArtists]) => {
       // console.log("similar_artist", [info, similarArtists]);
-      console.log(similarArtists);
-      res.render('results', {info, similarArtists})
+      console.log("type of simlair artists", typeof similarArtists);
+      res.render('results', {info, similarArtists: map_filtered_results(similarArtists)})
     })
     .catch((err) =>{
       console.log(err);
     });
 });
 
+function has_birthday(x){
+  if (!x.birthday){
+    return false;
+  } else if (x.birthday){
+    return true;
+  }
+}
 
+function map_filtered_results(similarArtists){
+  console.log("similair artists?", similarArtists)
+  if (!Array.isArray(similarArtists)){
+    similarArtists = [similarArtists];
+  }
 
+ return similarArtists.filter(has_birthday).map(function(x){
+  x.birthday.match(/\d+/)[0]
+  return   {id: x.id, content: x.name, start: x.birthday}
+ })
+}
 
 
 

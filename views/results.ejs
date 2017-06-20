@@ -1,3 +1,42 @@
- <%=JSON.stringify(info)%>
- <%=JSON.stringify(similarArtists)%>
+
+ <!DOCTYPE HTML>
+<html>
+<head>
+    <script src="/scripts/vis.js"></script>
+
+    <link href="/styles/vis.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+
+
+
+<div id="visualization"></div>
+
+<script type="text/javascript">
+
+
+  // DOM element where the Timeline will be attached
+  var container = document.getElementById('visualization');
+
+  // Create a DataSet (allows two way data-binding)
+  var items = new vis.DataSet(
+
+    <%-JSON.stringify(similarArtists)%>
+
+  );
+
+
+  // Configuration for the Timeline
+  var options = {};
+
+  // Create a Timeline
+  var timeline = new vis.Timeline(container, items, options);
+</script>
+
+
+</body>
+</html>
+
 
