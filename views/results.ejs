@@ -1,3 +1,4 @@
+
  <!DOCTYPE HTML>
 <html>
 <head>
@@ -8,9 +9,7 @@
 </head>
 <body>
 
-<%=(filtered_results)%>
 
- <%=JSON.stringify(filtered_results)%>
 
 
 <div id="visualization"></div>
@@ -24,7 +23,7 @@
   // Create a DataSet (allows two way data-binding)
   var items = new vis.DataSet(
 
-    <%-JSON.stringify(filtered_results)%>
+    <%-JSON.stringify(similarArtists)%>
 
   );
 
@@ -39,4 +38,5 @@
 
 </body>
 </html>
+
 
