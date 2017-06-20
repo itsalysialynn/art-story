@@ -48,41 +48,39 @@ function search(searchQuery) {
 // Function to get info about search query
 function getInfo(results) {
 
-  // if (results._embedded.results[0].type !== "artist" || results._embedded.results[0].type !== "artwork") {
+    return new Promise ((resolve, reject) => {
+      if (!results || !results._embedded || !results._embedded.results || !results._embedded.results._links) {
 
-  //   // TODO Replace with flash messages
-  //   console.log("IN GET INFO This is not a valid artist or artwork. Please try with another search term.");
-  //   return;
-  // } else
-
-  return new Promise ((resolve, reject) => {
-  console.log(results._embedded.results[0]);
-  const details_link = results._embedded.results[0]._links.self.href.substring(api_path.length + 1);
-  //determines what the search term is (artist, gene, art work etc.)
-  let newApi = details_link.split("/")[0];
-  newApi = newApi.substring(0,newApi.length-1);
-
-  // more detailed request from the info entered in search bar (2nd request)
-  api
-    .newRequest()
-    //search term is filled in here
-    .follow(newApi)
-    .withTemplateParameters({id: details_link.split("/")[1]})
-
-    .withRequestOptions({
-      headers: {
-        "X-Xapp-Token": xappToken,
-        Accept: "application/vnd.artsy-v2+json"
-        }
-    })
-    .getResource(function(filtered_error, filtered_results) {
-      if(filtered_error) {
-        reject(filtered_error);
-      } else {
-        resolve({type: newApi, info: filtered_results});
+        reject("Error, please enter a valid artist or artwork");
+        return;
       }
+
+      const details_link = results._embedded.results[0]._links.self.href.substring(api_path.length + 1);
+      //determines what the search term is (artist, gene, art work etc.)
+      let newApi = details_link.split("/")[0];
+      newApi = newApi.substring(0,newApi.length-1);
+
+      // more detailed request from the info entered in search bar (2nd request)
+      api
+        .newRequest()
+        //search term is filled in here
+        .follow(newApi)
+        .withTemplateParameters({id: details_link.split("/")[1]})
+
+        .withRequestOptions({
+          headers: {
+            "X-Xapp-Token": xappToken,
+            Accept: "application/vnd.artsy-v2+json"
+            }
+        })
+        .getResource(function(filtered_error, filtered_results) {
+          if(filtered_error) {
+            reject(filtered_error);
+          } else {
+            resolve({type: newApi, info: filtered_results});
+          }
+        });
     });
-  });
 }
 
 
@@ -186,52 +184,41 @@ app.get('/search', (req, res) => {
 
     }).then(({type, info}) => {
       let ps;
-      console.log(type);
-      if (type === "gene" || type === "show" || type === "artwork" || type == "undefined") {
 
-        // TODO Replace with flash messages
-        res.send("This is not a valid artist or artwork. Please try with another search term.");
-        return;
+      if (type === "artist"){
+        ps = Promise.all([
+          getArtistsArtwork(info).then(map_artworks),
+          getSimilarArtists(info).then(map_artists),
+          map_artists(info),
+          ])
+        .then(([results, results2, results3]) => {
+          return flatten([results, results2, results3])
+        })
 
-      } else if (type === "artist" || type === "artwork") {
+      } else if (type === "artwork"){
 
-          if (type === "artist"){
-            ps = Promise.all([
-              getArtistsArtwork(info).then(map_artworks),
-              getSimilarArtists(info).then(map_artists),
-              map_artists(info),
+        ps = Promise.all([
+          getSimilarArtworks(info).then(map_artworks),
+          map_artworks(info)
+          ])
+        .then(([results, results2]) => {
+          return flatten([results, results2])
+        })
 
-            ])
-            .then(([results, results2, results3]) => {
-              return flatten([results, results2, results3])
-            })
-
-          } else if (type === "artwork"){
-
-            ps = Promise.all([
-              getSimilarArtworks(info).then(map_artworks),
-              map_artworks(info)
-              ])
-            .then(([results, results2]) => {
-              return flatten([results, results2])
-            })
-
-          } else {
-            throw new Error('unknown type: ', type)
-          }
-          return ps.then((similars)=> {
-
-            res.render('results', {info, similars: similars})
-          })
       } else {
-
-        // TODO Replace with flash messages
-        res.send("This is not a valid artist or artwork. Please try with another search term.");
-        return;
+        throw new Error('unknown type: ', type)
       }
+      return ps.then((similars)=> {
+
+        res.render('results', {info, similars: similars})
+      })
     })
     .catch((err) =>{
-      console.log(err);
+
+      // console.log(err);
+      // render page for bad search result
+      // TODO use flash message
+      res.send("Error, please enter a valid artist or artwork. Return to <a href='/'>Search.</a>");
     });
 });
 
@@ -276,8 +263,6 @@ function map_artworks(artworks){
     return   {id: x.id, content: x.title, start: x.date.match(/\d+/)[0]}
  })
 }
-
-
 
 
 
