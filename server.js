@@ -49,9 +49,10 @@ function search(searchQuery) {
 function getInfo(results) {
 
     return new Promise ((resolve, reject) => {
+      // console.log(results);
+      console.log(results._embedded.results[0]._links.self);
 
-      if (!results || !results._embedded || !results._embedded.results || !results._embedded.results[0]._links) {
-        console.log(results._embedded.results);
+      if (!results || !results._embedded || !results._embedded.results || !results._embedded.results[0]._links || !results._embedded.results[0]._links.self) {
         reject("Error, please enter a valid artist or artwork");
         return;
       }
@@ -60,7 +61,7 @@ function getInfo(results) {
       //determines what the search term is (artist, gene, art work etc.)
       let newApi = details_link.split("/")[0];
       newApi = newApi.substring(0,newApi.length-1);
-
+      console.log("newApi: ", newApi);
       // more detailed request from the info entered in search bar (2nd request)
       api
         .newRequest()
@@ -86,6 +87,13 @@ function getInfo(results) {
 
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
+
+  console.log("birthday: ", results.birthday);
+
+  if (results.birthday === '') {
+    reject("Error, please enter a valid artist or artwork");
+    return;
+  }
 
   return new Promise ((resolve, reject) => {
     const artist_id = results.id;
@@ -183,8 +191,8 @@ app.get('/search', (req, res) => {
       return getInfo(results)
 
     }).then(({type, info}) => {
+      // console.log(type, results);
       let ps;
-      console.log(type);
       if (type === "artist"){
         ps = Promise.all([
           getArtistsArtwork(info).then(map_artworks),
