@@ -1,6 +1,6 @@
 "use strict";
 
- require("dotenv").load();
+require("dotenv").load();
 
 const ENV = process.env.ENV || "development";
 const PORT = process.env.PORT || 3000;
@@ -10,8 +10,8 @@ const app = express();
 const bodyParser = require("body-parser");
 
 const traverson = require('traverson'),
-    JsonHalAdapter = require('traverson-hal'),
-    xappToken = process.env.ARTSY_TOLKEN;
+  JsonHalAdapter = require('traverson-hal'),
+  xappToken = process.env.ARTSY_TOLKEN;
 
 
 const api_path = "https://api.artsy.net/api"
@@ -49,11 +49,11 @@ function search(searchQuery) {
 function getInfo(results) {
 
     return new Promise ((resolve, reject) => {
-      if (!results || !results._embedded || !results._embedded.results || !results._embedded.results._links) {
+      // if (!results || !results._embedded || !results._embedded.results || !results._embedded.results._links) {
 
-        reject("Error, please enter a valid artist or artwork");
-        return;
-      }
+      //   reject("Error, please enter a valid artist or artwork");
+      //   return;
+      // }
 
       const details_link = results._embedded.results[0]._links.self.href.substring(api_path.length + 1);
       //determines what the search term is (artist, gene, art work etc.)
@@ -65,8 +65,7 @@ function getInfo(results) {
         .newRequest()
         //search term is filled in here
         .follow(newApi)
-        .withTemplateParameters({id: details_link.split("/")[1]})
-
+        .withTemplateParameters({ id: details_link.split("/")[1] })
         .withRequestOptions({
           headers: {
             "X-Xapp-Token": xappToken,
@@ -269,7 +268,7 @@ function map_artworks(artworks){
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 
 app.get("/", function(req, res) {
   res.render("index");
