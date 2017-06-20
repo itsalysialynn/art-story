@@ -2,11 +2,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  max-width: 50%;
+  max-height: 50%;
 
   /* Must be displayed above for example selected Timeline items */
-  z-index: 10;
+  z-index: 10r;
 }
 
 .vis-active {
@@ -21,15 +21,15 @@
 }
 
 div.vis-configuration {
-    position:relative;
-    display:block;
-    float:left;
-    font-size:12px;
+  position:relative;
+  display:block;
+  float:left;
+  font-size:12px;
 }
 
 div.vis-configuration-wrapper {
-    display:block;
-    width:700px;
+  display:block;
+  max-width: 100%;
 }
 
 div.vis-configuration-wrapper::after {
@@ -66,7 +66,7 @@ div.vis-configuration.vis-config-button{
 }
 
 div.vis-configuration.vis-config-button.hover{
-    background-color: #4588e6;
+    background-color: ;
     border:2px solid #214373;
     color:#ffffff;
 }
@@ -281,9 +281,9 @@ input.vis-configuration.vis-config-range:focus::-ms-fill-upper {
     color: #ffffff;
     font-size:14px;
     border-radius:4px;
-    -webkit-transition: opacity 0.3s ease-in-out;
-    -moz-transition: opacity 0.3s ease-in-out;
-    transition: opacity 0.3s ease-in-out;
+    -webkit-transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
 }
 .vis-configuration-popup:after, .vis-configuration-popup:before {
     left: 100%;
@@ -791,9 +791,9 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-panel.vis-background.vis-horizontal .vis-grid.vis-horizontal {
-  position: absolute;
-  width: 100%;
-  height: 0;
+/*  position: absolute;*/
+  max-width: 100%;
+/*  height: 0;*/
   border-bottom: 1px solid;
 }
 
@@ -891,22 +891,22 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   /*font-size: 10px;*/
   white-space: nowrap;
   display: inline-block
+
 }
 
 .vis-item {
   position: absolute;
   color: #1A1A1A;
   border-color: #97B0F8;
-  border-width: 1px;
-  background-color: #D5DDF6;
+  border: 1px dotted;
   display: inline-block;
   z-index: 1;
   /*overflow: hidden;*/
 }
 
 .vis-item.vis-selected {
-  border-color: #FFC200;
-  background-color: #FFF785;
+  border-color: #C4BEE9;
+  background-color: #E0EAF5;
 
   /* z-index must be higher than the z-index of custom time bar and current time bar */
   z-index: 2;
@@ -917,7 +917,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-item.vis-point.vis-selected {
-  background-color: #FFF785;
+
 }
 
 .vis-item.vis-box {
@@ -946,7 +946,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-item.vis-background {
   border: none;
-  background-color: rgba(213, 221, 246, 0.4);
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -968,6 +967,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-item.vis-range .vis-item-content {
   position: relative;
   display: inline-block;
+  font-family: 'Abel', sans-serif;
+
 }
 
 .vis-item.vis-background .vis-item-content {
@@ -1128,7 +1129,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-nested-group {
-  background: #f5f5f5;
+  background: #F4F5FB;
 }
 
 .vis-label.vis-nesting-group.expanded:before {
@@ -1218,9 +1219,9 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-left.vis-panel.vis-vertical-scroll, .vis-right.vis-panel.vis-vertical-scroll {
   height: 100%;
-  overflow-x: hidden;
+  overflow-x: scroll;
   overflow-y: scroll;
-} 
+}
 
 .vis-left.vis-panel.vis-vertical-scroll {
   direction: rtl;
@@ -1399,21 +1400,24 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-time-axis .vis-text {
-  position: absolute;
+  font-family: 'Raleway', sans-serif;
+  font-size: xx-small;
   color: #4d4d4d;
-  padding: 3px;
+  letter-spacing: 5px;
+  position: absolute;
+  padding: 0.5%;
   overflow: hidden;
   box-sizing: border-box;
-
   white-space: nowrap;
 }
 
+
 .vis-time-axis .vis-text.vis-measure {
+  font-family: 'Raleway', sans-serif;
+  margin: 0;
   position: absolute;
   padding-left: 0;
   padding-right: 0;
-  margin-left: 0;
-  margin-right: 0;
   visibility: hidden;
 }
 
@@ -1437,12 +1441,17 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 
 .vis-timeline {
+  box-sizing: border-box;
   position: relative;
   border: 1px solid #bfbfbf;
-
+  max-width: 90%;
+  margin: 5%;
   overflow: hidden;
-  padding: 0;
-  margin: 0;
+  border-radius: 1%;
 
-  box-sizing: border-box;
+}
+
+#visualization {
+  max-width: 80%;
+  height: 20%;
 }

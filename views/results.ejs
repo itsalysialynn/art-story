@@ -25,11 +25,44 @@
     <%-JSON.stringify(filtered_results)%>
   );
 
+  items.add([<%- include partials/_art-movement-timeline.ejs %>]);
+
+
   // Configuration for the Timeline
-  var options = {};
+
+
+  var options = {
+    maxHeight: '500px',
+    // min: new Date(-5000, 0, 1),
+    max: '4000',
+    format: {
+      minorLabels: function(date, scale, step) {
+        let year = date.year();
+        let output = '';
+        switch (scale) {
+          case 'year':
+            output = Math.abs(date.format('YYYY'));
+            output += (year < 0) ? 'BC' : '';
+            break;
+        }
+
+        // if (scale === 'year') {
+        //   output += (year < 0) ? 'BC' :'AD';
+        // }
+        console.log('major labels function called with:', arguments);
+        return output;
+      }
+    },
+    timeAxis: {
+      scale: 'year', step: 500
+    }
+  };
+
 
   // Create a Timeline
-  var timeline = new vis.Timeline(container, items, options);
+  var timeline = new vis.Timeline(container, items, groups, options);
+  var groups = [{ <%- include partials/_groups.ejs %> }];
+
 </script>
 
 
