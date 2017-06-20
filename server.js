@@ -87,8 +87,7 @@ function getArtistsArtwork(results) {
 
   return new Promise ((resolve, reject) => {
     const artist_id = results.id;
-    // const artist_id = results._embedded.results[0]._links.self.href.substring(api_path.length + 9);
-  // console.log(artist_id);
+
   //handles artist specific searches
     api
       .newRequest()
@@ -119,9 +118,8 @@ function getArtistsArtwork(results) {
 function getSimilarArtists(results) {
 
   return new Promise ((resolve, reject) => {
-  // const artist_id = results._embedded.results[0]._links.self.href.substring(api_path.length + 9);
   const artist_id = results.id;
-  // console.log(results.id);
+
   //handles artist specific searches
     api
       .newRequest()
@@ -141,7 +139,6 @@ function getSimilarArtists(results) {
       if(error) {
         reject(error);
       } else {
-        // console.log("THIS IS SIMILAR ARTISTS", similarArtists)
         resolve(similarArtists);
 
       }
@@ -170,13 +167,11 @@ function getSimilarArtworks(results) {
       })
 
     .getResource((error, similar_artworks)=> {
-      // console.log("similar_artworks", similar_artworks)
       const similarArtworks = similar_artworks._embedded.artworks;
 
       if(error) {
         reject(error);
       } else {
-        console.log("THIS IS SIMILAR ARTworks", similarArtworks)
         resolve(similarArtworks);
 
       }
@@ -195,37 +190,31 @@ app.get('/search', (req, res) => {
       console.log(type, info)
 
       if (type === "artist"){
-        // p = getSimilarArtists(info).then(map_similarArtists)
         ps = Promise.all([
           getArtistsArtwork(info).then(map_artworks),
-          getSimilarArtists(info).then(map_artists)
+          getSimilarArtists(info).then(map_artists),
+          map_artists(info),
+
         ])
-        .then(([results]) => {
-          console.log("*******")
-          return results
+        .then(([results, results2, results3]) => {
+          return flatten([results, results2, results3])
         })
 
       } else if (type === "artwork"){
 
         ps = Promise.all([
-          getSimilarArtworks(info).then(map_artworks)
+          getSimilarArtworks(info).then(map_artworks),
+          map_artworks(info)
           ])
-        .then(([results]) => {
-          console.log("RESULTS", results)
-          return results
+        .then(([results, results2]) => {
+          return flatten([results, results2])
         })
 
       } else {
         throw new Error('unknown type: ', type)
       }
-      console.log("PS", ps)
       return ps.then((similars)=> {
-        console.log("similars", similars)
-        // flatten(similars){
-        //   return similars
-        // }
-        // console.log("similar_artist", [info, similarArtists]);
-        // console.log("type of similar artworks", typeof similars);
+
         res.render('results', {info, similars: similars})
       })
 
@@ -250,13 +239,10 @@ function has_birthday(x){
 }
 
 function map_artists(artists){
-  // console.log("similair artists?", similarArtists)
   if (!Array.isArray(artists)){
     artists = [artists];
   }
-
  return artists.filter(has_birthday).map(function(x){
-
   return   {id: x.id, content: x.name, start: x.birthday.match(/\d+/)[0]}
  })
 }
