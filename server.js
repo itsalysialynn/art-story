@@ -72,7 +72,7 @@ function getInfo(results) {
       if(filtered_error) {
         reject(filtered_error);
       } else {
-        resolve(filtered_results);
+        resolve({type: newApi, info: filtered_results});
       }
     });
   });
@@ -153,7 +153,44 @@ function getSimilarArtists(results) {
       if(error) {
         reject(error);
       } else {
+        // console.log("THIS IS SIMILAR ARTISTS", similarArtists)
         resolve(similarArtists);
+
+      }
+    });
+  });
+}
+
+// accessing similar artworks with the artwork id
+function getSimilarArtworks(results) {
+  console.log('getSimilarArtwork result:', JSON.stringify(results));
+  return new Promise ((resolve, reject) => {
+  const artwork_id = results._embedded.results[0]._links.self.href.substring(api_path.length + 10);
+  console.log("artwork_id", artwork_id);
+  // const artist_id = results._links.similar_artists.href.substring(api_path.length + 30)
+
+  //handles artist specific searches
+    api
+      .newRequest()
+      .follow('artworks')
+      .withTemplateParameters({similar_to_artwork_id: artwork_id})
+      .withRequestOptions({
+        headers: {
+          "X-Xapp-Token": xappToken,
+         Accept: "application/vnd.artsy-v2+json"
+        }
+      })
+
+    .getResource((error, similar_artworks)=> {
+      console.log("similar_artworks", similar_artworks)
+      const similarArtworks = similar_artworks._embedded.artworks;
+
+      if(error) {
+        reject(error);
+      } else {
+        console.log("THIS IS SIMILAR ARTworks", similarArtworks)
+        resolve(similarArtworks);
+
       }
     });
   });
@@ -163,15 +200,44 @@ function getSimilarArtists(results) {
 app.get('/search', (req, res) => {
   search(req.query.search)
     .then((results) => {
-      return Promise.all([
-        getInfo(results),
-        getArtistsArtworks(results),
-        getSimilarArtists(results)
-      ])
-    })
-    .then(([info, artistsArtworks, similarArtists]) => {
-      // console.log(artistsArtworks);
-      res.render('results', {info, artistsArtworks: mapArtistsArtworks(artistsArtworks), similarArtists: map_similar_artists(similarArtists)})
+      return getInfo(results)
+
+    }).then(({type, info}) => {
+      let ps;
+      console.log(type)
+
+      if (type === "artist"){
+        // p = getSimilarArtists(info).then(map_similarArtists)
+        ps = Promise.all([
+          getSimilarArtists(info).then(map_similarArtists),
+
+          // getArtistsArtwork(info) // .then(map_artworks)
+        ])
+        .then(([artists, artworks]) => {
+          console.log("*******")
+          return {
+            artists: artists,
+            artworks: artworks
+          }
+        })
+
+      } else if (type === "artwork"){
+
+        ps = getSimilarArtworks(info) // .then(map_artworks)
+        .then((artworks) => {
+          return { artists: artists }
+        })
+        // [dsad]
+      } else {
+        throw new Error('unknown type: ', type)
+      }
+
+      return ps.then((similars) => {
+        // console.log("similar_artist", [info, similarArtists]);
+        console.log("type of similar artworks", typeof similars);
+        res.render('results', {info, similars: similars})
+      })
+
     })
     .catch((err) =>{
       console.log(err);
@@ -186,12 +252,13 @@ function has_birthday(x){
   }
 }
 
-function map_similar_artists(similarArtists){
+function map_similarArtists(similarArtists){
   if (!Array.isArray(similarArtists)){
     similarArtists = [similarArtists];
   }
  return similarArtists.filter(has_birthday).map(function(x){
-  return {id: x.id, content: x.name, start: x.birthday.match(/\d+/)[0]}
+
+  return   {id: x.id, content: x.name, start: x.birthday.match(/\d+/)[0]}
  })
 }
 
