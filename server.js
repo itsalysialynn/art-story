@@ -47,10 +47,10 @@ function search(searchQuery) {
 
 //function to get info
 function getInfo(results) {
-  // console.log('getInfo result:', results);
+
   return new Promise ((resolve, reject) => {
   const details_link = results._embedded.results[0]._links.self.href.substring(api_path.length + 1);
-  // console.log(details_link);
+
   //determines what the search term is (artist, gene, art work etc.)
   let newApi = details_link.split("/")[0];
   newApi = newApi.substring(0,newApi.length-1);
@@ -78,14 +78,60 @@ function getInfo(results) {
   });
 }
 
+function hasArtworkDate(x){
+  if (!x.date){
+    return false;
+  } else if (x.date){
+    return true;
+  }
+}
+
+function mapArtistsArtworks(artistsArtworks){
+  if (!Array.isArray(artistsArtworks)){
+    artistsArtworks = [artistsArtworks];
+  }
+ return artistsArtworks.filter(hasArtworkDate).map(function(x){
+  return {id: x.id, content: x.title, start: x.date.match(/\d+/)[0]}
+ })
+}
+
+// accessing the artist's artworks using the artist id
+function getArtistsArtworks(results) {
+
+  return new Promise ((resolve, reject) => {
+  const artist_id = results._embedded.results[0]._links.self.href.substring(api_path.length + 9);
+  // console.log(artist_id);
+  //handles artist specific searches
+    api
+      .newRequest()
+      .follow('artworks')
+      .withTemplateParameters({artist_id: artist_id})
+      .withRequestOptions({
+        headers: {
+          "X-Xapp-Token": xappToken,
+         Accept: "application/vnd.artsy-v2+json"
+        }
+      })
+
+    .getResource((error, artists_artworks)=> {
+      const artistsArtworks = artists_artworks._embedded.artworks;
+      // console.log(artists_artworks._embedded.artworks);
+
+      if(error) {
+        reject(error);
+      } else {
+        resolve(artistsArtworks);
+      }
+    });
+  });
+}
+
 
 // accessing similar artists with the artist id
 function getSimilarArtists(results) {
-  // console.log('getSimilarArtist result:', results._embedded);
+
   return new Promise ((resolve, reject) => {
   const artist_id = results._embedded.results[0]._links.self.href.substring(api_path.length + 9);
-  // console.log("artist_id", artist_id);
-  // const artist_id = results._links.similar_artists.href.substring(api_path.length + 30)
 
   //handles artist specific searches
     api
@@ -106,7 +152,6 @@ function getSimilarArtists(results) {
       if(error) {
         reject(error);
       } else {
-        // resolve(topThreeSimilar);
         resolve(similarArtists);
       }
     });
@@ -119,13 +164,13 @@ app.get('/search', (req, res) => {
     .then((results) => {
       return Promise.all([
         getInfo(results),
+        getArtistsArtworks(results),
         getSimilarArtists(results)
       ])
     })
-    .then(([info, similarArtists]) => {
-      // console.log("similar_artist", [info, similarArtists]);
-      console.log("type of simlair artists", typeof similarArtists);
-      res.render('results', {info, similarArtists: map_filtered_results(similarArtists)})
+    .then(([info, artistsArtworks, similarArtists]) => {
+      // console.log(artistsArtworks);
+      res.render('results', {info, artistsArtworks: mapArtistsArtworks(artistsArtworks), similarArtists: map_similar_artists(similarArtists)})
     })
     .catch((err) =>{
       console.log(err);
@@ -140,17 +185,16 @@ function has_birthday(x){
   }
 }
 
-function map_filtered_results(similarArtists){
-  console.log("similair artists?", similarArtists)
+function map_similar_artists(similarArtists){
   if (!Array.isArray(similarArtists)){
     similarArtists = [similarArtists];
   }
-
  return similarArtists.filter(has_birthday).map(function(x){
-  x.birthday.match(/\d+/)[0]
-  return   {id: x.id, content: x.name, start: x.birthday}
+  return {id: x.id, content: x.name, start: x.birthday.match(/\d+/)[0]}
  })
 }
+
+
 
 
 
