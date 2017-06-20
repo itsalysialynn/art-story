@@ -85,7 +85,7 @@ function getSimilarArtists(results) {
   // console.log('getSimilarArtist result:', results._embedded);
   return new Promise ((resolve, reject) => {
   const artist_id = results._embedded.results[0]._links.self.href.substring(api_path.length + 9);
-  console.log("artist_id", artist_id);
+  // console.log("artist_id", artist_id);
   // const artist_id = results._links.similar_artists.href.substring(api_path.length + 30)
 
   //handles artist specific searches
@@ -102,17 +102,13 @@ function getSimilarArtists(results) {
 
     .getResource((error, similar_artists)=> {
 
-      var topThreeSimilar = [];
-      topThreeSimilar.push(similar_artists._embedded.artists[1].name);
-      topThreeSimilar.push(similar_artists._embedded.artists[2].name);
-      topThreeSimilar.push(similar_artists._embedded.artists[3].name);
-      // var similar_artist = similar_artists._embedded.artists[1].name;
-      // console.log(similar_artist);
+      const similarArtists = similar_artists._embedded.artists;
+
       if(error) {
         reject(error);
       } else {
-        resolve(topThreeSimilar);
-        // resolve(similar_artist);
+        // resolve(topThreeSimilar);
+        resolve(similarArtists);
       }
     });
   });
@@ -127,9 +123,6 @@ app.get('/search', (req, res) => {
         getInfo(results),
         getSimilarArtists(results)
       ])
-      .catch((err) =>{
-        console.log(err);
-      });
     })
     .then(([info, similarArtists]) => {
       // console.log("similar_artist", [info, similarArtists]);
