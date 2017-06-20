@@ -3,14 +3,15 @@
 <html>
 <head>
     <script src="/scripts/vis.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src='http://okfnlabs.org/wikipediajs/wikipedia.js'></script>
 
     <link href="/styles/vis.css" rel="stylesheet" type="text/css" />
 
 </head>
 <body>
 
-
-
+<%=similars.thumbnail%>
 
 <div id="visualization"></div>
 
@@ -23,7 +24,7 @@
   // Create a DataSet (allows two way data-binding)
   var items = new vis.DataSet(
 
-    <%-JSON.stringify(similars)%>
+    <%- JSON.stringify(similars, null, 2)%>
 
   );
 
@@ -33,6 +34,22 @@
 
   // Create a Timeline
   var timeline = new vis.Timeline(container, items, options);
+
+  timeline.on('select', function (properties) {
+    console.log('item selected:', properties.event.firstTarget.innerText);
+    let wikiQuery = properties.event.firstTarget.innerText.replace(/ /g, '_');
+    console.log(wikiQuery);
+    try {
+
+      WIKIPEDIA.getData('http://en.wikipedia.org/wiki/' + wikiQuery, function success(wikiData) {
+        console.log(wikiData);
+      }, function wikiError(err) {
+        console.log('error:', err);
+      });
+    } catch (err) {
+      console('error:', err);
+    }
+  });
 </script>
 
 

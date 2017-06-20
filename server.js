@@ -212,7 +212,19 @@ app.get('/search', (req, res) => {
       } else {
         throw new Error('unknown type: ', type)
       }
+
+
       return ps.then((similars)=> {
+        similars.sort(function (a, b) {
+          if (a.id < b.id) {
+            return -1;
+          } else if (a.id == b.id) {
+            return 0;
+          } else {
+            return 1;
+          }
+        });
+        console.log('similars:', JSON.stringify(similars, null, 2));
         res.render('results', {info, similars: similars})
       })
 
@@ -223,6 +235,7 @@ app.get('/search', (req, res) => {
 });
 
 function flatten(arr) {
+
   return arr.reduce(function (flat, toFlatten) {
     return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
   }, []);
@@ -241,7 +254,7 @@ function map_artists(artists){
     artists = [artists];
   }
  return artists.filter(has_birthday).map(function(x){
-  return   {id: x.id, content: x.name, start: x.birthday.match(/\d+/)[0]}
+  return   {id: x.id, content: x.name, start: x.birthday.match(/\d+/)[0], thumbnail: x._links.thumbnail.href}
  })
 }
 
@@ -254,14 +267,12 @@ function has_date(x){
 }
 
 function map_artworks(artworks){
-  console.log("ARTWORKS IN THE MAP?", artworks)
   if (!Array.isArray(artworks)){
     artworks = [artworks];
   }
 
  return artworks.filter(has_date).map(function(x){
-console.log("where is it?", {id: x.id, content: x.title, start: x.date.match(/\d+/)[0]})
-  return   {id: x.id, content: x.title, start: x.date.match(/\d+/)[0]}
+  return   {id: x.id, content: x.title, start: x.date.match(/\d+/)[0], medium: x.medium, thumbnail: x._links.thumbnail.href}
  })
 }
 
