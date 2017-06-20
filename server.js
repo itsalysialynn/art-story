@@ -131,8 +131,9 @@ function getArtistsArtworks(results) {
 function getSimilarArtists(results) {
 
   return new Promise ((resolve, reject) => {
-  const artist_id = results._embedded.results[0]._links.self.href.substring(api_path.length + 9);
-
+  // const artist_id = results._embedded.results[0]._links.self.href.substring(api_path.length + 9);
+  const artist_id = results.id;
+  console.log(results.id);
   //handles artist specific searches
     api
       .newRequest()
