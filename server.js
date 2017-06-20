@@ -49,11 +49,12 @@ function search(searchQuery) {
 function getInfo(results) {
 
     return new Promise ((resolve, reject) => {
-      // if (!results || !results._embedded || !results._embedded.results || !results._embedded.results._links) {
 
-      //   reject("Error, please enter a valid artist or artwork");
-      //   return;
-      // }
+      if (!results || !results._embedded || !results._embedded.results || !results._embedded.results[0]._links) {
+        console.log(results._embedded.results);
+        reject("Error, please enter a valid artist or artwork");
+        return;
+      }
 
       const details_link = results._embedded.results[0]._links.self.href.substring(api_path.length + 1);
       //determines what the search term is (artist, gene, art work etc.)
@@ -183,7 +184,7 @@ app.get('/search', (req, res) => {
 
     }).then(({type, info}) => {
       let ps;
-
+      console.log(type);
       if (type === "artist"){
         ps = Promise.all([
           getArtistsArtwork(info).then(map_artworks),
