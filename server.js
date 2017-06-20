@@ -55,36 +55,31 @@ function getInfo(results) {
   let newApi = details_link.split("/")[0];
   newApi = newApi.substring(0,newApi.length-1);
 
+  // if (newApi === Gene || Profile || Show) {
+  //   console.log(newApi);
+  // } else if (newApi === Artist || Artwork)
   // more detailed request from the info entered in search bar (2nd request)
-  api
-    .newRequest()
-    //search term is filled in here
-    .follow(newApi)
-    .withTemplateParameters({id: details_link.split("/")[1]})
+    api
+      .newRequest()
+      //search term is filled in here
+      .follow(newApi)
+      .withTemplateParameters({id: details_link.split("/")[1]})
 
-    .withRequestOptions({
-      headers: {
-        "X-Xapp-Token": xappToken,
-        Accept: "application/vnd.artsy-v2+json"
+      .withRequestOptions({
+        headers: {
+          "X-Xapp-Token": xappToken,
+          Accept: "application/vnd.artsy-v2+json"
+          }
+      })
+      .getResource(function(filtered_error, filtered_results) {
+        if(filtered_error) {
+          reject(filtered_error);
+        } else {
+          resolve({type: newApi, info: filtered_results});
         }
-    })
-    .getResource(function(filtered_error, filtered_results) {
-      if(filtered_error) {
-        reject(filtered_error);
-      } else {
-        resolve({type: newApi, info: filtered_results});
-      }
+      });
     });
-  });
 }
-
-// function hasArtworkDate(x){
-//   if (!x.date){
-//     return false;
-//   } else if (x.date){
-//     return true;
-//   }
-// }
 
 
 // accessing the artist's artworks using the artist id
@@ -230,7 +225,7 @@ app.get('/search', (req, res) => {
         //   return similars
         // }
         // console.log("similar_artist", [info, similarArtists]);
-        console.log("type of similar artworks", typeof similars);
+        // console.log("type of similar artworks", typeof similars);
         res.render('results', {info, similars: similars})
       })
 
