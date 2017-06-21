@@ -35,7 +35,7 @@ var WIKIPEDIA = function() {
         dbpediaUrl: url,
         summary: null
       };
-      if (data) {
+      if (url in data) {
         out.summary = my.extractSummary(url, data);
       } else {
         out.error = 'Failed to retrieve data. Is the URL or page name correct?';
