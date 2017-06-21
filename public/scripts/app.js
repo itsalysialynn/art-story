@@ -25,12 +25,16 @@ $(document).ready(function() {
         },
         success: function(data) {
           response(
-            $.map(data, function(item) {
-              return {
-                label: `${item.display} `,
-                value: item.id
-              };
-            })
+            data
+              .filter(function(item) {
+                return item.label === "Artist" || item.label === "Artwork";
+              })
+              .map(function(item) {
+                return {
+                  label: item.display,
+                  value: item.id
+                };
+              })
           );
         }
       });
