@@ -225,7 +225,7 @@ app.get('/search', (req, res) => {
           }
         });
         console.log('similars:', JSON.stringify(similars, null, 2));
-        res.render('results', {info, similars: similars})
+        res.render('results', {info, similars})
       })
 
     })
@@ -242,11 +242,7 @@ function flatten(arr) {
 }
 
 function has_birthday(x){
-  if (!x.birthday){
-    return false;
-  } else if (x.birthday){
-    return true;
-  }
+  return !!x.birthday;
 }
 
 function map_artists(artists){
