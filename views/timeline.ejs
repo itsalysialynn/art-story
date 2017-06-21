@@ -7,10 +7,14 @@
     <script src='http://okfnlabs.org/wikipediajs/wikipedia.js'></script>
 
     <link href="/styles/vis.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/styles/timeline.css">
+    <link rel="stylesheet" href="/styles/animate.css">
+    <link rel="stylesheet" href="/styles/art-movement-timeline.css">
 
 </head>
 <body>
 
+<% include partials/_search.ejs %>
 
 
 <div id="visualization"></div>
@@ -19,27 +23,27 @@
 
 
   // DOM element where the Timeline will be attached
-  const container = document.getElementById('visualization');
+  var container = document.getElementById('visualization');
 
   // Create a DataSet (allows two way data-binding)
-  const data = <%- JSON.stringify(similars, null, 2) %>;
+  var data = <%- JSON.stringify(similars, null, 2) %>;
 
-  const items = new vis.DataSet(data);
+  var items = new vis.DataSet(data);
   console.log("items", items)
 
 
   // Configuration for the Timeline
-  const options = {dataAttributes: ["id", "thumbnail", "medium"]};
+  var options = {dataAttributes: ["id", "thumbnail", "medium"]};
 
   // Create a Timeline
-  const timeline = new vis.Timeline(container, items, options);
+  var timeline = new vis.Timeline(container, items, options);
 
   timeline.on('select', function (properties) {
     console.log('item selected:', properties.event.firstTarget.parentNode.dataset.id);
 
-    const selectedId = properties.event.firstTarget.parentNode.dataset.id;
-    const thumbnailUrl = properties.event.firstTarget.parentNode.dataset.thumbnail;
-    const mediumArtwork = properties.event.firstTarget.parentNode.dataset.medium
+    var selectedId = properties.event.firstTarget.parentNode.dataset.id;
+    var thumbnailUrl = properties.event.firstTarget.parentNode.dataset.thumbnail;
+    var mediumArtwork = properties.event.firstTarget.parentNode.dataset.medium
     console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
 
     document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
@@ -53,7 +57,7 @@
     // console.log("find", data.filter(function(datum){return datum.id === selectedId;}))
     // console.log("find", data.filter(datum => datum.id === selectedId));
 
-    let wikiQuery = properties.event.firstTarget.innerText.replace(/ /g, '_');
+    var wikiQuery = properties.event.firstTarget.innerText.replace(/ /g, '_');
     console.log(wikiQuery);
     try {
 
@@ -72,7 +76,11 @@
 
 <div id='thumbnail'> </div>
 
-
+<% include partials/_art-movement-timeline.ejs %>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+    <script src="/scripts/app.js"></script>
+    <!-- <script src="/scripts/similar-artists.js"></script> -->
 </body>
 </html>
 
