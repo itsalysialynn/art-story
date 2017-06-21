@@ -3,12 +3,13 @@
 <html>
 <head>
     <script src="/scripts/vis.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src='http://okfnlabs.org/wikipediajs/wikipedia.js'></script>
 
     <link href="/styles/vis.css" rel="stylesheet" type="text/css" />
 
 </head>
 <body>
-
 
 
 
@@ -18,22 +19,58 @@
 
 
   // DOM element where the Timeline will be attached
-  var container = document.getElementById('visualization');
+  const container = document.getElementById('visualization');
 
   // Create a DataSet (allows two way data-binding)
-  var items = new vis.DataSet(
+  const data = <%- JSON.stringify(similars, null, 2) %>;
 
-    <%-JSON.stringify(similars)%>
-
-  );
+  const items = new vis.DataSet(data);
+  console.log("items", items)
 
 
   // Configuration for the Timeline
-  var options = {};
+  const options = {dataAttributes: ["id", "thumbnail", "medium"]};
 
   // Create a Timeline
-  var timeline = new vis.Timeline(container, items, options);
+  const timeline = new vis.Timeline(container, items, options);
+
+  timeline.on('select', function (properties) {
+    console.log('item selected:', properties.event.firstTarget.parentNode.dataset.id);
+
+    const selectedId = properties.event.firstTarget.parentNode.dataset.id;
+    const thumbnailUrl = properties.event.firstTarget.parentNode.dataset.thumbnail;
+    const mediumArtwork = properties.event.firstTarget.parentNode.dataset.medium
+    console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
+
+    document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
+    document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
+
+
+    function getById(datum){
+      return datum.id === selectedId;
+    }
+    console.log("find", data.filter(getById))
+    // console.log("find", data.filter(function(datum){return datum.id === selectedId;}))
+    // console.log("find", data.filter(datum => datum.id === selectedId));
+
+    let wikiQuery = properties.event.firstTarget.innerText.replace(/ /g, '_');
+    console.log(wikiQuery);
+    try {
+
+      WIKIPEDIA.getData('http://en.wikipedia.org/wiki/' + wikiQuery, function success(wikiData) {
+        console.log(wikiData);
+
+      }, function wikiError(err) {
+        console.log('error:', err);
+      });
+    } catch (err) {
+      console('error:', err);
+    }
+
+  });
 </script>
+
+<div id='thumbnail'> </div>
 
 
 </body>
