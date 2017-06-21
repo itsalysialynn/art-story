@@ -49,7 +49,7 @@ function getInfo(results) {
 
     return new Promise ((resolve, reject) => {
       // console.log(results);
-      // console.log(results._embedded.results[0]._links.self);
+      // console.log(results._embedded.results[0]);
 
       if (!results || !results._embedded || !results._embedded.results || !results._embedded.results[0]._links || !results._embedded.results[0]._links.self) {
         reject("Error, please enter a valid artist or artwork");
@@ -60,7 +60,7 @@ function getInfo(results) {
       //determines what the search term is (artist, gene, art work etc.)
       let newApi = details_link.split("/")[0];
       newApi = newApi.substring(0,newApi.length-1);
-      // console.log("newApi: ", newApi);
+      console.log("newApi: ", newApi);
       // more detailed request from the info entered in search bar (2nd request)
       api
         .newRequest()
@@ -77,6 +77,7 @@ function getInfo(results) {
           if(filtered_error) {
             reject(filtered_error);
           } else {
+            console.log(newApi);
             resolve({type: newApi, info: filtered_results});
           }
         });
@@ -86,8 +87,8 @@ function getInfo(results) {
 
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
-
-  console.log("birthday: ", results.birthday);
+  // console.log(results);
+  // console.log("birthday: ", results.birthday);
 
   if (results.birthday === '') {
     reject("Error, please enter a valid artist or artwork");
@@ -96,7 +97,7 @@ function getArtistsArtwork(results) {
 
   return new Promise ((resolve, reject) => {
     const artist_id = results.id;
-
+    // console.log(artist_id);
     // handles artist specific searches
     api
       .newRequest()
@@ -111,10 +112,10 @@ function getArtistsArtwork(results) {
 
     .getResource((error, artists_artworks)=> {
       const artistsArtworks = artists_artworks._embedded.artworks;
-
       if(error) {
         reject(error);
       } else {
+        console.log("artistsArtworks: ", artistsArtworks);
         resolve(artistsArtworks);
       }
     });
@@ -146,6 +147,7 @@ function getSimilarArtists(results) {
       if(error) {
         reject(error);
       } else {
+        console.log("similarArtists: ", similarArtists);
         resolve(similarArtists);
       }
     });
@@ -171,34 +173,82 @@ function getSimilarArtworks(results) {
       })
 
     .getResource((error, similar_artworks)=> {
-      const similarArtworks = similar_artworks._embedded.artworks;
 
       if(error) {
         reject(error);
       } else {
         resolve(similarArtworks);
+        const similarArtworks = similar_artworks._embedded.artworks;
 
       }
     });
   });
 }
 
+function flatten(arr) {
+  console.log("array in flatten: ", arr);
+  return arr.reduce(function (flat, toFlatten) {
+    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+  }, []);
+}
+
+function has_birthday(x){
+  return !!x.birthday;
+}
+
+function map_artists(artists){
+  console.log("map_artists: ", artists);
+  if (!Array.isArray(artists)){
+    artists = [artists];
+  }
+  return artists.filter(has_birthday).map(function(x){
+    // console.log("after return in map_artists: ", artists);
+    var thumbnailVal = (x._links.thumbnail === undefined) ? "" : x._links.thumbnail.href;
+    return   {id: x.id, content: x.name, start: x.birthday.match(/\d+/)[0], thumbnail: thumbnailVal}
+ })
+}
+
+function has_date(x){
+  if (!x.date){
+    return false;
+  } else if (x.date){
+    return true;
+  }
+}
+
+function map_artworks(artworks){
+  console.log("artworks in map_artworks: ", artworks);
+
+  if (!Array.isArray(artworks)){
+    artworks = [artworks];
+  }
+  return artworks.filter(has_date).map(function(x){
+      // console.log("artworks in map_artworks filter: ", artworks);
+  return   {id: x.id, content: x.title, start: x.date.match(/\d+/)[0], medium: x.medium, thumbnail: x._links.thumbnail.href}
+
+ })
+}
+
+
 // get request to the api using the search bar (1st request)
 app.get('/search', (req, res) => {
   search(req.query.search)
     .then((results) => {
+      // console.log(results);
       return getInfo(results)
 
     }).then(({type, info}) => {
-      // console.log(type, results);
       let ps;
       if (type === "artist"){
+        console.log("type in if statement:", type);
+
         ps = Promise.all([
           getArtistsArtwork(info).then(map_artworks),
           getSimilarArtists(info).then(map_artists),
           map_artists(info),
           ])
         .then(([results, results2, results3]) => {
+          console.log("results after promise all: ", [results, results2, results3]);
           return flatten([results, results2, results3])
         })
 
@@ -218,7 +268,7 @@ app.get('/search', (req, res) => {
 
 
       return ps.then((similars)=> {
-
+        console.log("similars: ", similars);
         similars.sort(function (a, b) {
           if (a.id < b.id) {
             return -1;
@@ -228,58 +278,21 @@ app.get('/search', (req, res) => {
             return 1;
           }
         });
-        console.log('similars:', JSON.stringify(similars, null, 2));
+        // console.log('similars:', JSON.stringify(similars, null, 2));
         res.render('results', {info, similars})
 
       })
     })
     .catch((err) =>{
-
-      // console.log(err);
+      console.log("This is an error");
+      console.log(err);
       // render page for bad search result
       // TODO use flash message
       res.send("Error, please enter a valid artist or artwork. Return to <a href='/'>Search.</a>");
     });
 });
 
-function flatten(arr) {
 
-  return arr.reduce(function (flat, toFlatten) {
-    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
-  }, []);
-}
-
-function has_birthday(x){
-  return !!x.birthday;
-}
-
-function map_artists(artists){
-  if (!Array.isArray(artists)){
-    artists = [artists];
-  }
- return artists.filter(has_birthday).map(function(x){
-  return   {id: x.id, content: x.name, start: x.birthday.match(/\d+/)[0], thumbnail: x._links.thumbnail.href}
- })
-}
-
-function has_date(x){
-  if (!x.date){
-    return false;
-  } else if (x.date){
-    return true;
-  }
-}
-
-function map_artworks(artworks){
-
-  if (!Array.isArray(artworks)){
-    artworks = [artworks];
-  }
-  return artworks.filter(has_date).map(function(x){
-  return   {id: x.id, content: x.title, start: x.date.match(/\d+/)[0], medium: x.medium, thumbnail: x._links.thumbnail.href}
-
- })
-}
 
 
 
