@@ -9,38 +9,35 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 
-const traverson = require('traverson'),
-  JsonHalAdapter = require('traverson-hal'),
+const traverson = require("traverson"),
+  JsonHalAdapter = require("traverson-hal"),
   xappToken = process.env.ARTSY_TOLKEN;
 
-
-const api_path = "https://api.artsy.net/api"
+const api_path = "https://api.artsy.net/api";
 
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
 const api = traverson.from(api_path).jsonHal();
 
-
 // Function for initial search
 function search(searchQuery) {
   return new Promise((resolve, reject) => {
-
-  api
-    .newRequest()
-    .follow("search")
-    .withRequestOptions({
-      headers: {
-        "X-Xapp-Token": xappToken,
-        Accept: "application/vnd.artsy-v2+json"
-      }
-    })
-    .withTemplateParameters({q: searchQuery})
-    .getResource((error, results) => {
-      if(error) {
-        reject(error);
-      } else {
-        resolve(results);
-      }
-    });
+    api
+      .newRequest()
+      .follow("search")
+      .withRequestOptions({
+        headers: {
+          "X-Xapp-Token": xappToken,
+          Accept: "application/vnd.artsy-v2+json"
+        }
+      })
+      .withTemplateParameters({ q: searchQuery })
+      .getResource((error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
   });
 }
 
@@ -84,60 +81,56 @@ function getInfo(results) {
     });
 }
 
-
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
   // console.log(results);
   // console.log("birthday: ", results.birthday);
 
-  if (results.birthday === '') {
+  if (results.birthday === "") {
     reject("Error, please enter a valid artist or artwork");
     return;
   }
 
-  return new Promise ((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const artist_id = results.id;
     // console.log(artist_id);
     // handles artist specific searches
     api
       .newRequest()
-      .follow('artworks')
-      .withTemplateParameters({artist_id: artist_id})
+      .follow("artworks")
+      .withTemplateParameters({ artist_id: artist_id })
       .withRequestOptions({
         headers: {
           "X-Xapp-Token": xappToken,
-         Accept: "application/vnd.artsy-v2+json"
+          Accept: "application/vnd.artsy-v2+json"
         }
       })
-
-    .getResource((error, artists_artworks)=> {
-      const artistsArtworks = artists_artworks._embedded.artworks;
-      if(error) {
-        reject(error);
-      } else {
-        console.log("artistsArtworks: ", artistsArtworks);
-        resolve(artistsArtworks);
-      }
+      .getResource((error, artists_artworks) => {
+        const artistsArtworks = artists_artworks._embedded.artworks;
+        if(error) {
+          reject(error);
+        } else {
+          console.log("artistsArtworks: ", artistsArtworks);
+          resolve(artistsArtworks);
+        }
     });
   });
 }
 
-
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
-
-  return new Promise ((resolve, reject) => {
-  const artist_id = results.id;
+  return new Promise((resolve, reject) => {
+    const artist_id = results.id;
 
     //handles artist specific searches
     api
       .newRequest()
-      .follow('artists')
-      .withTemplateParameters({similar_to_artist_id: artist_id})
+      .follow("artists")
+      .withTemplateParameters({ similar_to_artist_id: artist_id })
       .withRequestOptions({
         headers: {
           "X-Xapp-Token": xappToken,
-         Accept: "application/vnd.artsy-v2+json"
+          Accept: "application/vnd.artsy-v2+json"
         }
       })
 
@@ -156,32 +149,29 @@ function getSimilarArtists(results) {
 
 // Accesses similar artworks with the artwork id
 function getSimilarArtworks(results) {
-
-  return new Promise ((resolve, reject) => {
-  const artwork_id = results.id
+  return new Promise((resolve, reject) => {
+    const artwork_id = results.id;
 
     //handles artist specific searches
     api
       .newRequest()
-      .follow('artworks')
-      .withTemplateParameters({similar_to_artwork_id: artwork_id})
+      .follow("artworks")
+      .withTemplateParameters({ similar_to_artwork_id: artwork_id })
       .withRequestOptions({
         headers: {
           "X-Xapp-Token": xappToken,
-         Accept: "application/vnd.artsy-v2+json"
+          Accept: "application/vnd.artsy-v2+json"
         }
       })
-
-    .getResource((error, similar_artworks)=> {
-
-      if(error) {
-        reject(error);
-      } else {
-        resolve(similarArtworks);
+      .getResource((error, similar_artworks) => {
         const similarArtworks = similar_artworks._embedded.artworks;
-
-      }
-    });
+        if (error) {
+          reject(error);
+        } else {
+          const similarArtworks = similar_artworks._embedded.artworks;
+          resolve(similarArtworks);
+        }
+      });
   });
 }
 
@@ -231,7 +221,7 @@ function map_artworks(artworks){
 
 
 // get request to the api using the search bar (1st request)
-app.get('/search', (req, res) => {
+app.get("/search", (req, res) => {
   search(req.query.search)
     .then((results) => {
       // console.log(results);
@@ -257,15 +247,12 @@ app.get('/search', (req, res) => {
         ps = Promise.all([
           getSimilarArtworks(info).then(map_artworks),
           map_artworks(info)
-          ])
-        .then(([results, results2]) => {
-          return flatten([results, results2])
-        })
-
+        ]).then(([results, results2]) => {
+          return flatten([results, results2]);
+        });
       } else {
-        throw new Error('unknown type: ', type)
+        throw new Error("unknown type: ", type);
       }
-
 
       return ps.then((similars)=> {
         console.log("similars: ", similars);
@@ -278,21 +265,20 @@ app.get('/search', (req, res) => {
             return 1;
           }
         });
-        // console.log('similars:', JSON.stringify(similars, null, 2));
-        res.render('results', {info, similars})
-
-      })
+        // console.log("similars:", JSON.stringify(similars, null, 2));
+        res.render("timeline", { info, similars });
+      });
     })
-    .catch((err) =>{
+    .catch(err => {
       console.log("This is an error");
       console.log(err);
       // render page for bad search result
       // TODO use flash message
-      res.send("Error, please enter a valid artist or artwork. Return to <a href='/'>Search.</a>");
+      res.send(
+        "Error, please enter a valid artist or artwork. Return to <a href='/'>Search.</a>"
+      );
     });
 });
-
-
 
 
 
