@@ -4,7 +4,7 @@
 <head>
     <script src="/scripts/vis.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src='http://okfnlabs.org/wikipediajs/wikipedia.js'></script>
+    <script src='/scripts/wikipedia.js'></script>
 
     <link href="/styles/vis.css" rel="stylesheet" type="text/css" />
 
@@ -29,7 +29,7 @@
 
 
   // Configuration for the Timeline
-  const options = {dataAttributes: ["id", "thumbnail", "medium"]};
+  const options = {dataAttributes: ["id", "content", "thumbnail", "medium"]};
 
   // Create a Timeline
   const timeline = new vis.Timeline(container, items, options);
@@ -39,11 +39,17 @@
 
     const selectedId = properties.event.firstTarget.parentNode.dataset.id;
     const thumbnailUrl = properties.event.firstTarget.parentNode.dataset.thumbnail;
-    const mediumArtwork = properties.event.firstTarget.parentNode.dataset.medium
+    const mediumArtwork = properties.event.firstTarget.parentNode.dataset.medium;
+    const nameTitle = properties.event.firstTarget.parentNode.dataset.content;
     console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
 
     document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
-    document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
+
+    if(mediumArtwork){
+      document.getElementById('medium').innerHTML = "<div>" + mediumArtwork + "</div> ";
+    }
+
+    document.getElementById('name').innerHTML = "<div>" + nameTitle + "</div> "
 
 
     function getById(datum){
@@ -54,11 +60,19 @@
     // console.log("find", data.filter(datum => datum.id === selectedId));
 
     let wikiQuery = properties.event.firstTarget.innerText.replace(/ /g, '_');
-    console.log(wikiQuery);
+    console.log("http://en.wikipedia.org/wiki/"+ wikiQuery);
+
     try {
 
       WIKIPEDIA.getData('http://en.wikipedia.org/wiki/' + wikiQuery, function success(wikiData) {
-        console.log(wikiData);
+        console.log("wikidata", wikiData);
+        var artistSummary = wikiData.summary.summary
+        console.log("artistSummary", artistSummary)
+        if (artistSummary){
+          document.getElementById('summary').innerHTML = "<div>" + artistSummary + "</div> "
+          var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery
+          document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "'>"+ wikiLink +"</a>"
+        }
 
       }, function wikiError(err) {
         console.log('error:', err);
@@ -67,10 +81,16 @@
       console('error:', err);
     }
 
+
   });
 </script>
 
+
+<div id='name'></div>
+<div id='summary'></div>
+<div id='wikiLink'></div>
 <div id='thumbnail'> </div>
+<div id='medium'></div>
 
 
 </body>

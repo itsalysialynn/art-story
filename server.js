@@ -263,11 +263,7 @@ function map_artists(artists){
 }
 
 function has_date(x){
-  if (!x.date){
-    return false;
-  } else if (x.date){
-    return true;
-  }
+  return !!x.date;
 }
 
 function map_artworks(artworks){
