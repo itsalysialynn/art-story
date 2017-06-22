@@ -1,0 +1,37 @@
+div.artist-info {
+  display: flex;
+  width: 50em;
+}
+
+div#name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 2px;
+  font-weight: bolder;
+  font-size: 500%;
+  padding-bottom: .1em;
+}
+
+div#thumbnail {
+  height: 6em;
+}
+
+div#summary {
+  padding-left: 1em;
+  font-family: 'Playfair Display', serif;
+  font-size: 100%;
+}
+
+.artist {
+  padding-left: 5em;
+  padding-bottom: 5em;
+}
+
+div#wikiLink {
+  padding-left: 19.75em;
+  font-family: 'Playfair Display', serif;
+  font-size: 100%;
+}
+
+div#wikiLink:link {
+  color: #e02f1c;
+}
