@@ -11,6 +11,13 @@ $(document).ready(function() {
     }
   });
 
+  $(".horizontal-accordion-item").click(function() {
+    $(".horizontal-accordion-item-details-content").removeClass(
+      ".horizontal-accordion-item.active .horizontal-accordion-item-details"
+    );
+    $(this).addClass("active");
+  });
+
   // queries API for search auto-fill data
   $("#autocomplete").autocomplete({
     source: function(request, response) {
@@ -45,4 +52,6 @@ $(document).ready(function() {
       return false;
     }
   });
+
+  $("#value").keypress(function(e) {});
 });

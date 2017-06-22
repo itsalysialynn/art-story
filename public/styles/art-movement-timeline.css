@@ -1,151 +1,68 @@
-.horizontal-accordion,
-.horizontal-accordion > form > ul > li > div,
-.horizontal-accordion > form > ul > li > label {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.horizontal-accordion > form > ul, .horizontal-accordion > form > ul > * {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-/* height of the accordion */
-.horizontal-accordion > form > ul,
-.horizontal-accordion > form > ul > li > div {
-  height: 2em;
-}
-
-.horizontal-accordion,
-.horizontal-accordion > form > ul > li > div > input:checked + label {
-  background: white;
-}
-
-.horizontal-accordion > form > ul > li > input,
-.horizontal-accordion > form > ul > li > label {
-  position: absolute;
-}
-
-.horizontal-accordion > form > ul > li,
-.horizontal-accordion > form > ul > li:last-child {
-}
-
-/* hide the radio button with opacity and position: absolute in order to preserve the keyboard arrow navigation */
-.horizontal-accordion > form > ul > li > div,
-.horizontal-accordion > form > ul > li > input {
-  opacity: 0;
+.overflow-x-auto {
+  overflow-x: auto;
+  overflow-y: none;
 }
 
 .horizontal-accordion {
-  width: 3000px;
-  left: 0;
-  right: 0;
-  font-family: Arial, Helvetica, Sans-serif;
-  padding: 1px;
-  cursor: default;
+  display: flex;
+  height: 10em;
 }
 
-.horizontal-accordion > form > ul > li > label {
-  display: block;
-  width: 203px; /* "height" of the accordion button */
-  padding: 0 8px;
-  letter-spacing: 1px;
+.horizontal-accordion-item {
+  display: flex;
+}
+
+.horizontal-accordion-item.active .horizontal-accordion-item-details {
+  width: 32em;
+}
+
+.horizontal-accordion-item-details {
+  overflow: hidden;
+  transition: 500ms;
+  width: 0;
+}
+
+.horizontal-accordion-item-details-content {
+  white-space: normal;
+  width: 300px;
+}
+
+.horizontal-accordion-item-heading {
+  width: 20px;
+  letter-spacing: .1em;
   font: bold 14px/32px "Arial Rounded MT", Arial, Helvetica, Sans-serif;
   background: white;
   border: solid, 1px, black;
   color: black;
-  text-align: right;
-  cursor: pointer;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  padding: .5em;
+}
 
-  -webkit-transition: all .3s cubic-bezier(.09, .11, .24, .91);
-  -moz-transition: all .3s cubic-bezier(.09, .11, .24, .91);
-  -ms-transition: all .3s cubic-bezier(.09, .11, .24, .91);
-  -o-transition: all .3s cubic-bezier(.09, .11, .24, .91);
-  transition: all .3s cubic-bezier(.09, .11, .24, .91);
-
-  -webkit-transform: translateX(-100%) rotate(-90deg);
-  -moz-transform: translateX(-100%) rotate(-90deg);
-  -ms-transform: translateX(-100%) rotate(-90deg);
-  -o-transform: translateX(-100%) rotate(-90deg);
+.horizontal-accordion-item-heading-rotated {
   transform: translateX(-100%) rotate(-90deg);
-
-  -webkit-transform-origin: right top;
-  -moz-transform-origin: right top;
-  -ms-transform-origin: right top;
-  -o-transform-origin: right top;
-  transform-origin: right top;
-
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
+  transform-origin: top right;
+  text-align: right;
+  width: 12em;
 }
 
-.horizontal-accordion > form > ul > li > input:not(:checked) + label:hover {
-  background: #e02f1c;
+p.art-movement-description {
+  font-size: 12px;
+  height: 3em;
+  font-family: Arial, Helvetica, Sans-serif;
+  padding: 1px;
 }
 
-.horizontal-accordion > form > ul > li > input:checked + label {
-  border-bottom-color: transparent;
-  color: black;
+img.art-movement-image {
+  height: 13em;
 }
 
-.horizontal-accordion > form > ul > li {
-  float: left;
-  padding: 0 32px 0 0;
-  border-right: 0;
-}
-
-.horizontal-accordion > form > ul > li > div {
-  width: 0;
-  font-size: 10px;
-  color: #fff;
-  margin: 0 -32px 0 32px;
-
-  -webkit-transition: all .3s cubic-bezier(.09, .11, .24, .91);
-  -moz-transition: all .3s cubic-bezier(.09, .11, .24, .91);
-  -ms-transition: all .3s cubic-bezier(.09, .11, .24, .91);
-  -o-transition: all .3s cubic-bezier(.09, .11, .24, .91);
-  transition: all .3s cubic-bezier(.09, .11, .24, .91);
-}
-
-.horizontal-accordion > form > ul > li > input:checked ~ div {
+div.horizontal-accordion-item-details-content {
   width: 500px; /* the width of the expanded panel */
-  height: 300px;
+  height: 13em;
   padding: 8px;
   overflow: auto;
   opacity: 1;
 }
 
-.horizontal-accordion > form > ul > li > div h3 {
-  font: inherit;
-  font-size: 14px;
-  border: 0;
-}
-
-.horizontal-accordion > form > ul > li > div h3,
-.horizontal-accordion > form > ul > li > div p {
-  color: black;
-  margin: 0;
-}
-
-.horizontal-accordion > form > ul > li > div img {
-  height: 13em;
-}
-
-.horizontal-accordion > form > ul > li > div p {
-  font-size: 11px;
-  padding-left: 1em;
-  height: 1em;
-}
-
-div.art-movement-image-and-description {
-  display: flex;
-  margin-top: 1em;
-}
-a {
-  flex-wrap: wrap;
+div.horizontal-accordion-item-heading-rotated:hover {
+  background: #e02f1c;
 }

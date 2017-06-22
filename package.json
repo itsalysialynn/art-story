@@ -14,9 +14,7 @@
     "traverson-hal": "^6.0.0",
     "vis": "^4.20.0"
   },
-  "devDependencies": {
-
-  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
