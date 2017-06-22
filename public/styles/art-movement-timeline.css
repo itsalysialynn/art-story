@@ -1,11 +1,12 @@
 .overflow-x-auto {
   overflow-x: auto;
-  overflow-y: none;
+  height: 20em;
 }
 
 .horizontal-accordion {
   display: flex;
-  height: 10em;
+  height: 20em;
+  border-top: solid, 1px, grey;
 }
 
 .horizontal-accordion-item {
@@ -13,7 +14,8 @@
 }
 
 .horizontal-accordion-item.active .horizontal-accordion-item-details {
-  width: 32em;
+  width: 40em;
+  border-top: solid, 1px, grey;
 }
 
 .horizontal-accordion-item-details {
@@ -28,39 +30,54 @@
 }
 
 .horizontal-accordion-item-heading {
-  width: 20px;
+  width: 2em;
   letter-spacing: .1em;
   font: bold 14px/32px "Arial Rounded MT", Arial, Helvetica, Sans-serif;
   background: white;
-  border: solid, 1px, black;
   color: black;
-  padding: .5em;
+  padding: .25em;
+}
+
+.horizontal-accordion-item-details-date {
+  transform: translateX(-100%) rotate(-90deg);
+  transform-origin: top right;
+  text-align: right;
+  white-space: nowrap;
+  padding-right: 2.1em;
+  font: bold 14px/32px "Arial Rounded MT", Arial, Helvetica, Sans-serif;
+  letter-spacing: .1em;
+}
+
+p.art-movement-description {
+  font-size: 12px;
+  height: 10em;
+  font-family: Arial, Helvetica, Sans-serif;
+  margin: 0;
+  padding-left: 1em;
+  padding-right: .25em;
+}
+
+img.art-movement-image {
+  height: 11em;
+  padding-left: 2em;
+}
+
+.horizontal-accordion-item-details-flex {
+  display: flex;
+}
+
+div.horizontal-accordion-item-details-content {
+  width: 40em; /* the width of the expanded panel */
+  height: 20em;
+  opacity: 1;
 }
 
 .horizontal-accordion-item-heading-rotated {
   transform: translateX(-100%) rotate(-90deg);
   transform-origin: top right;
   text-align: right;
-  width: 12em;
-}
-
-p.art-movement-description {
-  font-size: 12px;
-  height: 3em;
-  font-family: Arial, Helvetica, Sans-serif;
-  padding: 1px;
-}
-
-img.art-movement-image {
-  height: 13em;
-}
-
-div.horizontal-accordion-item-details-content {
-  width: 500px; /* the width of the expanded panel */
-  height: 13em;
-  padding: 8px;
-  overflow: auto;
-  opacity: 1;
+  width: 16em;
+  padding-right: 2em;
 }
 
 div.horizontal-accordion-item-heading-rotated:hover {

@@ -15,7 +15,14 @@ $(document).ready(function() {
     $(".horizontal-accordion-item-details-content").removeClass(
       ".horizontal-accordion-item.active .horizontal-accordion-item-details"
     );
+
+    // look .active and if anyone has taht class remove
+    // add the class to the one that was clicked
     $(this).addClass("active");
+  });
+
+  $(".horizontal-accordion-item-heading-rotated").click(function() {
+    $(this).toggleClass(".horizontal-accordion-item-heading-click");
   });
 
   // queries API for search auto-fill data
