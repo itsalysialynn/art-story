@@ -264,7 +264,7 @@ let configureOptions = {
     showMinorLabels: true,
     start: '',
     width: '100%',
-    zoomable: true,
+    zoomable: false,
     zoomKey: ['ctrlKey', 'altKey', 'metaKey', ''],
     zoomMax: [315360000000000, 10, 315360000000000, 1],
     zoomMin: [10, 10, 315360000000000, 1],

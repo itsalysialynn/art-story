@@ -9,11 +9,14 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 
+const wikipedia = require('./lib/wikipedia');
+
+
 const traverson = require("traverson"),
   JsonHalAdapter = require("traverson-hal"),
   xappToken = process.env.ARTSY_TOLKEN;
 
-// const wikipedia_js = require('public/scripts/wikipedia.js');
+// const wikipediajs = require('./public/scripts/wikipedia.js');
 
 const api_path = "https://api.artsy.net/api";
 
@@ -278,8 +281,9 @@ function map_artworks(artworks) {
   });
 }
 
+
 // function wiki_artist(){
-//   var info = WIKIPEDIA.getData('http://en.wikipedia.org/wiki/Invasion_of_Normandy');
+//   var info = wikipediajs.WIKIPEDIA.getData('http://en.wikipedia.org/wiki/Invasion_of_Normandy');
 //   console.log(info)
 // }
 // wiki_artist()
@@ -289,6 +293,12 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 app.use(express.static("public"));
+
+app.get("/test/:query", function(req, res) {
+  wikipedia.getData('http://en.wikipedia.org/wiki/' + req.params.query, function(wikiData) {
+    res.send(wikiData);
+  });
+});
 
 app.get("/", function(req, res) {
   res.render("index");
