@@ -2,11 +2,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  max-width: 50%;
+  max-height: 50%;
 
   /* Must be displayed above for example selected Timeline items */
-  z-index: 10;
+  z-index: 10r;
 }
 
 .vis-active {
@@ -21,15 +21,15 @@
 }
 
 div.vis-configuration {
-    position:relative;
-    display:block;
-    float:left;
-    font-size:12px;
+  position:relative;
+  display:block;
+  float:left;
+  font-size:12px;
 }
 
 div.vis-configuration-wrapper {
-    display:block;
-    width:700px;
+  display:block;
+  max-width: 100%;
 }
 
 div.vis-configuration-wrapper::after {
@@ -42,7 +42,7 @@ div.vis-configuration.vis-config-option-container{
     display:block;
     width:495px;
     background-color: #ffffff;
-    border:2px solid #f7f8fa;
+     2px solid #f7f8fa;
     border-radius:4px;
     margin-top:20px;
     left:10px;
@@ -56,7 +56,7 @@ div.vis-configuration.vis-config-button{
     vertical-align: middle;
     line-height:25px;
     background-color: #f7f8fa;
-    border:2px solid #ceced0;
+     2px solid #ceced0;
     border-radius:4px;
     margin-top:20px;
     left:10px;
@@ -66,8 +66,8 @@ div.vis-configuration.vis-config-button{
 }
 
 div.vis-configuration.vis-config-button.hover{
-    background-color: #4588e6;
-    border:2px solid #214373;
+    background-color: ;
+     2px solid #214373;
     color:#ffffff;
 }
 
@@ -122,7 +122,7 @@ div.vis-configuration.vis-config-colorBlock{
     top:1px;
     width:30px;
     height:19px;
-    border:1px solid #444444;
+     1px solid #444444;
     border-radius:2px;
     padding:0px;
     margin:0px;
@@ -149,7 +149,7 @@ input.vis-configuration.vis-config-range{
     -webkit-appearance: none;
 
     /*fix for FF unable to apply focus style bug */
-    border: 0px solid white;
+      0px solid white;
     background-color:rgba(0,0,0,0);
 
     /*required for proper track sizing in FF*/
@@ -168,13 +168,13 @@ input.vis-configuration.vis-config-range::-webkit-slider-runnable-track {
     background: linear-gradient(to bottom,  #dedede 0%,#c8c8c8 99%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dedede', endColorstr='#c8c8c8',GradientType=0 ); /* IE6-9 */
 
-    border: 1px solid #999999;
+      1px solid #999999;
     box-shadow: #aaaaaa 0px 0px 3px 0px;
     border-radius: 3px;
 }
 input.vis-configuration.vis-config-range::-webkit-slider-thumb {
     -webkit-appearance: none;
-    border: 1px solid #14334b;
+      1px solid #14334b;
     height: 17px;
     width: 17px;
     border-radius: 50%;
@@ -215,12 +215,12 @@ input.vis-configuration.vis-config-range::-moz-range-track {
     background: linear-gradient(to bottom,  #dedede 0%,#c8c8c8 99%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dedede', endColorstr='#c8c8c8',GradientType=0 ); /* IE6-9 */
 
-    border: 1px solid #999999;
+      1px solid #999999;
     box-shadow: #aaaaaa 0px 0px 3px 0px;
     border-radius: 3px;
 }
 input.vis-configuration.vis-config-range::-moz-range-thumb {
-    border: none;
+      none;
     height: 16px;
     width: 16px;
 
@@ -257,7 +257,7 @@ input.vis-configuration.vis-config-range::-ms-fill-upper {
     border-radius: 10px;
 }
 input.vis-configuration.vis-config-range::-ms-thumb {
-    border: none;
+      none;
     height: 16px;
     width: 16px;
     border-radius: 50%;
@@ -273,7 +273,7 @@ input.vis-configuration.vis-config-range:focus::-ms-fill-upper {
 .vis-configuration-popup {
     position: absolute;
     background: rgba(57, 76, 89, 0.85);
-    border: 2px solid #f2faff;
+      2px solid #f2faff;
     line-height:30px;
     height:30px;
     width:150px;
@@ -281,14 +281,14 @@ input.vis-configuration.vis-config-range:focus::-ms-fill-upper {
     color: #ffffff;
     font-size:14px;
     border-radius:4px;
-    -webkit-transition: opacity 0.3s ease-in-out;
-    -moz-transition: opacity 0.3s ease-in-out;
-    transition: opacity 0.3s ease-in-out;
+    -webkit-transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
 }
 .vis-configuration-popup:after, .vis-configuration-popup:before {
     left: 100%;
     top: 50%;
-    border: solid transparent;
+      solid transparent;
     content: " ";
     height: 0;
     width: 0;
@@ -322,7 +322,7 @@ div.vis-tooltip {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-  border: 1px solid #808074;
+    1px solid #808074;
 
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
   pointer-events: none;
@@ -357,7 +357,7 @@ div.vis-color-picker div.vis-arrow::after,
 div.vis-color-picker div.vis-arrow::before {
   right: 100%;
   top: 50%;
-  border: solid transparent;
+    solid transparent;
   content: " ";
   height: 0;
   width: 0;
@@ -398,7 +398,7 @@ div.vis-color-picker div.vis-selector {
   width:15px;
   height:15px;
   border-radius:15px;
-  border:1px solid #ffffff;
+   1px solid #ffffff;
   background: #4c4c4c; /* Old browsers */
   background: -moz-linear-gradient(top,  #4c4c4c 0%, #595959 12%, #666666 25%, #474747 39%, #2c2c2c 50%, #000000 51%, #111111 60%, #2b2b2b 76%, #1c1c1c 91%, #131313 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#4c4c4c), color-stop(12%,#595959), color-stop(25%,#666666), color-stop(39%,#474747), color-stop(50%,#2c2c2c), color-stop(51%,#000000), color-stop(60%,#111111), color-stop(76%,#2b2b2b), color-stop(91%,#1c1c1c), color-stop(100%,#131313)); /* Chrome,Safari4+ */
@@ -415,7 +415,7 @@ div.vis-color-picker div.vis-new-color {
   position:absolute;
   width:140px;
   height:20px;
-  border:1px solid rgba(0,0,0,0.1);
+   1px solid rgba(0,0,0,0.1);
   border-radius:5px;
   top:380px;
   left:159px;
@@ -432,7 +432,7 @@ div.vis-color-picker div.vis-initial-color {
   position:absolute;
   width:140px;
   height:20px;
-  border:1px solid rgba(0,0,0,0.1);
+   1px solid rgba(0,0,0,0.1);
   border-radius:5px;
   top:380px;
   left:10px;
@@ -467,28 +467,28 @@ div.vis-color-picker div.vis-button {
   text-align:center;
   line-height: 25px;
   top:410px;
-  border:2px solid #d9d9d9;
+   2px solid #d9d9d9;
   background-color: #f7f7f7;
   cursor:pointer;
 }
 
 div.vis-color-picker div.vis-button.vis-cancel {
-  /*border:2px solid #ff4e33;*/
+  /* 2px solid #ff4e33;*/
   /*background-color: #ff7761;*/
   left:5px;
 }
 div.vis-color-picker div.vis-button.vis-load {
-  /*border:2px solid #a153e6;*/
+  /* 2px solid #a153e6;*/
   /*background-color: #cb8dff;*/
   left:82px;
 }
 div.vis-color-picker div.vis-button.vis-apply {
-  /*border:2px solid #4588e6;*/
+  /* 2px solid #4588e6;*/
   /*background-color: #82b6ff;*/
   left:159px;
 }
 div.vis-color-picker div.vis-button.vis-save {
-  /*border:2px solid #45e655;*/
+  /* 2px solid #45e655;*/
   /*background-color: #6dff7c;*/
   left:236px;
 }
@@ -625,7 +625,7 @@ div.vis-network div.vis-edit-mode div.vis-button.vis-edit {
 
 div.vis-network div.vis-edit-mode div.vis-button.vis-edit.vis-edit-mode {
   background-color: #fcfcfc;
-  border: 1px solid #cccccc;
+    1px solid #cccccc;
 }
 
 div.vis-network div.vis-manipulation div.vis-button.vis-connect {
@@ -765,7 +765,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   height: 40px;
   width: 40px;
   position: absolute;
-  top: 7px;
   right: 20px;
   border-radius: 50%;
   font-size: 28px;
@@ -792,9 +791,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-panel.vis-background.vis-horizontal .vis-grid.vis-horizontal {
   position: absolute;
-  width: 100%;
-  height: 0;
-  border-bottom: 1px solid;
+  max-width: 100%;
+
 }
 
 .vis-panel.vis-background.vis-horizontal .vis-grid.vis-minor {
@@ -816,7 +814,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-data-axis .vis-y-axis.vis-major.vis-measure {
   padding: 0;
   margin: 0;
-  border: 0;
+
   visibility: hidden;
   width: auto;
 }
@@ -824,15 +822,11 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-data-axis .vis-y-axis.vis-minor {
   position: absolute;
-  width: 100%;
   color: #bebebe;
   white-space: nowrap;
 }
 
 .vis-data-axis .vis-y-axis.vis-minor.vis-measure {
-  padding: 0;
-  margin: 0;
-  border: 0;
   visibility: hidden;
   width: auto;
 }
@@ -841,7 +835,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   position: absolute;
   color: #4d4d4d;
   white-space: nowrap;
-  bottom: 20px;
   text-align: center;
 }
 
@@ -853,7 +846,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-data-axis .vis-y-axis.vis-title.vis-left {
-  bottom: 0;
   -webkit-transform-origin: left top;
   -moz-transform-origin: left top;
   -ms-transform-origin: left top;
@@ -867,7 +859,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-data-axis .vis-y-axis.vis-title.vis-right {
-  bottom: 0;
   -webkit-transform-origin: right bottom;
   -moz-transform-origin: right bottom;
   -ms-transform-origin: right bottom;
@@ -883,7 +874,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-legend {
   background-color: rgba(247, 252, 255, 0.65);
   padding: 5px;
-  border: 1px solid #b3b3b3;
+    1px solid #b3b3b3;
   box-shadow: 2px 2px 10px rgba(154, 154, 154, 0.55);
 }
 
@@ -891,22 +882,22 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   /*font-size: 10px;*/
   white-space: nowrap;
   display: inline-block
+
 }
 
 .vis-item {
   position: absolute;
   color: #1A1A1A;
   border-color: #97B0F8;
-  border-width: 1px;
-  background-color: #D5DDF6;
+  border-radius:5%;
   display: inline-block;
   z-index: 1;
-  /*overflow: hidden;*/
+  overflow: hidden;
 }
 
 .vis-item.vis-selected {
-  border-color: #FFC200;
-  background-color: #FFF785;
+  border-color: #C4BEE9;
+  background-color: #E0EAF5;
 
   /* z-index must be higher than the z-index of custom time bar and current time bar */
   z-index: 2;
@@ -917,36 +908,35 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-item.vis-point.vis-selected {
-  background-color: #FFF785;
+
 }
 
 .vis-item.vis-box {
   text-align: center;
-  border-style: solid;
-  border-radius: 2px;
+  /*border-style: solid;
+  border-radius: 2px;*/
 }
 
 .vis-item.vis-point {
-  background: none;
+
 }
 
 .vis-item.vis-dot {
   position: absolute;
   padding: 0;
-  border-width: 4px;
-  border-style: solid;
-  border-radius: 4px;
+ /* border-width: 4px;
+  border-style: solid;*/
+  /*border-radius: 4px;*/
 }
 
 .vis-item.vis-range {
-  border-style: solid;
-  border-radius: 2px;
+ /* border-style: solid;*/
+/*  border-radius: 2px;*/
   box-sizing: border-box;
 }
 
 .vis-item.vis-background {
-  border: none;
-  background-color: rgba(213, 221, 246, 0.4);
+    none;
   box-sizing: border-box;
   padding: 0;
   margin: 0;
@@ -968,6 +958,9 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-item.vis-range .vis-item-content {
   position: relative;
   display: inline-block;
+  font-family: 'Abel', sans-serif;
+  font-size: xx-small;
+
 }
 
 .vis-item.vis-background .vis-item-content {
@@ -979,25 +972,21 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   padding: 0;
   position: absolute;
   width: 0;
-  border-left-width: 1px;
-  border-left-style: solid;
+/*  border-left-width: 1px;*/
+  /*border-left-style: solid;*/
 }
 
 .vis-item .vis-item-content {
   white-space: nowrap;
-  box-sizing: border-box;
-  padding: 5px;
+
 }
 
 .vis-item .vis-onUpdateTime-tooltip {
   position: absolute;
   background: #4f81bd;
   color: white;
-  width: 200px;
   text-align: center;
   white-space: nowrap;
-  padding: 5px;
-  border-radius: 1px;
   transition: 0.4s;
   -o-transition: 0.4s;
   -moz-transition: 0.4s;
@@ -1006,9 +995,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-item .vis-delete, .vis-item .vis-delete-rtl {
   position: absolute;
-  top: 0px;
-  width: 24px;
-  height: 24px;
   box-sizing: border-box;
   padding: 0px 5px;
   cursor: pointer;
@@ -1054,7 +1040,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   position: absolute;
   width: 100%;
   height: 100%;
-  top: 0;
+
   left: 0px;
   cursor: move;
 }
@@ -1100,8 +1086,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-itemset .vis-background,
 .vis-itemset .vis-foreground {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 90%;
+
   overflow: visible;
 }
 
@@ -1116,7 +1102,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-foreground .vis-group {
   position: relative;
   box-sizing: border-box;
-  border-bottom: 1px solid #bfbfbf;
+
 }
 
 .vis-foreground .vis-group:last-child {
@@ -1128,7 +1114,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-nested-group {
-  background: #f5f5f5;
+  background: #F4F5FB;
 }
 
 .vis-label.vis-nesting-group.expanded:before {
@@ -1205,7 +1191,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-panel.vis-right,
 .vis-panel.vis-top,
 .vis-panel.vis-bottom {
-  border: 1px #bfbfbf;
+    1px #bfbfbf;
 }
 
 .vis-panel.vis-center,
@@ -1218,9 +1204,9 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-left.vis-panel.vis-vertical-scroll, .vis-right.vis-panel.vis-vertical-scroll {
   height: 100%;
-  overflow-x: hidden;
+  overflow-x: scroll;
   overflow-y: scroll;
-} 
+}
 
 .vis-left.vis-panel.vis-vertical-scroll {
   direction: rtl;
@@ -1399,21 +1385,24 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-time-axis .vis-text {
-  position: absolute;
+  font-family: 'Raleway', sans-serif;
+  font-size: xx-small;
   color: #4d4d4d;
-  padding: 3px;
+  letter-spacing: 5px;
+  position: absolute;
+  padding: 0.5%;
   overflow: hidden;
   box-sizing: border-box;
-
   white-space: nowrap;
 }
 
+
 .vis-time-axis .vis-text.vis-measure {
+  font-family: 'Raleway', sans-serif;
+  margin: 0;
   position: absolute;
   padding-left: 0;
   padding-right: 0;
-  margin-left: 0;
-  margin-right: 0;
   visibility: hidden;
 }
 
@@ -1437,12 +1426,10 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 
 .vis-timeline {
-  position: relative;
-  border: 1px solid #bfbfbf;
-
-  overflow: hidden;
-  padding: 0;
-  margin: 0;
-
   box-sizing: border-box;
+  position: relative;
+  max-width: 90%;
+  margin: 5%;
+  overflow: hidden;
 }
+

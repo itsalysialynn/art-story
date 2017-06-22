@@ -426,7 +426,7 @@ TimeAxis.prototype._repaintMinorLine = function (x, width, orientation, classNam
   };
   line.style.width = width + 'px';
 
-  
+
 
   return line;
 };
