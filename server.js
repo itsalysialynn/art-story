@@ -255,7 +255,8 @@ function map_artists(artists) {
       id: x.id,
       content: x.name,
       start: x.birthday.match(/\d+/)[0],
-      thumbnail: x._links.thumbnail.href
+      thumbnail: x._links.thumbnail.href,
+      group: 'artist'
     };
   });
 }
@@ -273,10 +274,13 @@ function map_artworks(artworks) {
   return artworks.filter(has_date).map(function(x) {
     return {
       id: x.id,
-      content: x.title,
+      content: "&#9679" + x.title,
       start: x.date.match(/\d+/)[0],
       medium: x.medium,
-      thumbnail: x._links.thumbnail.href
+      thumbnail: x._links.thumbnail.href,
+      group: 'artwork',
+      type: 'point',
+      addClass: 'circle'
     };
   });
 }
