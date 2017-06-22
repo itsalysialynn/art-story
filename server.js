@@ -45,17 +45,18 @@ function search(searchQuery) {
 function getInfo(results) {
 
     return new Promise ((resolve, reject) => {
-
+      // console.log(results._embedded.results);
       if (!results || !results._embedded || !results._embedded.results || !results._embedded.results[0]._links || !results._embedded.results[0]._links.self) {
         reject("Error, please enter a valid artist or artwork");
         return;
       }
 
       const details_link = results._embedded.results[0]._links.self.href.substring(api_path.length + 1);
+      // console.log(details_link);
       //determines what the search term is (artist, gene, art work etc.)
       let newApi = details_link.split("/")[0];
       newApi = newApi.substring(0,newApi.length-1);
-
+      // console.log("newApi: ", newApi);
       // more detailed request from the info entered in search bar (2nd request)
       api
         .newRequest()
@@ -69,9 +70,11 @@ function getInfo(results) {
             }
         })
         .getResource(function(filtered_error, filtered_results) {
+          // console.log("HERE");
           if(filtered_error) {
             reject(filtered_error);
           } else {
+            // console.log("getInfo: ", newApi, filtered_results);
             resolve({type: newApi, info: filtered_results});
           }
         });
@@ -134,6 +137,7 @@ function getSimilarArtists(results) {
       if(error) {
         reject(error);
       } else {
+        // console.log("similarArtists: ", similarArtists);
         resolve(similarArtists);
       }
     });
@@ -162,6 +166,7 @@ function getSimilarArtworks(results) {
           reject(error);
         } else {
           const similarArtworks = similar_artworks._embedded.artworks;
+          // console.log("similarArtworks: ", similarArtworks);
           resolve(similarArtworks);
         }
       });
