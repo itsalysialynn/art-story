@@ -170,8 +170,8 @@
       } else (
          document.getElementById('medium').innerHTML = "<div></div> "
         )
-
-      document.getElementById('name').innerHTML = "<div>" + nameTitle + "</div> "
+      var modfiedName = nameTitle.replace(/\s/g, "+")
+      document.getElementById('name').innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
 
 
 

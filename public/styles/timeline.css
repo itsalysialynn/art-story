@@ -11,6 +11,16 @@ div#name {
   line-height: .8em;
 }
 
+div#name a {
+  text-decoration: none;
+  color: black;
+}
+
+div#name a:hover {
+  text-decoration: none;
+  color: #e02f1c;
+}
+
 div#thumbnail {
   float: left;
   margin-right: 2em;
