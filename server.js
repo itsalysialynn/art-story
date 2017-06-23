@@ -127,6 +127,36 @@ function getArtistsArtwork(results) {
   });
 }
 
+// Accesses the artworks's artist using the artwork id
+function getArtworksArtist(results) {
+
+  return new Promise((resolve, reject) => {
+    const artwork_id = results.id;
+
+    // handles artwork specific searches
+    api
+      .newRequest()
+      .follow("artists")
+      .withTemplateParameters({ artwork_id: artwork_id })
+      .withRequestOptions({
+        headers: {
+          "X-Xapp-Token": xappToken,
+          Accept: "application/vnd.artsy-v2+json"
+        }
+      })
+      .getResource((error, artworks_artist) => {
+        const artworksArtist = artworks_artist._embedded.artists;
+        console.log("artworksArtist", artworksArtist)
+
+        if (error) {
+          reject(error);
+        } else {
+          resolve(artworksArtist);
+        }
+      });
+  });
+}
+
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
   return new Promise((resolve, reject) => {
@@ -202,9 +232,11 @@ app.get("/search", (req, res) => {
       } else if (type === "artwork") {
         ps = Promise.all([
           getSimilarArtworks(info).then(map_artworks),
+          getArtworksArtist(info).then(map_artists),
           map_artworks(info)
-        ]).then(([results, results2]) => {
-          return flatten([results, results2]);
+        ]).then(([results, results2, results3]) => {
+          console.log("get artworks artist result hopefully", results2)
+          return flatten([results, results2, results3]);
         });
       } else {
         throw new Error("unknown type: ", type);
