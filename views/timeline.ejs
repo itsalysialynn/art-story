@@ -72,8 +72,8 @@
     // Create a DataSet (allows two way data-binding)
 
     var data = <%- JSON.stringify(similars, null, 2) %>;
-
-
+    var info = <%- JSON.stringify(info)%>;
+    console.log("info", info)
 
     var movements = <%- include partials/_art-movements.ejs %>;
 
@@ -109,18 +109,20 @@
     // console.log("full data", full_data)
 
 
-
+    var start = if (info.birthday){return new Date(+info.birthday, 0, 1)} else { return new Date(+info.date, 0, 1)}
 
     // Configuration for the Timeline
-    let options = {
-          // maxHeight: '500px',
-          // minHeight: '499px',
-          // width: '100%',
-          // verticalScroll: false,
+    var options = {
+          maxHeight: '500px',
+          minHeight: '499px',
+          width: '100%',
+          verticalScroll: false,
           // zoomable: false,
-          // zoomMin: 31556952000,
-          // min: new Date(-4000, 0, 1),
-          // groupOrder: 'content'
+          zoomMin: 31556952000,
+          min: new Date(-4000, 0, 1),
+          max: new Date(),
+          start: start,
+          end: new Date(2017, 0, 1),
 
 
           format: {
@@ -144,7 +146,7 @@
     var timeline = new vis.Timeline(container, all_data, groups, options);
     // timeline.setGroups(groups);
 
-    window.timeline = timeline; // evil hack for debugging
+
 
     timeline.on('select', function (properties) {
       console.log('item selected:', properties.event.firstTarget.parentNode.dataset.id);
