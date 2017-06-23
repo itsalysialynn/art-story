@@ -892,7 +892,16 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   display: inline-block;
   z-index: 1;
   overflow: hidden;
+  font-family: 'Abel', sans-serif;
+  font-size: xx-small;
+
+
 }
+
+/*.vis-item.circle:before{
+  content: ' \25CF';
+  font-size: 10px;
+}*/
 
 .vis-item.vis-selected {
   border-color: #C4BEE9;
@@ -907,13 +916,14 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-item.vis-point.vis-selected {
-
+  content: ' \25CF';
+  font-size: 10px;
 }
 
 .vis-item.vis-box {
   text-align: center;
-  /*border-style: solid;
-  border-radius: 2px;*/
+  border-bottom: solid;
+  border-radius: 2px;
 }
 
 .vis-item.vis-point {
@@ -962,6 +972,34 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 }
 
+.vis-item.ancient-art{
+  border-bottom: red;
+  border-bottom-style: solid;
+}
+
+.vis-item.medieval-art{
+  border-bottom: orange;
+  border-bottom-style: solid;
+}
+
+.vis-item.the-renaissance{
+  border-bottom: yellow;
+  border-bottom-style: solid;
+}
+
+.vis-item.post-renaissance{
+  border-bottom: green;
+  border-bottom-style: solid;
+}
+.vis-item.modern-art{
+  border-bottom: blue;
+  border-bottom-style: solid;
+}
+.vis-item.contemporary-art{
+  border-bottom: purple;
+  border-bottom-style: solid;
+}
+
 .vis-item.vis-background .vis-item-content {
   position: absolute;
   display: inline-block;
@@ -971,8 +1009,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   padding: 0;
   position: absolute;
   width: 0;
-/*  border-left-width: 1px;*/
-  /*border-left-style: solid;*/
 }
 
 .vis-item .vis-item-content {
