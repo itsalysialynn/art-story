@@ -246,16 +246,23 @@ function has_birthday(x) {
   return !!x.birthday;
 }
 
+// var url = window.location.toString();
+// window.location = url.replace('{image_version}', 'large');
+
+
 function map_artists(artists) {
   if (!Array.isArray(artists)) {
     artists = [artists];
   }
   return artists.filter(has_birthday).map(function(x) {
+    const imageLink = x._links.image.href
+     const largeImage = imageLink.replace('{image_version}', 'large');
+    // .replace('{image_version}', 'large');
     return {
       id: x.id,
       content: x.name,
       start: x.birthday.match(/\d+/)[0],
-      thumbnail: x._links.thumbnail.href,
+      thumbnail: largeImage,
       group: 'artist'
     };
   });
@@ -272,12 +279,14 @@ function map_artworks(artworks) {
     artworks = [artworks];
   }
   return artworks.filter(has_date).map(function(x) {
+    const imageLink = x._links.image.href
+     const largeImage = imageLink.replace('{image_version}', 'large');
     return {
       id: x.id,
       content: "&#9679" + x.title,
       start: x.date.match(/\d+/)[0],
       medium: x.medium,
-      thumbnail: x._links.thumbnail.href,
+      thumbnail: largeImage,
       group: 'artwork',
       type: 'point',
       addClass: 'circle'
