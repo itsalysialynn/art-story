@@ -287,6 +287,7 @@ function map_artists(artists) {
     artists = [artists];
   }
   return artists.filter(has_birthday).map(function(x) {
+    console.log("x", x)
     const imageLink = x._links.image.href
      const largeImage = imageLink.replace('{image_version}', 'large');
     // .replace('{image_version}', 'large');
