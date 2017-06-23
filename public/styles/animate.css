@@ -568,6 +568,7 @@
 
 .fadeIn {
   animation-name: fadeIn;
+  
 }
 
 @keyframes fadeInDown {

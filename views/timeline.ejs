@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en" class="js gr__tympanus_net">
 <head>
@@ -16,77 +17,173 @@
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
   <script src='http://okfnlabs.org/wikipediajs/wikipedia.js'></script>
 
-</head>
-<body>
+  <% include partials/_search.ejs %>
+
+  <div id="visualization"></div>
+
+
+  <script type="text/javascript">
 
 
 
+  // create a data set with groups
+  var groupNames = ['artwork','artist','movement'];
+  var groups = new vis.DataSet();
+  for (var g = 0; g < groupNames.length; g++) {
+    groups.add({id: g, content: groupNames[g]});
+  }
 
-<div id="visualization"></div>
+    // DOM element where the Timeline will be attached
+    var container = document.getElementById('visualization');
 
-<script type="text/javascript">
+    // Create a DataSet (allows two way data-binding)
+    var data = <%- JSON.stringify(similars, null, 2) %>;
+    var info = <%- JSON.stringify(info)%>;
+    console.log("info", info)
+
+    var movements = <%- include partials/_art-movements.ejs %>;
+
+    function flatten(arr) {
+      return arr.reduce(function(flat, toFlatten) {
+        return flat.concat(
+          Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten
+        );
+      }, []);
+    }
+
+    var full_data = flatten([data, movements])
+
+    for (var thing_id in full_data) {
+      full_data[thing_id].group = groupNames.indexOf(full_data[thing_id].group);
+    }
+
+    var all_data = new vis.DataSet (full_data);
+
+    console.log("yitems", all_data);
+    // console.log("full data", full_data)
+
+    var start =   +info.birthday || +info.date;
+
+    // Configuration for the Timeline
+    var options = {
+          maxHeight: '500px',
+          minHeight: '499px',
+          width: '100%',
+          verticalScroll: false,
+          // zoomable: false,
+          zoomMin: 31556952000,
+          min: new Date(-4000, 0, 1),
+          max: new Date(),
+          start: new Date(start, 0, 1),
+          end: new Date(2017, 0, 1),
+
+          format: {
+            minorLabels: function(date, scale, step) {
+              let year = date.year();
+              let output = '';
+              switch (scale) {
+                case 'year':
+                  output = Math.abs(date.format('YYYY'));
+                  output += (year < 0) ? 'BC' : '';
+                  break;
+              }
+              return output;
+            }
+          },
+          dataAttributes: ["id", "content", "thumbnail", "medium", "group"]
+    };
 
 
-  // DOM element where the Timeline will be attached
-  var container = document.getElementById('visualization');
+    // Create a Timeline
+    var timeline = new vis.Timeline(container, all_data, groups, options);
+    // timeline.setGroups(groups);
 
-  // Create a DataSet (allows two way data-binding)
-  var data = <%- JSON.stringify(similars, null, 2) %>;
+    timeline.on('select', function (properties) {
 
-  var items = new vis.DataSet(data);
-  console.log("items", items)
-
-
-  // Configuration for the Timeline
-  var options = {dataAttributes: ["id", "thumbnail", "medium"]};
-
-  // Create a Timeline
-  var timeline = new vis.Timeline(container, items, options);
-
-  timeline.on('select', function (properties) {
-    console.log('item selected:', properties.event.firstTarget.parentNode.dataset.id);
+      console.log('item selected:', properties.event.firstTarget.parentNode.dataset.id);
 
     var selectedId = properties.event.firstTarget.parentNode.dataset.id;
     var thumbnailUrl = properties.event.firstTarget.parentNode.dataset.thumbnail;
-    var mediumArtwork = properties.event.firstTarget.parentNode.dataset.medium
-    console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
+    var mediumArtwork = properties.event.firstTarget.parentNode.dataset.medium;
+    var nameTitle = properties.event.firstTarget.parentNode.dataset.content;
 
-    document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
-    document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
+    if (selectedId !== undefined){
+      console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
+
+      document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
+
+      if(mediumArtwork){
+        document.getElementById('medium').innerHTML = "<div>" + mediumArtwork + "</div> "
+      } else (
+         document.getElementById('medium').innerHTML = "<div></div> "
+        )
+      var modfiedName = nameTitle.replace(/\s/g, "+")
+      document.getElementById('name').innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
 
 
-    function getById(datum){
-      return datum.id === selectedId;
+
+      function getById(datum){
+        return datum.id === selectedId;
+      }
+
+      console.log("find", data.filter(getById))
+      // console.log("find", data.filter(function(datum){return datum.id === selectedId;}))
+      // console.log("find", data.filter(datum => datum.id === selectedId));
+
+      let wikiQuery = properties.event.firstTarget.innerText.replace(/ /g, '_');
+      console.log("http://en.wikipedia.org/wiki/"+ wikiQuery);
+
+      console.log("group", properties.event.firstTarget.parentNode.dataset.group)
+
+      try {
+
+        WIKIPEDIA.getData('http://en.wikipedia.org/wiki/' + wikiQuery, function success(wikiData) {
+          console.log("wikidata", wikiData);
+          var artistSummary = wikiData.summary && wikiData.summary.summary
+          console.log("artistSummary", artistSummary)
+
+          if (properties.event.firstTarget.parentNode.dataset.group === "1"){
+
+            if (artistSummary){
+              document.getElementById('summary').innerHTML = "<div>" + artistSummary + "</div> "
+              var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery
+              document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "'>"+ wikiLink +"</a>"
+            } else {
+              document.getElementById('summary').innerHTML = "<div> Could not find summary at this time</div> "
+              document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
+            }
+          } else {
+            document.getElementById('summary').innerHTML = "<div> </div> "
+              document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
+          }
+
+        }, function wikiError(err) {
+          console.log('error:', err);
+        });
+      } catch (err) {
+        console('error:', err);
+      }
+
     }
-    console.log("find", data.filter(getById))
-    // console.log("find", data.filter(function(datum){return datum.id === selectedId;}))
-    // console.log("find", data.filter(datum => datum.id === selectedId));
 
-    var wikiQuery = properties.event.firstTarget.innerText.replace(/ /g, '_');
-    console.log(wikiQuery);
-    try {
-
-      WIKIPEDIA.getData('http://en.wikipedia.org/wiki/' + wikiQuery, function success(wikiData) {
-        console.log(wikiData);
-
-      }, function wikiError(err) {
-        console.log('error:', err);
-      });
-    } catch (err) {
-      console('error:', err);
-    }
-
-  });
+})
 </script>
 
-<div id='thumbnail'> </div>
+<div class="artist hidden">
+  <div id="thumbnail"> </div>
+  <div id="name"></div>
+  <div id="summary"></div>
+  <div id="medium"></div>
+  <div id="wikiLink"></div>
+</div>
+
 
 <% include partials/_art-movement-timeline.ejs %>
+
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
     <script src="/scripts/app.js"></script>
-    <!-- <script src="/scripts/similar-artists.js"></script> -->
+
 </body>
 </html>
-
 
