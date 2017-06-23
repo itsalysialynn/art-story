@@ -1,35 +1,56 @@
-<!doctype html>
-<head>
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html lang="en" class="js gr__tympanus_net">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/searchbar.css">
+    <link rel="stylesheet" href="/styles/demo.css">
 
-    <title>Art Timeline</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <script src="/scripts/searchbar.js"></script>
+    <!--[if IE]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]--><script>document.documentElement.className = 'js';</script>
+  </head>
+  <body class="demo-5">
+    <svg class="hidden">
+      <defs>
+        <symbol id="icon-search" viewBox="0 0 24 24">
+          <title>search</title>
+          <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </symbol>
+        <symbol id="icon-cross" viewBox="0 0 24 24">
+          <title>cross</title>
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </symbol>
+      </defs>
+    </svg>
+    <main class="main-wrap">
+      <header class="codrops-header">
+        <div class="search-wrap">
+          <button id="btn-search" class="btn btn--search"><svg class="icon icon--search"><use xlink:href="#icon-search"></use></svg></button>
+        </div>
+      </header>
+    </main><!-- /main-wrap -->
+    <div class="search">
+      <button id="btn-search-close" class="btn btn--search-close" aria-label="Close search form"><svg class="icon icon--cross"><use xlink:href="#icon-cross"></use></svg></button>
 
-    <link rel="stylesheet" href="/styles/timeline.css">
-    <link rel="stylesheet" href="/styles/animate.css">
-    <link rel="stylesheet" href="/styles/art-movement-timeline.css">
-</head>
-
-<body>
-    <!-- search bar -->
-    <% include partials/_search.ejs %>
-
-
-    <img class="artist-photo" src="https://userscontent2.emaze.com/images/7659c4c0-1ac4-462c-9bfb-26c1c18e6ed2/7f58b05e2d51ad0824e983f3b12fd5ac.jpg" height=300px>
-    <p class="artist-text">Sherman grew up in Huntington, New York on Long Island.  Sherman works in series, typically photographing herself in a range of costumes. For example, in her landmark 69 photograph series, the Complete Untitled Film Stills, (1977-1980) Sherman appeared as B-movie, foreign film and film noir style actresses. Sherman’s most recent series, dated 2003, features her as clowns. Although Sherman does not consider her work feminist, many of her photo-series, like the 1981 “Centerfolds,” call attention to the stereotyping of women in films, television and magazines.</p>
-
-    <img class="artist-timeline-photo" src="http://www.arthistoryarchive.com/arthistory/photography/images/CindySherman-Untitled-Film-Still-34-1979.jpg" height=300px />
-    <img class="artist-timeline-photo" src="http://www.arthistoryarchive.com/arthistory/photography/images/CindySherman-Untitled-Film-Still-35-1979.jpg" height=300px />
-    <img class="artist-timeline-photo" src="http://www.arthistoryarchive.com/arthistory/photography/images/CindySherman-Untitled-Film-Still-36-1979.jpg" height=300px />
-    <img class="artist-timeline-photo" src="http://www.arthistoryarchive.com/arthistory/photography/images/CindySherman-Untitled-Film-Still-43-1979.jpg" height=300px />
-
-    <!-- art movement timeline -->
-    <% include partials/_art-movement-timeline.ejs %>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-    <script src="/scripts/app.js"></script>
-    <!-- <script src="/scripts/similar-artists.js"></script> -->
-</body>
+      <form class="search__form" action="/search" method="get">
+        <input class="search__input" type="search" name="search" id="autocomplete" placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <span class="search__info">Hit enter to search or ESC to close</span>
+      </form>
+      <p id="value"></p>
+      <div class="search__related">
+        <div class="search__suggestion">
+          <h3>Search for an Artist</h3>
+          <p>Vincent Van Gogh or Gustav Klimt</p>
+        </div>
+        <div class="search__suggestion">
+          <h3>Search for an Artwork</h3>
+          <p>The Old Violin or The Kiss</p>
+        </div>
+      </div>
+    </div><!-- /search -->
+    <script src="/scripts/searchbar.js"></script>
+  </body>
 </html>
