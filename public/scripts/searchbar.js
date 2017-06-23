@@ -25,12 +25,6 @@
 	function initEvents() {
 		openCtrl.addEventListener('click', openSearch);
 		closeCtrl.addEventListener('click', closeSearch);
-		document.addEventListener('keyup', function(ev) {
-			// escape key.
-			if( ev.keyCode == 27 ) {
-				closeSearch();
-			}
-		});
 	}
 
 	function openSearch() {
@@ -49,5 +43,7 @@
 	}
 
 	init();
+
+	openSearch();
 
 })(window);
