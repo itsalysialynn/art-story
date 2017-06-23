@@ -9,8 +9,7 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 
-const wikipedia = require('./lib/wikipedia');
-
+const wikipedia = require("./lib/wikipedia");
 
 const traverson = require("traverson"),
   JsonHalAdapter = require("traverson-hal"),
@@ -22,6 +21,18 @@ const api_path = "https://api.artsy.net/api";
 
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
 const api = traverson.from(api_path).jsonHal();
+
+// For debugging
+function logStep(label) {
+  return function logIt(data) {
+    console.log("\n\n*** LOGSTEP: ", label);
+    console.log(JSON.stringify(data, null, 2));
+    return data;
+  };
+}
+
+// Promise.map polyfill
+Promise.map = (arr, callback) => Promise.all(arr.map(callback));
 
 // Function for initial search
 function search(searchQuery) {
@@ -49,9 +60,6 @@ function search(searchQuery) {
 // Function to get info about search query
 function getInfo(results) {
   return new Promise((resolve, reject) => {
-    // console.log(results);
-    // console.log(results._embedded.results[0]._links.self);
-
     if (
       !results ||
       !results._embedded ||
@@ -66,10 +74,11 @@ function getInfo(results) {
     const details_link = results._embedded.results[0]._links.self.href.substring(
       api_path.length + 1
     );
+
     //determines what the search term is (artist, gene, art work etc.)
     let newApi = details_link.split("/")[0];
     newApi = newApi.substring(0, newApi.length - 1);
-    // console.log("newApi: ", newApi);
+
     // more detailed request from the info entered in search bar (2nd request)
     api
       .newRequest()
@@ -94,8 +103,6 @@ function getInfo(results) {
 
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
-  console.log("birthday: ", results.birthday);
-
   if (results.birthday === "") {
     reject("Error, please enter a valid artist or artwork");
     return;
@@ -117,7 +124,6 @@ function getArtistsArtwork(results) {
       })
       .getResource((error, artists_artworks) => {
         const artistsArtworks = artists_artworks._embedded.artworks;
-
         if (error) {
           reject(error);
         } else {
@@ -148,6 +154,7 @@ function getSimilarArtists(results) {
         if (error) {
           reject(error);
         } else {
+          // console.log("similarArtists: ", similarArtists);
           resolve(similarArtists);
         }
       });
@@ -172,33 +179,161 @@ function getSimilarArtworks(results) {
       })
       .getResource((error, similar_artworks) => {
         const similarArtworks = similar_artworks._embedded.artworks;
-
         if (error) {
           reject(error);
         } else {
+          const similarArtworks = similar_artworks._embedded.artworks;
+          // console.log("similarArtworks: ", similarArtworks);
           resolve(similarArtworks);
         }
       });
   });
 }
 
+// Gets each artist ready for Vis
+function map_artists(artists) {
+  return (
+    Promise.resolve(artists)
+      .then(artists => artists.map(normalizeBirthday).filter(has_birthday))
+      .then(updateArtistsFromWiki)
+      .then(artists => artists.map(artistForVis))
+      // .then(logStep("after filtering artists"))
+      .catch(err => {
+        console.error("map_artists failure");
+        console.error(err);
+        return [];
+      })
+  );
+}
+
+// Gets artist info from wiki
+function getArtistFromWiki(artist) {
+  return new Promise((resolve, reject) => {
+    wikipedia.getData(
+      "http://en.wikipedia.org/wiki/" + modifyNameForWiki(artist),
+      resolve,
+      reject
+    );
+  });
+}
+
+// Gets info from wiki and takes death day (if present)
+// If death day is not present, takes the min of (artist's birthday + 75) or current year
+function updateArtistsFromWiki(artists) {
+  return Promise.map(artists, artist =>
+    getArtistFromWiki(artist)
+      .catch(console.error)
+      .then(wikiData => {
+        // console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
+        let endDates = wikiData.summary.endDates;
+        artist.end = normalizeDeathday(endDates);
+        return artist;
+      })
+      .catch(err => {
+        let thisYear = new Date().getFullYear();
+        let artistBirthday = Number(artist.birthday);
+        let endDate = Math.min(artistBirthday + 75, thisYear);
+
+        artist.end = "" + endDate;
+        return artist;
+      })
+  );
+}
+
+// Gets artist ready to send to Vis
+function artistForVis(artist) {
+  var thumbnailVal = getThumbnail(artist);
+  return {
+    id: artist.id,
+    content: artist.name,
+    start: artist.birthday,
+    end: artist.end,
+    thumbnail: thumbnailVal
+  };
+}
+
+// Gets each artwork ready for Vis
+function map_artworks(artworks) {
+  return artworks.filter(has_date).map(function(x) {
+    return {
+      id: x.id,
+      content: x.title,
+      start: x.date.match(/\d+/)[0],
+      medium: x.medium,
+      thumbnail: x._links.thumbnail.href
+    };
+  });
+}
+
+// Flattens arrays of similar artists, artworks, and searched artist
+function flatten(arr) {
+  return arr.reduce(function(flat, toFlatten) {
+    return flat.concat(
+      Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten
+    );
+  }, []);
+}
+
+// Checks if artist has birthday
+function has_birthday(x) {
+  return !!x.birthday;
+}
+
+// Checks if artist has death day
+function hasDeathDay(artist) {
+  return !!artist.end;
+}
+
+// Normalizes birthday so it is only a year
+function normalizeBirthday(artist) {
+  if (artist.birthday) {
+    var m = artist.birthday.match(/\d{3,4}/);
+    if (m) {
+      artist.birthday = m[0];
+    } else {
+      artist.birthday = null;
+    }
+  }
+  return artist;
+}
+
+// Normalizes death day so it is only a year
+function normalizeDeathday(endDates) {
+  return endDates.match(/\d{3,4}/)[0];
+}
+
+// Gets picture
+function getThumbnail(artist) {
+  return artist._links.thumbnail === undefined
+    ? ""
+    : artist._links.thumbnail.href;
+}
+
+// Checks for date
+function has_date(x) {
+  return x.date;
+}
+
+// Gets artist name ready for fetching from wiki
+function modifyNameForWiki(artist) {
+  return artist.name.replace(/ /g, "_");
+}
+
 // get request to the api using the search bar (1st request)
 app.get("/search", (req, res) => {
   search(req.query.search)
-    .then(results => {
-      return getInfo(results);
-    })
+    // .then(logStep("search"))
+    .then(getInfo)
+    // .then(logStep("getInfo"))
     .then(({ type, info }) => {
-      // console.log(type, results);
       let ps;
       if (type === "artist") {
-        ps = Promise.all([
-          getArtistsArtwork(info).then(map_artworks),
-          getSimilarArtists(info).then(map_artists),
-          map_artists(info)
-        ]).then(([results, results2, results3]) => {
-          return flatten([results, results2, results3]);
-        });
+        let artistsArtwork = getArtistsArtwork(info).then(map_artworks);
+        let similarArtists = getSimilarArtists(info).then(map_artists);
+
+        ps = Promise.all([artistsArtwork, similarArtists, map_artists([info])])
+          // .then(logStep("process artist"))
+          .then(flatten);
       } else if (type === "artwork") {
         ps = Promise.all([
           getSimilarArtworks(info).then(map_artworks),
@@ -220,87 +355,21 @@ app.get("/search", (req, res) => {
             return 1;
           }
         });
-        console.log("similars:", JSON.stringify(similars, null, 2));
-        res.render("timeline", { info, similars });
+        if (req.query.format === "json") {
+          res.json({ info, similars });
+        } else {
+          res.render("timeline", { info, similars });
+        }
       });
     })
     .catch(err => {
-      // console.log(err);
-      // render page for bad search result
-      // TODO use flash message
+      console.log("This is an error");
+      console.log(err);
       res.send(
         "Error, please enter a valid artist or artwork. Return to <a href='/'>Search.</a>"
       );
     });
 });
-
-function flatten(arr) {
-  return arr.reduce(function(flat, toFlatten) {
-    return flat.concat(
-      Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten
-    );
-  }, []);
-}
-
-function has_birthday(x) {
-  return !!x.birthday;
-}
-
-// var url = window.location.toString();
-// window.location = url.replace('{image_version}', 'large');
-
-
-function map_artists(artists) {
-  if (!Array.isArray(artists)) {
-    artists = [artists];
-  }
-  return artists.filter(has_birthday).map(function(x) {
-    const imageLink = x._links.image.href
-     const largeImage = imageLink.replace('{image_version}', 'large');
-    // .replace('{image_version}', 'large');
-    return {
-      id: x.id,
-      content: x.name,
-      start: x.birthday.match(/\d+/)[0],
-      thumbnail: largeImage,
-      group: 'artist'
-    };
-  });
-}
-
-
-function has_date(x){
-  return !!x.date;
-
-}
-
-function map_artworks(artworks) {
-  if (!Array.isArray(artworks)) {
-    artworks = [artworks];
-  }
-  return artworks.filter(has_date).map(function(x) {
-    const imageLink = x._links.image.href
-     const largeImage = imageLink.replace('{image_version}', 'large');
-    return {
-      id: x.id,
-      content: "&#9679" + x.title,
-      start: x.date.match(/\d+/)[0],
-      medium: x.medium,
-      thumbnail: largeImage,
-      group: 'artwork',
-      type: 'point',
-      addClass: 'circle'
-    };
-  });
-}
-
-
-// function wiki_artist(){
-//   var info = wikipediajs.WIKIPEDIA.getData('http://en.wikipedia.org/wiki/Invasion_of_Normandy');
-//   console.log(info)
-// }
-// wiki_artist()
-
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -308,9 +377,12 @@ app.use(express.static("public"));
 app.use(express.static("public"));
 
 app.get("/test/:query", function(req, res) {
-  wikipedia.getData('http://en.wikipedia.org/wiki/' + req.params.query, function(wikiData) {
-    res.send(wikiData);
-  });
+  wikipedia.getData(
+    "http://en.wikipedia.org/wiki/" + req.params.query,
+    function(wikiData) {
+      res.send(wikiData);
+    }
+  );
 });
 
 app.get("/", function(req, res) {
