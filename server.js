@@ -242,25 +242,31 @@ function updateArtistsFromWiki(artists) {
 
 // Gets artist ready to send to Vis
 function artistForVis(artist) {
-  var thumbnailVal = getThumbnail(artist);
+  const imageLink = artist._links.image.href;
+  const largeImage = imageLink.replace("{image_version}", "large");
   return {
     id: artist.id,
     content: artist.name,
     start: artist.birthday,
     end: artist.end,
-    thumbnail: thumbnailVal
+    thumbnail: largeImage,
+    group: "artist"
   };
 }
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
   return artworks.filter(has_date).map(function(x) {
+    const imageLink = x._links.image.href;
+    const largeImage = imageLink.replace("{image_version}", "large");
     return {
       id: x.id,
-      content: x.title,
+      content: "&#9679" + x.title,
       start: x.date.match(/\d+/)[0],
       medium: x.medium,
-      thumbnail: x._links.thumbnail.href
+      thumbnail: largeImage,
+      group: "artwork",
+      type: "point"
     };
   });
 }
@@ -300,13 +306,6 @@ function normalizeBirthday(artist) {
 // Normalizes death day so it is only a year
 function normalizeDeathday(endDates) {
   return endDates.match(/\d{3,4}/)[0];
-}
-
-// Gets picture
-function getThumbnail(artist) {
-  return artist._links.thumbnail === undefined
-    ? ""
-    : artist._links.thumbnail.href;
 }
 
 // Checks for date
