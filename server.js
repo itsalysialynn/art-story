@@ -289,7 +289,6 @@ function map_artworks(artworks) {
       thumbnail: largeImage,
       group: 'artwork',
       type: 'point',
-      addClass: 'circle'
     };
   });
 }
