@@ -109,7 +109,7 @@
     // console.log("full data", full_data)
 
 
-    var start = if (info.birthday){return new Date(+info.birthday, 0, 1)} else { return new Date(+info.date, 0, 1)}
+    var start =   +info.birthday || +info.date;
 
     // Configuration for the Timeline
     var options = {
@@ -121,7 +121,7 @@
           zoomMin: 31556952000,
           min: new Date(-4000, 0, 1),
           max: new Date(),
-          start: start,
+          start: new Date(start, 0, 1),
           end: new Date(2017, 0, 1),
 
 
