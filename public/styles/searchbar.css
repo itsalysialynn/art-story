@@ -1,5 +1,7 @@
 /* Layout for search container */
+
 .search {
+  background: transparent;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -9,7 +11,7 @@
 
 .js .search {
   position: fixed;
-  z-index: 1000;
+  z-index: 1;
   top: 0;
   left: 0;
   width: 100%;
@@ -212,7 +214,7 @@
     font-size: 1.25em;
   }
   .search__suggestion {
-    font-size: 80%;
+    font-size: 60%;
     width: 100%;
   }
   .search__suggestion:nth-child(2),
