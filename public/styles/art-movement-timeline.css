@@ -37,6 +37,7 @@
   background: white;
   color: black;
   padding: .25em;
+  cursor: pointer;
 }
 
 .horizontal-accordion-item-details-date {
@@ -44,9 +45,13 @@
   transform-origin: top right;
   text-align: right;
   white-space: nowrap;
-  padding-right: 1em;
+  padding-right: 1.2em;
   font-family: Helvetica, sans-serif;
   letter-spacing: .1em;
+  padding-top: .2em;
+  background-color: black;
+  color: white;
+  padding-bottom: .2em;
 }
 
 p.art-movement-description {
@@ -56,15 +61,20 @@ p.art-movement-description {
   margin: 0;
   padding-left: 1em;
   padding-right: .25em;
+  margin-top: -2em;
 }
 
 img.art-movement-image {
   height: 11em;
   padding-left: 2em;
+  margin-top: -2em;
 }
 
 .horizontal-accordion-item-details-flex {
   display: flex;
+  padding-right: .5em;
+  padding-left: .5em;
+  padding-top: 1em;
 }
 
 div.horizontal-accordion-item-details-content {
@@ -81,13 +91,23 @@ div.horizontal-accordion-item-details-content {
   padding-right: 1em;
   font-family: Helvetica;
   font-weight: bolder;
+  padding-top: .4em;
 }
 
-div.horizontal-accordion-item-heading-rotated:hover {
+div.horizontal-accordion-item-heading:hover {
   background: #e02f1c;
+  transition: .3s all ease-in-out;
 }
 
 .movement-padding {
   margin-right: 4.75em;
   margin-left: 4.75em;
+}
+
+.active div.horizontal-accordion-item-heading {
+  background: #e02f1c;
+}
+
+a {
+  cursor: pointer;
 }

@@ -2,66 +2,63 @@
   font-family: Helvetica, sans-serif;
 }
 
-.align {
-  padding-left: 3em;
-  padding-right: 3em;
-}
-
 div#name {
   font-family: Helvetica, sans-serif;
   font-weight: bolder;
   font-size: 450%;
-  padding-bottom: .1em;
-  padding-left: .2em;
+
   white-space: nowrap;
   line-height: .8em;
 }
 
 div#thumbnail {
-  height: 6em;
+  float: left;
+  margin-right: 2em;
+}
+div#thumbnail img {
+  height: 22em;
+  padding-bottom: 3em;
 }
 
 div#summary {
-  padding-left: 1em;
   font-family: Helvetica, sans-serif;
-  font-size: 90%;
-  position: absolute;
-  padding-right: 5.75em;
-  padding-left: 22.2em;
-  padding-top: 75.5px;
+  font-size: 100%;
+  margin-top: 1em;
+  line-height: 1.4;
+  margin-right: 5em;
 }
 
 div#wikiLink {
-  padding-left: 16.5em;
   font-family: Helvetica, sans-serif;
   font-size: 90%;
-  position: absolute;
-  padding-top: 16em;
-  padding-bottom: 2em;
 }
 
 div#wikiLink:link {
   color: #e02f1c;
+  cursor: pointer;
 }
 
 div#medium {
-  padding-left: 1em;
   font-family: Helvetica, sans-serif;
   font-size: 90%;
-  position: absolute;
-  padding-top: 5.5em;
-  padding-right: 0.75em;
-  padding-left: 11.56em;
-  margin-left: 4em;
-  margin-right: 4em;
-  padding-left: 11.6em;
 }
 
 .artist {
-  padding-left: 4.75em;
-  display: flex;
-  padding-top: 1em;
-  padding-bottom: 8em;
-  border-bottom: 3px black solid;
-  height: 12em;
+  padding: 0 4.7em;
+  overflow: auto;
+  display: none;
+}
+
+.vis-item-content {
+  cursor: pointer;
+}
+
+div#name:hover {
+  font-family: Helvetica, sans-serif;
+  font-weight: bolder;
+  font-size: 450%;
+  color: #e02f1c;
+  white-space: nowrap;
+  line-height: .8em;
+  cursor: pointer;
 }

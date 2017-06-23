@@ -11,18 +11,24 @@ $(document).ready(function() {
     }
   });
 
+  //toggles the accordion on click
   $(".horizontal-accordion-item").click(function() {
-    $(".horizontal-accordion-item-details-content").removeClass(
-      ".horizontal-accordion-item.active .horizontal-accordion-item-details"
-    );
+    $(".horizontal-accordion-item").removeClass("active");
 
-    // look .active and if anyone has taht class remove
-    // add the class to the one that was clicked
     $(this).addClass("active");
   });
 
   $(".horizontal-accordion-item-heading-rotated").click(function() {
     $(this).toggleClass(".horizontal-accordion-item-heading-click");
+  });
+
+  $(".vis-item-content").click(function() {
+    $(".artist").fadeOut({
+      duration: 300,
+      done: function() {
+        $(".artist").fadeIn(1000);
+      }
+    });
   });
 
   // queries API for search auto-fill data
