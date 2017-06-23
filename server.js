@@ -23,6 +23,10 @@ const api_path = "https://api.artsy.net/api";
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
 const api = traverson.from(api_path).jsonHal();
 
+
+// Promise.map polyfill
+Promise.map = (arr, callback) => Promise.all(arr.map(callback))
+
 // Function for initial search
 function search(searchQuery) {
   return new Promise((resolve, reject) => {
@@ -50,18 +54,17 @@ function search(searchQuery) {
 function getInfo(results) {
 
     return new Promise ((resolve, reject) => {
-      // console.log(results._embedded.results);
       if (!results || !results._embedded || !results._embedded.results || !results._embedded.results[0]._links || !results._embedded.results[0]._links.self) {
         reject("Error, please enter a valid artist or artwork");
         return;
       }
 
       const details_link = results._embedded.results[0]._links.self.href.substring(api_path.length + 1);
-      // console.log(details_link);
+
       //determines what the search term is (artist, gene, art work etc.)
       let newApi = details_link.split("/")[0];
       newApi = newApi.substring(0,newApi.length-1);
-      // console.log("newApi: ", newApi);
+
       // more detailed request from the info entered in search bar (2nd request)
       api
         .newRequest()
@@ -75,14 +78,10 @@ function getInfo(results) {
             }
         })
         .getResource(function(filtered_error, filtered_results) {
-          // console.log("HERE");
+
           if(filtered_error) {
             reject(filtered_error);
           } else {
-            // modifyNameForWiki(filtered_results.name);
-            // console.log(filtered_results.name);
-            // console.log("getInfo: ", filtered_results);
-            // console.log({type: newApi, info: filtered_results});
             resolve({type: newApi, info: filtered_results});
           }
         });
@@ -181,138 +180,114 @@ function getSimilarArtworks(results) {
   });
 }
 
+// Flattens arrays of similar artists, artworks, and searched artist
 function flatten(arr) {
   return arr.reduce(function (flat, toFlatten) {
     return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
   }, []);
 }
 
+// Checks if artist has birthday
 function has_birthday(x){
   return !!x.birthday;
 }
 
+// Checks if artist has death day
 function hasDeathDay(artist) {
   return !!artist.end;
 }
 
-function normalizeBirthday(birthday) {
-  if (birthday) {
-    var m = birthday.match(/\d{3,4}/);
+// Normalizes birthday so it is only a year
+function normalizeBirthday(artist) {
+  if (artist.birthday) {
+    var m = artist.birthday.match(/\d{3,4}/);
     if (m) {
-      return m[0];
+      artist.birthday = m[0];
+    } else {
+      artist.birthday = null;
     }
   }
-  return null;
+  return artist;
 }
 
-function normalizeDeathday(wikiData) {
-    if (wikiData.summary.endDates) {
-    var m = wikiData.summary.endDates.match(/\d{3,4}/);
-    if (m) {
-      return m[0];
-    }
-  }
-  return null;
+// Normalizes death day so it is only a year
+function normalizeDeathday(endDates) {
+  return endDates.match(/\d{3,4}/)[0];
 }
 
-
-
+// Gets picture
 function getThumbnail(artist) {
   return (artist._links.thumbnail === undefined) ? "" : artist._links.thumbnail.href;
 }
 
-function map_artists(artists){
-
-  return Promise.all(artists.map((artist) => {
-    return getArtistFromWiki(artist)
-    // .then(logStep("get artist from wiki"))
-    .then((wikiData) => {
-      return { artist, wikiData }
-    })
-    .catch((err) => {
-      console.error(err);
-      return { artist, wikiData: null};
-    })
-  }))
-  // .then(logStep("get wiki data for artists"))
-  .then((artistsWithData) => {
-    return (artistsWithData
-      .map(({ artist, wikiData }) => {
-
-        console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
-
-        if (wikiData.summary !== null) {
-          var endDate = wikiData.summary.endDates;
-          artist.end = normalizeDeathday(wikiData);
-
-          console.log("ARTIST END: ", artist.end);
-          console.log("ARTIST: ", artist);
-          return artist;
-
-        } else {
-          artist.end = "" + (new Date()).getFullYear();
-          console.log("ARTIST END AS 2017: ", artist);
-          return artist;
-        }
-
-      return artist;
-    }))
-  })
-  // return Promise.resolve(artists)
-  .then((artists) => {
-    return (artists
-      .map((artist) => {
-        artist.birthday = normalizeBirthday(artist.birthday);
+// Gets info from wiki and takes death day (if present)
+// If death day is not present, takes the min of (artist's birthday + 75) or current year
+function updateArtistsFromWiki(artists) {
+  return Promise.map(artists, (artist) => (
+    getArtistFromWiki(artist)
+      .catch(console.error)
+      .then((wikiData) => {
+        // console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
+        let endDates = wikiData.summary.endDates;
+        artist.end = normalizeDeathday(endDates);
         return artist;
       })
-    );
-  })
-  // .then(logStep("before filtering artists"))
-  .then((artists) => {
-    return (artists
-      .filter(has_birthday)
-      .filter(hasDeathDay)
-      .map(function(artist){
-        var thumbnailVal = getThumbnail(artist);
-        return {id: artist.id, content: artist.name, start: artist.birthday, end: artist.end, thumbnail: thumbnailVal};
-      }));
-  })
+      .catch((err) => {
+        let thisYear = (new Date()).getFullYear();
+        let artistBirthday = Number(artist.birthday);
+        let endDate = Math.min(artistBirthday + 75, thisYear);
+
+        artist.end = "" + endDate;
+        return artist;
+      })
+  ))
+}
+
+// Gets artist ready to send to Vis
+function artistForVis(artist) {
+  var thumbnailVal = getThumbnail(artist);
+  return {id: artist.id, content: artist.name, start: artist.birthday, end: artist.end, thumbnail: thumbnailVal};
+}
+
+// Gets each artist ready for Vis
+function map_artists(artists){
+  return Promise.resolve(artists)
+  .then((artists) => artists.map(normalizeBirthday).filter(has_birthday))
+  .then(updateArtistsFromWiki)
+  .then((artists) => artists.map(artistForVis))
   // .then(logStep("after filtering artists"))
   .catch((err) => {
     console.error("map_artists failure");
     console.error(err);
+    return [];
   })
 }
 
-
+// Checks for date
 function has_date(x){
   return x.date;
 }
 
+// Gets each artwork ready for Vis
 function map_artworks(artworks){
-
-  if (!Array.isArray(artworks)){
-    artworks = [artworks];
-  }
   return artworks.filter(has_date).map(function(x){
     return   {id: x.id, content: x.title, start: x.date.match(/\d+/)[0], medium: x.medium, thumbnail: x._links.thumbnail.href}
  })
 }
 
-
-
+// Gets artist name ready for fetching from wiki
 function modifyNameForWiki(artist) {
   return artist.name.replace(/ /g, '_');
 }
 
-
+// Gets artist info from wiki
 function getArtistFromWiki(artist) {
   return new Promise((resolve, reject) => {
     wikipedia.getData('http://en.wikipedia.org/wiki/' + modifyNameForWiki(artist), resolve, reject);
   })
 }
 
-
+// For debugging
 function logStep(label) {
   return function logIt(data) {
     console.log("\n\n*** LOGSTEP: ", label);
@@ -326,28 +301,17 @@ function logStep(label) {
 app.get("/search", (req, res) => {
   search(req.query.search)
     // .then(logStep("search"))
-    .then((results) => {
-      return getInfo(results)
-
-    })
+    .then(getInfo)
     // .then(logStep("getInfo"))
     .then(({type, info}) => {
       let ps;
-      if (type === "artist"){
+      if (type === "artist") {
+        let artistsArtwork = getArtistsArtwork(info).then(map_artworks);
+        let similarArtists = getSimilarArtists(info).then(map_artists).then(logStep("getSimilarArtists"));
 
-        ps = Promise.all([
-          getArtistsArtwork(info)
-          .then(map_artworks)
-          .then(logStep("getArtistsArtwork")),
-          getSimilarArtists(info)
-          .then(map_artists),
-          // .then(logStep("getSimilarArtists")),
-          map_artists([info])
-          ])
-        .then(logStep("process artist"))
-        .then(([results, results2, results3]) => {
-          return flatten([results, results2, results3])
-        })
+        ps = Promise.all([artistsArtwork, similarArtists, map_artists([info])])
+        // .then(logStep("process artist"))
+        .then(flatten)
 
       } else if (type === "artwork"){
 
@@ -381,8 +345,6 @@ app.get("/search", (req, res) => {
     .catch(err => {
       console.log("This is an error");
       console.log(err);
-      // render page for bad search result
-      // TODO use flash message
       res.send(
         "Error, please enter a valid artist or artwork. Return to <a href='/'>Search.</a>"
       );
