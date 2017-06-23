@@ -24,8 +24,18 @@ traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
 const api = traverson.from(api_path).jsonHal();
 
 
+// For debugging
+function logStep(label) {
+  return function logIt(data) {
+    console.log("\n\n*** LOGSTEP: ", label);
+    console.log(JSON.stringify(data, null, 2));
+    return data;
+  }
+}
+
 // Promise.map polyfill
 Promise.map = (arr, callback) => Promise.all(arr.map(callback))
+
 
 // Function for initial search
 function search(searchQuery) {
@@ -180,12 +190,70 @@ function getSimilarArtworks(results) {
   });
 }
 
+// Gets each artist ready for Vis
+function map_artists(artists){
+  return Promise.resolve(artists)
+  .then((artists) => artists.map(normalizeBirthday).filter(has_birthday))
+  .then(updateArtistsFromWiki)
+  .then((artists) => artists.map(artistForVis))
+  // .then(logStep("after filtering artists"))
+  .catch((err) => {
+    console.error("map_artists failure");
+    console.error(err);
+    return [];
+  })
+}
+
+// Gets artist info from wiki
+function getArtistFromWiki(artist) {
+  return new Promise((resolve, reject) => {
+    wikipedia.getData('http://en.wikipedia.org/wiki/' + modifyNameForWiki(artist), resolve, reject);
+  })
+}
+
+// Gets info from wiki and takes death day (if present)
+// If death day is not present, takes the min of (artist's birthday + 75) or current year
+function updateArtistsFromWiki(artists) {
+  return Promise.map(artists, (artist) => (
+    getArtistFromWiki(artist)
+      .catch(console.error)
+      .then((wikiData) => {
+        // console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
+        let endDates = wikiData.summary.endDates;
+        artist.end = normalizeDeathday(endDates);
+        return artist;
+      })
+      .catch((err) => {
+        let thisYear = (new Date()).getFullYear();
+        let artistBirthday = Number(artist.birthday);
+        let endDate = Math.min(artistBirthday + 75, thisYear);
+
+        artist.end = "" + endDate;
+        return artist;
+      })
+  ))
+}
+
+// Gets artist ready to send to Vis
+function artistForVis(artist) {
+  var thumbnailVal = getThumbnail(artist);
+  return {id: artist.id, content: artist.name, start: artist.birthday, end: artist.end, thumbnail: thumbnailVal};
+}
+
+// Gets each artwork ready for Vis
+function map_artworks(artworks){
+  return artworks.filter(has_date).map(function(x){
+    return   {id: x.id, content: x.title, start: x.date.match(/\d+/)[0], medium: x.medium, thumbnail: x._links.thumbnail.href}
+ })
+}
+
 // Flattens arrays of similar artists, artworks, and searched artist
 function flatten(arr) {
   return arr.reduce(function (flat, toFlatten) {
     return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
   }, []);
 }
+
 
 // Checks if artist has birthday
 function has_birthday(x){
@@ -220,59 +288,9 @@ function getThumbnail(artist) {
   return (artist._links.thumbnail === undefined) ? "" : artist._links.thumbnail.href;
 }
 
-// Gets info from wiki and takes death day (if present)
-// If death day is not present, takes the min of (artist's birthday + 75) or current year
-function updateArtistsFromWiki(artists) {
-  return Promise.map(artists, (artist) => (
-    getArtistFromWiki(artist)
-      .catch(console.error)
-      .then((wikiData) => {
-        // console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
-        let endDates = wikiData.summary.endDates;
-        artist.end = normalizeDeathday(endDates);
-        return artist;
-      })
-      .catch((err) => {
-        let thisYear = (new Date()).getFullYear();
-        let artistBirthday = Number(artist.birthday);
-        let endDate = Math.min(artistBirthday + 75, thisYear);
-
-        artist.end = "" + endDate;
-        return artist;
-      })
-  ))
-}
-
-// Gets artist ready to send to Vis
-function artistForVis(artist) {
-  var thumbnailVal = getThumbnail(artist);
-  return {id: artist.id, content: artist.name, start: artist.birthday, end: artist.end, thumbnail: thumbnailVal};
-}
-
-// Gets each artist ready for Vis
-function map_artists(artists){
-  return Promise.resolve(artists)
-  .then((artists) => artists.map(normalizeBirthday).filter(has_birthday))
-  .then(updateArtistsFromWiki)
-  .then((artists) => artists.map(artistForVis))
-  // .then(logStep("after filtering artists"))
-  .catch((err) => {
-    console.error("map_artists failure");
-    console.error(err);
-    return [];
-  })
-}
-
 // Checks for date
 function has_date(x){
   return x.date;
-}
-
-// Gets each artwork ready for Vis
-function map_artworks(artworks){
-  return artworks.filter(has_date).map(function(x){
-    return   {id: x.id, content: x.title, start: x.date.match(/\d+/)[0], medium: x.medium, thumbnail: x._links.thumbnail.href}
- })
 }
 
 // Gets artist name ready for fetching from wiki
@@ -280,21 +298,6 @@ function modifyNameForWiki(artist) {
   return artist.name.replace(/ /g, '_');
 }
 
-// Gets artist info from wiki
-function getArtistFromWiki(artist) {
-  return new Promise((resolve, reject) => {
-    wikipedia.getData('http://en.wikipedia.org/wiki/' + modifyNameForWiki(artist), resolve, reject);
-  })
-}
-
-// For debugging
-function logStep(label) {
-  return function logIt(data) {
-    console.log("\n\n*** LOGSTEP: ", label);
-    console.log(JSON.stringify(data, null, 2));
-    return data;
-  }
-}
 
 
 // get request to the api using the search bar (1st request)
@@ -350,8 +353,6 @@ app.get("/search", (req, res) => {
       );
     });
 });
-
-
 
 
 app.set("view engine", "ejs");
