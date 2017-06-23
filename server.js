@@ -79,7 +79,10 @@ function getInfo(results) {
           if(filtered_error) {
             reject(filtered_error);
           } else {
-            // console.log("getInfo: ", newApi, filtered_results);
+            // modifyNameForWiki(filtered_results.name);
+            // console.log(filtered_results.name);
+            // console.log("getInfo: ", filtered_results);
+            // console.log({type: newApi, info: filtered_results});
             resolve({type: newApi, info: filtered_results});
           }
         });
@@ -188,28 +191,102 @@ function has_birthday(x){
   return !!x.birthday;
 }
 
-function map_artists(artists){
-  if (!Array.isArray(artists)){
-    artists = [artists];
-  }
-
-  return artists.filter(has_birthday).map(function(x){
-    var thumbnailVal = (x._links.thumbnail === undefined) ? "" : x._links.thumbnail.href;
-    if(x.birthday.match(/\d{3,4}/) === undefined || x.birthday.match(/\d{3,4}/) === null){
-      return {id: x.id, content: x.name, start: '3000', thumbnail: thumbnailVal}
-    }
-    else{
-      return {id: x.id, content: x.name, start: x.birthday.match(/\d{3,4}/)[0], thumbnail: thumbnailVal}
-    }
-  });
+function hasDeathDay(artist) {
+  return !!artist.end;
 }
 
-function has_date(x){
-  if (!x.date){
-    return false;
-  } else if (x.date){
-    return true;
+function normalizeBirthday(birthday) {
+  if (birthday) {
+    var m = birthday.match(/\d{3,4}/);
+    if (m) {
+      return m[0];
+    }
   }
+  return null;
+}
+
+function normalizeDeathday(wikiData) {
+    if (wikiData.summary.endDates) {
+    var m = wikiData.summary.endDates.match(/\d{3,4}/);
+    if (m) {
+      return m[0];
+    }
+  }
+  return null;
+}
+
+
+
+function getThumbnail(artist) {
+  return (artist._links.thumbnail === undefined) ? "" : artist._links.thumbnail.href;
+}
+
+function map_artists(artists){
+
+  return Promise.all(artists.map((artist) => {
+    return getArtistFromWiki(artist)
+    // .then(logStep("get artist from wiki"))
+    .then((wikiData) => {
+      return { artist, wikiData }
+    })
+    .catch((err) => {
+      console.error(err);
+      return { artist, wikiData: null};
+    })
+  }))
+  // .then(logStep("get wiki data for artists"))
+  .then((artistsWithData) => {
+    return (artistsWithData
+      .map(({ artist, wikiData }) => {
+
+        console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
+
+        if (wikiData.summary !== null) {
+          var endDate = wikiData.summary.endDates;
+          artist.end = normalizeDeathday(wikiData);
+
+          console.log("ARTIST END: ", artist.end);
+          console.log("ARTIST: ", artist);
+          return artist;
+
+        } else {
+          artist.end = "" + (new Date()).getFullYear();
+          console.log("ARTIST END AS 2017: ", artist);
+          return artist;
+        }
+
+      return artist;
+    }))
+  })
+  // return Promise.resolve(artists)
+  .then((artists) => {
+    return (artists
+      .map((artist) => {
+        artist.birthday = normalizeBirthday(artist.birthday);
+        return artist;
+      })
+    );
+  })
+  // .then(logStep("before filtering artists"))
+  .then((artists) => {
+    return (artists
+      .filter(has_birthday)
+      .filter(hasDeathDay)
+      .map(function(artist){
+        var thumbnailVal = getThumbnail(artist);
+        return {id: artist.id, content: artist.name, start: artist.birthday, end: artist.end, thumbnail: thumbnailVal};
+      }));
+  })
+  // .then(logStep("after filtering artists"))
+  .catch((err) => {
+    console.error("map_artists failure");
+    console.error(err);
+  })
+}
+
+
+function has_date(x){
+  return x.date;
 }
 
 function map_artworks(artworks){
@@ -223,21 +300,51 @@ function map_artworks(artworks){
 }
 
 
+
+function modifyNameForWiki(artist) {
+  return artist.name.replace(/ /g, '_');
+}
+
+
+function getArtistFromWiki(artist) {
+  return new Promise((resolve, reject) => {
+    wikipedia.getData('http://en.wikipedia.org/wiki/' + modifyNameForWiki(artist), resolve, reject);
+  })
+}
+
+
+function logStep(label) {
+  return function logIt(data) {
+    console.log("\n\n*** LOGSTEP: ", label);
+    console.log(JSON.stringify(data, null, 2));
+    return data;
+  }
+}
+
+
 // get request to the api using the search bar (1st request)
 app.get("/search", (req, res) => {
   search(req.query.search)
+    // .then(logStep("search"))
     .then((results) => {
       return getInfo(results)
 
-    }).then(({type, info}) => {
+    })
+    // .then(logStep("getInfo"))
+    .then(({type, info}) => {
       let ps;
       if (type === "artist"){
 
         ps = Promise.all([
-          getArtistsArtwork(info).then(map_artworks),
-          getSimilarArtists(info).then(map_artists),
-          map_artists(info),
+          getArtistsArtwork(info)
+          .then(map_artworks)
+          .then(logStep("getArtistsArtwork")),
+          getSimilarArtists(info)
+          .then(map_artists),
+          // .then(logStep("getSimilarArtists")),
+          map_artists([info])
           ])
+        .then(logStep("process artist"))
         .then(([results, results2, results3]) => {
           return flatten([results, results2, results3])
         })
@@ -254,10 +361,7 @@ app.get("/search", (req, res) => {
         throw new Error("unknown type: ", type);
       }
 
-      return ps.then((flattened)=> {
-        var similars = flattened.filter(function(flattened) {
-          return flattened.start < 3000;
-        })
+      return ps.then((similars)=> {
         similars.sort(function (a, b) {
           if (a.id < b.id) {
             return -1;
@@ -267,7 +371,11 @@ app.get("/search", (req, res) => {
             return 1;
           }
         });
-        res.render("timeline", { info, similars });
+        if (req.query.format === "json") {
+          res.json({ info, similars });
+        } else {
+          res.render("timeline", { info, similars });
+        }
       });
     })
     .catch(err => {
@@ -282,12 +390,6 @@ app.get("/search", (req, res) => {
 });
 
 
-
-// function wiki_artist(){
-//   var info = wikipediajs.WIKIPEDIA.getData('http://en.wikipedia.org/wiki/Invasion_of_Normandy');
-//   console.log(info)
-// }
-// wiki_artist()
 
 
 app.set("view engine", "ejs");
