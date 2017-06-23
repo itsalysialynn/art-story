@@ -32,7 +32,8 @@
 .horizontal-accordion-item-heading {
   width: 2em;
   letter-spacing: .1em;
-  font: bold 14px/32px "Arial Rounded MT", Arial, Helvetica, Sans-serif;
+  font-family: Helvetica, sans-serif;
+  font-weight: bold;
   background: white;
   color: black;
   padding: .25em;
@@ -43,15 +44,15 @@
   transform-origin: top right;
   text-align: right;
   white-space: nowrap;
-  padding-right: 2.1em;
-  font: bold 14px/32px "Arial Rounded MT", Arial, Helvetica, Sans-serif;
+  padding-right: 1em;
+  font-family: Helvetica, sans-serif;
   letter-spacing: .1em;
 }
 
 p.art-movement-description {
   font-size: 12px;
   height: 10em;
-  font-family: Arial, Helvetica, Sans-serif;
+  font-family: Helvetica, sans-serif;
   margin: 0;
   padding-left: 1em;
   padding-right: .25em;
@@ -77,9 +78,16 @@ div.horizontal-accordion-item-details-content {
   transform-origin: top right;
   text-align: right;
   width: 16em;
-  padding-right: 2em;
+  padding-right: 1em;
+  font-family: Helvetica;
+  font-weight: bolder;
 }
 
 div.horizontal-accordion-item-heading-rotated:hover {
   background: #e02f1c;
+}
+
+.movement-padding {
+  margin-right: 4.75em;
+  margin-left: 4.75em;
 }

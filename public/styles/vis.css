@@ -42,7 +42,7 @@ div.vis-configuration.vis-config-option-container{
     display:block;
     width:495px;
     background-color: #ffffff;
-     2px solid #f7f8fa;
+
     border-radius:4px;
     margin-top:20px;
     left:10px;
@@ -314,7 +314,7 @@ div.vis-tooltip {
   padding: 5px;
   white-space: nowrap;
 
-  font-family: verdana;
+  font-family: Helvetica, sans-serif;
   font-size:14px;
   color:#000000;
   background-color: #f5f4ed;
@@ -322,7 +322,6 @@ div.vis-tooltip {
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
-    1px solid #808074;
 
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
   pointer-events: none;
@@ -567,7 +566,7 @@ div.vis-network div.vis-close:hover {
 div.vis-network div.vis-manipulation div.vis-button,
 div.vis-network div.vis-edit-mode div.vis-button {
   float:left;
-  font-family: verdana;
+  font-family: Helvetica, sans-serif;
   font-size: 12px;
   -moz-border-radius: 15px;
   border-radius: 15px;
@@ -958,7 +957,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-item.vis-range .vis-item-content {
   position: relative;
   display: inline-block;
-  font-family: 'Abel', sans-serif;
+  font-family: Helvetica, sans-serif;
   font-size: xx-small;
 
 }
@@ -1017,7 +1016,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-item .vis-delete:after, .vis-item .vis-delete-rtl:after {
   content: "\00D7"; /* MULTIPLICATION SIGN */
   color: red;
-  font-family: arial, sans-serif;
+  font-family: Helvetica, sans-serif;
   font-size: 22px;
   font-weight: bold;
 
@@ -1385,7 +1384,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-time-axis .vis-text {
-  font-family: 'Raleway', sans-serif;
+  font-family: Helvetica, sans-serif;
   font-size: xx-small;
   color: #4d4d4d;
   letter-spacing: 5px;
@@ -1398,7 +1397,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 
 .vis-time-axis .vis-text.vis-measure {
-  font-family: 'Raleway', sans-serif;
+  font-family: Helvetica, sans-serif;
   margin: 0;
   position: absolute;
   padding-left: 0;
