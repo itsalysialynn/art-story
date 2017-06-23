@@ -310,7 +310,7 @@ app.get("/search", (req, res) => {
       let ps;
       if (type === "artist") {
         let artistsArtwork = getArtistsArtwork(info).then(map_artworks);
-        let similarArtists = getSimilarArtists(info).then(map_artists).then(logStep("getSimilarArtists"));
+        let similarArtists = getSimilarArtists(info).then(map_artists);
 
         ps = Promise.all([artistsArtwork, similarArtists, map_artists([info])])
         // .then(logStep("process artist"))
