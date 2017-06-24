@@ -130,14 +130,14 @@
             if (artistSummary){
               document.getElementById('summary').innerHTML = "<div>" + artistSummary + "</div> "
               var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery
-              document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
+              document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "' target='blank'>"+ "More Info" +"</a>"
             } else {
               document.getElementById('summary').innerHTML = "<div> Could not find summary at this time</div> "
-              document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
+              document.getElementById('wikiLink').innerHTML = "<a href='' target='blank'></a>"
             }
           } else {
             document.getElementById('summary').innerHTML = "<div> </div> "
-              document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
+              document.getElementById('wikiLink').innerHTML = "<a href='' target='blank'></a>"
           }
         }, function wikiError(err) {
           console.log('error:', err);
