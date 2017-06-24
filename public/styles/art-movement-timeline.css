@@ -22,6 +22,7 @@
   overflow: hidden;
   transition: 500ms;
   width: 0;
+  border-right: 1px solid;
 }
 
 .horizontal-accordion-item-details-content {
@@ -55,31 +56,25 @@
 }
 
 p.art-movement-description {
-  font-size: 12px;
+  font-size: 84%;
   height: 10em;
   font-family: Helvetica, sans-serif;
-  margin: 0;
-  padding-left: 1em;
-  padding-right: .25em;
-  margin-top: -2em;
+  text-align: justify;
+  line-height: 1.2;
+  margin-top: -0.2em;
+  margin-right: 2em;
+  margin-left: 3.4em;
 }
 
 img.art-movement-image {
-  height: 11em;
-  padding-left: 2em;
-  margin-top: -2em;
-}
-
-.horizontal-accordion-item-details-flex {
-  display: flex;
-  padding-right: .5em;
-  padding-left: .5em;
-  padding-top: 1em;
+  float: left;
+  margin-left: 3em;
+  margin-right: 1em;
+  height: 13em;
 }
 
 div.horizontal-accordion-item-details-content {
   width: 40em; /* the width of the expanded panel */
-  height: 20em;
   opacity: 1;
 }
 
@@ -106,8 +101,14 @@ div.horizontal-accordion-item-heading a:hover {
 
 .active div.horizontal-accordion-item-heading {
   background: #e02f1c;
+  border: none;
 }
 
 a {
   cursor: pointer;
+  color: black;
+}
+
+a:visited {
+  color: grey;
 }
