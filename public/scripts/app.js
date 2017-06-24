@@ -7,7 +7,6 @@ $(document).ready(function() {
     $("#autocomplete").focus();
   });
 
-
   // submits search when enter is pressed
   $("#autocomplete").keypress(function(e) {
     if (e.which == 13) {
@@ -31,7 +30,7 @@ $(document).ready(function() {
     $(".artist").fadeOut({
       duration: 300,
       done: function() {
-        $(".artist").fadeIn(1000);
+        $(".artist").fadeIn(500);
       }
     });
   });
@@ -72,4 +71,3 @@ $(document).ready(function() {
 
   $("#value").keypress(function(e) {});
 });
-

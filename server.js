@@ -103,7 +103,6 @@ function getInfo(results) {
 
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
-
   return new Promise((resolve, reject) => {
     const artist_id = results.id;
       if (results.birthday === "") {
@@ -256,9 +255,6 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
-    if (!Array.isArray(artworks)) {
-    artworks = [artworks];
-  }
   return artworks.filter(has_date).map(function(x) {
     const imageLink = x._links.image.href;
     const largeImage = imageLink.replace("{image_version}", "large");
