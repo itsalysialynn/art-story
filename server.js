@@ -103,11 +103,12 @@ function getInfo(results) {
 
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
+  if (results.birthday === "") {
+    reject("Error, please enter a valid artist or artwork");
+    return;
+  }
+
   return new Promise((resolve, reject) => {
-    if (results.birthday === "") {
-      reject("Error, please enter a valid artist or artwork");
-      return;
-    }
     const artist_id = results.id;
 
     // handles artist specific searches
@@ -255,9 +256,6 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
-  if (!Array.isArray(artworks)) {
-    artworks = [artworks];
-  }
   return artworks.filter(has_date).map(function(x) {
     const imageLink = x._links.image.href;
     const largeImage = imageLink.replace("{image_version}", "large");
