@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/styles/animate.css">
     <link rel="stylesheet" href="/styles/art-movement-timeline.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    
+
 
 
 
@@ -130,14 +130,16 @@
 
     timeline.on('select', function (properties) {
 
-      console.log('item selected:', properties.event.firstTarget.parentNode.dataset.id);
+      var selected = $(properties.event.firstTarget).parents('[data-id]')[0];
+
+      console.log('item selected:', selected.dataset.id);
 
 
 
-    var selectedId = properties.event.firstTarget.parentNode.dataset.id;
-    var thumbnailUrl = properties.event.firstTarget.parentNode.dataset.thumbnail;
-    var mediumArtwork = properties.event.firstTarget.parentNode.dataset.medium;
-    var nameTitle = properties.event.firstTarget.parentNode.dataset.content;
+    var selectedId = selected.dataset.id;
+    var thumbnailUrl = selected.dataset.thumbnail;
+    var mediumArtwork = selected.dataset.medium;
+    var nameTitle = selected.dataset.content;
 
     if (selectedId !== undefined){
       console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
@@ -162,7 +164,7 @@
       // console.log("find", data.filter(function(datum){return datum.id === selectedId;}))
       // console.log("find", data.filter(datum => datum.id === selectedId));
 
-      let wikiQuery = properties.event.firstTarget.innerText.replace(/ /g, '_');
+      let wikiQuery = $(selected).find('.vis-item-content').text().replace(/ /g, '_');
       console.log("http://en.wikipedia.org/wiki/"+ wikiQuery);
 
       console.log("group", properties.event.firstTarget.parentNode.dataset.group)
@@ -174,7 +176,7 @@
           var artistSummary = wikiData.summary && wikiData.summary.summary
           console.log("artistSummary", artistSummary)
 
-          if (properties.event.firstTarget.parentNode.dataset.group === "1"){
+          if (selected.dataset.group === "1"){
 
             if (artistSummary){
               document.getElementById('summary').innerHTML = "<div>" + artistSummary + "</div> "

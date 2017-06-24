@@ -941,6 +941,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-item.vis-range {
  /* border-style: solid;*/
 /*  border-radius: 2px;*/
+    border-bottom-style: dotted;
+    border-bottom-color: black;
   box-sizing: border-box;
 }
 
