@@ -62,7 +62,7 @@ div#medium {
   cursor: pointer;
 }
 
-div#name:hover {
+div#name a:hover {
   color: #e02f1c;
   cursor: pointer;
 }
