@@ -256,6 +256,9 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
+    if (!Array.isArray(artworks)) {
+    artworks = [artworks];
+  }
   return artworks.filter(has_date).map(function(x) {
     const imageLink = x._links.image.href;
     const largeImage = imageLink.replace("{image_version}", "large");
