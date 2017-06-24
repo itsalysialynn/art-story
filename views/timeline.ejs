@@ -1,30 +1,29 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en" class="js gr__tympanus_net">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link href="/styles/vis.css" rel="stylesheet">
+  <link rel="stylesheet" href="/styles/vis.css" >
   <link rel="stylesheet" href="/styles/timeline.css">
   <link rel="stylesheet" href="/styles/animate.css">
   <link rel="stylesheet" href="/styles/art-movement-timeline.css">
-  <link rel="stylesheet" href="/styles/searchbar.css">
-  <link rel="stylesheet" href="/styles/demo.css">
+
+  <link rel="stylesheet" href="/vendor/timeline-demo.css">
+  <link rel="stylesheet" href="/vendor/timeline-searchbar.css">
   <link rel="stylesheet" href="/vendor/jquery_ui.css">
 
   <script src="/scripts/vis.js"></script>
   <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
   <script src='http://okfnlabs.org/wikipediajs/wikipedia.js'></script>
+</head>
+<body>
 
-  <% include partials/_search.ejs %>
+<% include partials/_search-bar.ejs %>
 
   <div id="visualization"></div>
 
-
   <script type="text/javascript">
-
-
 
   // create a data set with groups
   var groupNames = ['artwork','artist','movement'];
@@ -51,7 +50,7 @@
       }, []);
     }
 
-    var full_data = flatten([data, movements])
+    var full_data = flatten([data, movements]);
 
     for (var thing_id in full_data) {
       full_data[thing_id].group = groupNames.indexOf(full_data[thing_id].group);
@@ -163,9 +162,7 @@
       } catch (err) {
         console('error:', err);
       }
-
     }
-
 })
 </script>
 
@@ -177,12 +174,12 @@
   <div id="wikiLink"></div>
 </div>
 
-
 <% include partials/_art-movement-timeline.ejs %>
 
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
-    <script src="/scripts/app.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+<script src="/scripts/app.js"></script>
+<script src="/scripts/timeline-searchbar.js"></script>
 
 </body>
 </html>

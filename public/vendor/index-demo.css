@@ -47,8 +47,6 @@ table {
 	border-spacing: 0;
 }
 
-
-
 *,
 *::after,
 *::before {
@@ -59,7 +57,7 @@ body {
 	overflow: hidden;
 	margin: 0;
 	color: #fffff;
-	background-color: #00adef;
+/*	background-color: #00adef;*/
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
