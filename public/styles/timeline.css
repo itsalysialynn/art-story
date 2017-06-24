@@ -6,8 +6,6 @@ div#name {
   font-family: Helvetica, sans-serif;
   font-weight: bolder;
   font-size: 450%;
-
-  white-space: nowrap;
   line-height: .8em;
 }
 
@@ -27,15 +25,14 @@ div#thumbnail {
 }
 div#thumbnail img {
   height: 22em;
-  padding-bottom: 3em;
 }
 
 div#summary {
   font-family: Helvetica, sans-serif;
-  font-size: 100%;
-  margin-top: 1em;
+  font-size: 95%;
+  margin-top: 1.7em;
   line-height: 1.4;
-  margin-right: 5em;
+  text-align: justify;
 }
 
 div#wikiLink {
@@ -54,7 +51,9 @@ div#medium {
 }
 
 .artist {
-  padding: 0 4.7em;
+  padding-bottom: 3em;
+  padding-left: 6em;
+  padding-right: 6em;
   overflow: auto;
   display: none;
 }
@@ -64,11 +63,6 @@ div#medium {
 }
 
 div#name:hover {
-  font-family: Helvetica, sans-serif;
-  font-weight: bolder;
-  font-size: 450%;
   color: #e02f1c;
-  white-space: nowrap;
-  line-height: .8em;
   cursor: pointer;
 }
