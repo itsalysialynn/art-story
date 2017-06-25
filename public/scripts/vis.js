@@ -25,6 +25,7 @@
 
 "use strict";
 
+
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -35600,10 +35601,10 @@ return /******/ (function(modules) { // webpackBootstrap
         labelHighlightBold: true,
         level: undefined,
         margin: {
-          top: 5,
-          right: 5,
-          bottom: 5,
-          left: 5
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0
         },
         mass: 1,
         physics: true,

@@ -7,13 +7,32 @@ $(document).ready(function() {
     $("#autocomplete").focus();
   });
 
-
   // submits search when enter is pressed
   $("#autocomplete").keypress(function(e) {
     if (e.which == 13) {
       $("form").submit();
       return false;
     }
+  });
+
+  //toggles the accordion on click
+  $(".horizontal-accordion-item").click(function() {
+    $(".horizontal-accordion-item").removeClass("active");
+
+    $(this).addClass("active");
+  });
+
+  $(".horizontal-accordion-item-heading-rotated").click(function() {
+    $(this).toggleClass(".horizontal-accordion-item-heading-click");
+  });
+
+  $(".vis-item-content").click(function() {
+    $(".artist").fadeOut({
+      duration: 300,
+      done: function() {
+        $(".artist").fadeIn(500);
+      }
+    });
   });
 
   // queries API for search auto-fill data
@@ -50,4 +69,6 @@ $(document).ready(function() {
       return false;
     }
   });
+
+  $("#value").keypress(function(e) {});
 });

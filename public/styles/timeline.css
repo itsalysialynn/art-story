@@ -1,0 +1,68 @@
+#visualization {
+  font-family: Helvetica, sans-serif;
+}
+
+div#name {
+  font-family: Helvetica, sans-serif;
+  font-weight: bolder;
+  font-size: 450%;
+  line-height: .8em;
+}
+
+div#name a {
+  text-decoration: none;
+  color: black;
+}
+
+div#name a:hover {
+  text-decoration: none;
+  color: #e02f1c;
+}
+
+div#thumbnail {
+  float: left;
+  margin-right: 2em;
+}
+div#thumbnail img {
+  height: 22em;
+}
+
+div#summary {
+  font-family: Helvetica, sans-serif;
+  font-size: 95%;
+  margin-top: 1.7em;
+  line-height: 1.4;
+  text-align: justify;
+}
+
+div#wikiLink {
+  font-family: Helvetica, sans-serif;
+  font-size: 90%;
+}
+
+div#wikiLink:link {
+  color: #e02f1c;
+  cursor: pointer;
+}
+
+div#medium {
+  font-family: Helvetica, sans-serif;
+  font-size: 90%;
+}
+
+.artist {
+  padding-bottom: 3em;
+  padding-left: 6em;
+  padding-right: 6em;
+  overflow: auto;
+  display: none;
+}
+
+.vis-item-content {
+  cursor: pointer;
+}
+
+div#name a:hover {
+  color: #e02f1c;
+  cursor: pointer;
+}
