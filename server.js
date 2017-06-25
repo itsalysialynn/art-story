@@ -15,6 +15,9 @@ const traverson = require("traverson"),
   JsonHalAdapter = require("traverson-hal"),
   xappToken = process.env.ARTSY_TOLKEN;
 
+const Fiber = require('fibers');
+
+
 // const wikipediajs = require('./public/scripts/wikipedia.js');
 
 const api_path = "https://api.artsy.net/api";
@@ -152,36 +155,45 @@ function getArtworksArtist(results) {
       })
       .getResource((error, artworks_artist) => {
         const artworksArtist = artworks_artist._embedded.artists;
+        const imageLink = results._links.image.href;
+        const largeImage = imageLink.replace("{image_version}", "large");
         if (error) {
           reject(error);
         } else {
-          resolve(artworksArtist);
+          resolve({
+            id: results.id,
+            content: "&#9679" + results.title,
+            artist: artworksArtist.name,
+            start: results.date.match(/\d+/)[0],
+            medium: results.medium,
+            thumbnail: largeImage,
+            group: "artwork",
+            type: "point"
+          });
         }
       });
   });
 }
 
-function getArtworksArtist2(results) {
-  console.log("hey I'm here woo")
-  const artwork_id = results.id;
-  let artworksArtist
-  api
-    .newRequest()
-    .follow("artists")
-    .withTemplateParameters({ artwork_id: artwork_id })
-    .withRequestOptions({
-      headers: {
-        "X-Xapp-Token": xappToken,
-        Accept: "application/vnd.artsy-v2+json"
-      }
-    })
-    .getResource((error, artworks_artist) => {
-      artworksArtist = artworks_artist._embedded.artists;
-      console.log("After", artworksArtist);
-  });
-  console.log("☹️", artworksArtist);
-  return artworksArtist
-}
+// function getArtworksArtist2(results) {
+//  new Promise((resolve, reject) => {
+//   const artwork_id = results.id;
+//   let artworksArtist
+//   api
+//     .newRequest()
+//     .follow("artists")
+//     .withTemplateParameters({ artwork_id: artwork_id })
+//     .withRequestOptions({
+//       headers: {
+//         "X-Xapp-Token": xappToken,
+//         Accept: "application/vnd.artsy-v2+json"
+//       }
+//     })
+//     .getResource((error, artworks_artist) => {
+//       artworksArtist = artworks_artist._embedded.artists;
+
+//   });
+// }
 
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
@@ -242,6 +254,7 @@ function getSimilarArtworks(results) {
 
 // Gets each artist ready for Vis
 function map_artists(artists) {
+  console.log("artist", artist)
   return (
     Promise.resolve(artists)
       .then(artists => artists.map(normalizeBirthday).filter(has_birthday))
@@ -306,26 +319,16 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
+
     if (!Array.isArray(artworks)) {
     artworks = [artworks];
   }
-  return artworks.filter(has_date).map(function(x) {
-    const imageLink = x._links.image.href;
-    const largeImage = imageLink.replace("{image_version}", "large");
-
-  console.log("trying to call this function", getArtworksArtist2(x))
-
-    return {
-      id: x.id,
-      content: "&#9679" + x.title,
-      start: x.date.match(/\d+/)[0],
-      medium: x.medium,
-      thumbnail: largeImage,
-      group: "artwork",
-      type: "point"
-    };
+  const mappedArtworks = artworks.filter(has_date).map(function(x) {
+    // const imageLink = x._links.image.href;
+    // const largeImage = imageLink.replace("{image_version}", "large");
+    getArtworksArtist(x)
   });
-}
+ }
 
 // Flattens arrays of similar artists, artworks, and searched artist
 function flatten(arr) {
@@ -387,7 +390,7 @@ app.get("/search", (req, res) => {
         let similarArtists = getSimilarArtists(info).then(map_artists);
 
         ps = Promise.all([artistsArtwork, similarArtists, map_artists([info])])
-          // .then(logStep("process artist"))
+
           .then(flatten);
       } else if (type === "artwork") {
         ps = Promise.all([
@@ -395,7 +398,7 @@ app.get("/search", (req, res) => {
           getArtworksArtist(info).then(map_artists),
           map_artworks(info)
         ]).then(([results, results2, results3]) => {
-          return flatten([results, results2, results3]);
+            return flatten([results, results2, results3]);
         });
       } else {
         throw new Error("unknown type: ", type);
@@ -414,6 +417,7 @@ app.get("/search", (req, res) => {
         if (req.query.format === "json") {
           res.json({ info, similars });
         } else {
+          console.log("similars", similars)
           res.render("timeline", { info, similars });
         }
       });
