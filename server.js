@@ -152,8 +152,6 @@ function getArtworksArtist(results) {
       })
       .getResource((error, artworks_artist) => {
         const artworksArtist = artworks_artist._embedded.artists;
-        console.log("artworksArtist", artworksArtist)
-
         if (error) {
           reject(error);
         } else {
@@ -161,6 +159,28 @@ function getArtworksArtist(results) {
         }
       });
   });
+}
+
+function getArtworksArtist2(results) {
+  console.log("hey I'm here woo")
+  const artwork_id = results.id;
+  let artworksArtist
+  api
+    .newRequest()
+    .follow("artists")
+    .withTemplateParameters({ artwork_id: artwork_id })
+    .withRequestOptions({
+      headers: {
+        "X-Xapp-Token": xappToken,
+        Accept: "application/vnd.artsy-v2+json"
+      }
+    })
+    .getResource((error, artworks_artist) => {
+      artworksArtist = artworks_artist._embedded.artists;
+      console.log("After", artworksArtist);
+  });
+  console.log("☹️", artworksArtist);
+  return artworksArtist
 }
 
 // Accesses similar artists with the artist id
@@ -286,13 +306,15 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
-  console.log("artworks", [artworks])
     if (!Array.isArray(artworks)) {
     artworks = [artworks];
   }
   return artworks.filter(has_date).map(function(x) {
     const imageLink = x._links.image.href;
     const largeImage = imageLink.replace("{image_version}", "large");
+
+  console.log("trying to call this function", getArtworksArtist2(x))
+
     return {
       id: x.id,
       content: "&#9679" + x.title,
