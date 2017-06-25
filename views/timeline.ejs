@@ -31,10 +31,12 @@
   <div id="summary"></div>
   <div id="medium"></div>
   <div id="wikiLink"></div>
+  <div id="artist"></div>
 </div>
 
   <script type="text/javascript">
   // create a data set with groups
+
   var groupNames = ['artwork','artist','movement'];
   var groups = new vis.DataSet();
   for (var g = 0; g < groupNames.length; g++) {
@@ -96,7 +98,7 @@
               return output;
             }
           },
-          dataAttributes: ["id", "content", "thumbnail", "medium", "group"]
+          dataAttributes: ["id", "content", "thumbnail", "medium", "group", "artist"]
     };
     // Create a Timeline
     var timeline = new vis.Timeline(container, all_data, groups, options);
@@ -120,6 +122,7 @@
 
       if (mediumArtwork){
         document.getElementById('name').innerHTML = "<div>" + nameTitle + "</div>"
+
       } else {
       document.getElementById('name').innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
       }
@@ -170,6 +173,7 @@
     var thumbnailUrl = selected.dataset.thumbnail;
     var mediumArtwork = selected.dataset.medium;
     var nameTitle = selected.dataset.content.replace(/&#9679/g, '');
+    var artworkArtist = selected.dataset.artist
     console.log("nametitle", nameTitle)
     if (selectedId !== undefined){
       console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
@@ -183,6 +187,8 @@
 
       if (mediumArtwork){
         document.getElementById('name').innerHTML = "<div>" + nameTitle + "</div>"
+        document.getElementById('artist').innerHTML = "<div>" + artworkArtist + "</div>"
+
       } else {
       document.getElementById('name').innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
       }

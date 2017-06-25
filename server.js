@@ -26,7 +26,7 @@ const api = traverson.from(api_path).jsonHal();
 function logStep(label) {
   return function logIt(data) {
     console.log("\n\n*** LOGSTEP: ", label);
-    console.log(JSON.stringify(data, null, 2));
+    console.log(JSON.stringify(data, null, 2));````
     return data;
   };
 }
@@ -162,7 +162,6 @@ function getArtworksArtist(results) {
 }
 
 function getArtworksArtist2(results) {
-  console.log("hey I'm here woo")
   const artwork_id = results.id;
   let artworksArtist
   api
@@ -177,9 +176,7 @@ function getArtworksArtist2(results) {
     })
     .getResource((error, artworks_artist) => {
       artworksArtist = artworks_artist._embedded.artists;
-      console.log("After", artworksArtist);
   });
-  console.log("☹️", artworksArtist);
   return artworksArtist
 }
 
@@ -309,22 +306,60 @@ function map_artworks(artworks) {
     if (!Array.isArray(artworks)) {
     artworks = [artworks];
   }
-  return artworks.filter(has_date).map(function(x) {
-    const imageLink = x._links.image.href;
-    const largeImage = imageLink.replace("{image_version}", "large");
 
-  console.log("trying to call this function", getArtworksArtist2(x))
+  return (
+    // artworks
+    // artworks -> artist
+    // artworks + artist
+    // [a b c]
+    Promise.map(artworks.filter(has_date), artwork => composeArtworkArtist(artwork))
+      .catch(err => {
+        console.error("map_artworks failure");
+        console.error(err);
+        return [];
+      })
+  );
+}
 
-    return {
-      id: x.id,
-      content: "&#9679" + x.title,
-      start: x.date.match(/\d+/)[0],
-      medium: x.medium,
-      thumbnail: largeImage,
-      group: "artwork",
-      type: "point"
-    };
+function composeArtworkArtist(artwork) {
+
+  return new Promise((resolve, reject) => {
+    const artwork_id = artwork.id;
+
+    // handles artwork specific searches
+    api
+      .newRequest()
+      .follow("artists")
+      .withTemplateParameters({ artwork_id: artwork_id })
+      .withRequestOptions({
+        headers: {
+          "X-Xapp-Token": xappToken,
+          Accept: "application/vnd.artsy-v2+json"
+        }
+      })
+      .getResource((error, artworks_artist) => {
+        const artworksArtist = artworks_artist._embedded.artists;
+        if (error) {
+          reject(error);
+        } else {
+          const imageLink = artwork._links.image.href;
+          const largeImage = imageLink.replace("{image_version}", "large");
+          // console.log("🐳🐳🐳")
+          // console.log(artworksArtist);
+          resolve({
+              id: artwork.id,
+              content: "&#9679" + artwork.title,
+              start: artwork.date.match(/\d+/)[0],
+              medium: artwork.medium,
+              thumbnail: largeImage,
+              group: "artwork",
+              type: "point",
+              artist: artworksArtist[0].name
+            });
+        }
+      });
   });
+  return ;
 }
 
 // Flattens arrays of similar artists, artworks, and searched artist
@@ -414,6 +449,7 @@ app.get("/search", (req, res) => {
         if (req.query.format === "json") {
           res.json({ info, similars });
         } else {
+          console.log("similars", similars)
           res.render("timeline", { info, similars });
         }
       });
