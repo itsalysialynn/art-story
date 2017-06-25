@@ -133,6 +133,56 @@ function getArtistsArtwork(results) {
   });
 }
 
+// gets an artworks artist using the artwork id
+function getArtworksArtist(results) {
+
+  return new Promise((resolve, reject) => {
+    const artwork_id = results.id;
+
+    // handles artwork specific searches
+    api
+      .newRequest()
+      .follow("artists")
+      .withTemplateParameters({ artwork_id: artwork_id })
+      .withRequestOptions({
+        headers: {
+          "X-Xapp-Token": xappToken,
+          Accept: "application/vnd.artsy-v2+json"
+        }
+      })
+      .getResource((error, artworks_artist) => {
+        const artworksArtist = artworks_artist._embedded.artists;
+        if (error) {
+          reject(error);
+        } else {
+          resolve(artworksArtist);
+        }
+      });
+  });
+}
+
+function getArtworksArtist2(results) {
+  console.log("hey I'm here woo")
+  const artwork_id = results.id;
+  let artworksArtist
+  api
+    .newRequest()
+    .follow("artists")
+    .withTemplateParameters({ artwork_id: artwork_id })
+    .withRequestOptions({
+      headers: {
+        "X-Xapp-Token": xappToken,
+        Accept: "application/vnd.artsy-v2+json"
+      }
+    })
+    .getResource((error, artworks_artist) => {
+      artworksArtist = artworks_artist._embedded.artists;
+      console.log("After", artworksArtist);
+  });
+  console.log("☹️", artworksArtist);
+  return artworksArtist
+}
+
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
   return new Promise((resolve, reject) => {
@@ -256,9 +306,15 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
+    if (!Array.isArray(artworks)) {
+    artworks = [artworks];
+  }
   return artworks.filter(has_date).map(function(x) {
     const imageLink = x._links.image.href;
     const largeImage = imageLink.replace("{image_version}", "large");
+
+  console.log("trying to call this function", getArtworksArtist2(x))
+
     return {
       id: x.id,
       content: "&#9679" + x.title,
@@ -336,9 +392,10 @@ app.get("/search", (req, res) => {
       } else if (type === "artwork") {
         ps = Promise.all([
           getSimilarArtworks(info).then(map_artworks),
+          getArtworksArtist(info).then(map_artists),
           map_artworks(info)
-        ]).then(([results, results2]) => {
-          return flatten([results, results2]);
+        ]).then(([results, results2, results3]) => {
+          return flatten([results, results2, results3]);
         });
       } else {
         throw new Error("unknown type: ", type);

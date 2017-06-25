@@ -8,6 +8,7 @@
     "dotenv": "^4.0.0",
     "ejs": "^2.5.6",
     "express": "^4.15.3",
+    "fibers": "^2.0.0",
     "jsonfile": "^3.0.0",
     "node-import": "^0.9.2",
     "superagent": "^3.5.2",

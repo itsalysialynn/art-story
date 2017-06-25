@@ -1,21 +1,32 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <script src="/scripts/vis.js"></script>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-    <script src='/scripts/wikipedia.js'></script>
 
-    <link href="/styles/vis.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="/styles/timeline.css">
-    <link rel="stylesheet" href="/styles/animate.css">
-    <link rel="stylesheet" href="/styles/art-movement-timeline.css">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <script src="/scripts/vis.js"></script>
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script src='/scripts/wikipedia.js'></script>
+
+
+  <link href="/styles/vis.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="/styles/timeline.css">
+  <link rel="stylesheet" href="/styles/animate.css">
+  <link rel="stylesheet" href="/styles/art-movement-timeline.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
 </head>
 <body>
 
 <% include partials/_search.ejs %>
 
 <div id="visualization"></div>
+
+<div class="artist hidden">
+  <div id="thumbnail"> </div>
+  <div id="name"></div>
+  <div id="summary"></div>
+  <div id="medium"></div>
+  <div id="wikiLink"></div>
+</div>
 
 <script type="text/javascript">
 
@@ -26,10 +37,9 @@
   for (var g = 0; g < groupNames.length; g++) {
     groups.add({id: g, content: groupNames[g]});
   }
+
   // DOM element where the Timeline will be attached
   var container = document.getElementById('visualization');
-
-  // Create a DataSet (allows two way data-binding)
   var data = <%- JSON.stringify(similars, null, 2) %>;
   var info = <%- JSON.stringify(info)%>;
   var movements = <%- include partials/_art-movements.ejs %>;
@@ -42,24 +52,24 @@
     }, []);
   }
 
-  var full_data = flatten([data, movements])
+  var full_data = flatten([data, movements]);
 
   for (var thing_id in full_data) {
     full_data[thing_id].group = groupNames.indexOf(full_data[thing_id].group);
   }
 
   var all_data = new vis.DataSet (full_data);
-  var start =   +info.birthday || +info.date;
+  var start =   (+info.birthday || +info.date) - 50;
+  var end = +info.end + 50 || +info.date + 50;
+
+  // Configuration for the Timeline
   var options = {
-    maxHeight: '500px',
-    minHeight: '499px',
-    width: '100%',
     verticalScroll: false,
     zoomMin: 31556952000,
     min: new Date(-4000, 0, 1),
     max: new Date(),
     start: new Date(start, 0, 1),
-    end: new Date(2017, 0, 1),
+    end: new Date(end, 0, 1),
     format: {
       minorLabels: function(date, scale, step) {
         var year = date.year();
@@ -78,26 +88,68 @@
 
   // Create a Timeline
   var timeline = new vis.Timeline(container, all_data, groups, options);
+  var selectedId = info.id;
+  var thumbnailUrl = info._links.thumbnail.href;
+  var mediumArtwork = info.medium;
+  var nameTitle = info.name || info.title;
 
-  // timeline.setGroups(groups);
+  if (selectedId !== undefined){
+    document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
+
+    if(mediumArtwork){
+      document.getElementById('medium').innerHTML = "<div>" + mediumArtwork + "</div> "
+    } else {
+      document.getElementById('medium').innerHTML = "<div></div> "
+    }
+
+    var modfiedName = nameTitle.replace(/\s/g, "+");
+
+    if (mediumArtwork){
+      document.getElementById('name').innerHTML = "<div>" + nameTitle + "</div>"
+    } else {
+      document.getElementById('name').innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
+    }
+
+    function getById(datum){
+      return datum.id === selectedId;
+    }
+  }
+
+  var wikiQuery = (info.name || info.title).replace(/ /g, '_');
+ 
+  WIKIPEDIA.getData('http://en.wikipedia.org/wiki/' + wikiQuery, function success(wikiData) {
+ 
+    var artistSummary = wikiData.summary && wikiData.summary.summary
+
+    if (artistSummary){
+      document.getElementById('summary').innerHTML = "<div>" + artistSummary + "</div> "
+      var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery
+      document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
+    } else {
+      document.getElementById('summary').innerHTML = "<div> Could not find summary at this time</div> "
+      document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
+    }
+  });
+
   timeline.on('select', function (properties) {
     var selected = $(properties.event.firstTarget).parents('[data-id]')[0];
     var selectedId = selected.dataset.id;
     var thumbnailUrl = selected.dataset.thumbnail;
     var mediumArtwork = selected.dataset.medium;
-    var nameTitle = selected.dataset.content;
-    
-    if (selectedId !== undefined){
+    var nameTitle = selected.dataset.content.replace(/&#9679/g, '');
+  
+    if(selectedId !== undefined){
       document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
+
       if(mediumArtwork){
         document.getElementById('medium').innerHTML = "<div>" + mediumArtwork + "</div> "
       } else {
         document.getElementById('medium').innerHTML = "<div></div> "
       }
-
-      var modfiedName = nameTitle.replace(/\s/g, "+")
-
-      if (mediumArtwork){
+    
+      var modfiedName = nameTitle.replace(/\s/g, "+");
+      
+      if(mediumArtwork){
         document.getElementById('name').innerHTML = "<div>" + nameTitle + "</div>"
       } else {
         document.getElementById('name').innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
@@ -106,43 +158,36 @@
       function getById(datum){
         return datum.id === selectedId;
       }
-     
+      
       var wikiQuery = $(selected).find('.vis-item-content').text().replace(/ /g, '_');
 
       try {
         WIKIPEDIA.getData('http://en.wikipedia.org/wiki/' + wikiQuery, function success(wikiData) {
-          var artistSummary = wikiData.summary && wikiData.summary.summary
 
+          var artistSummary = wikiData.summary && wikiData.summary.summary
+          
           if (selected.dataset.group === "1"){
             if (artistSummary){
               document.getElementById('summary').innerHTML = "<div>" + artistSummary + "</div> "
               var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery
-              document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "' target='blank'>"+ "More Info" +"</a>"
+              document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
             } else {
               document.getElementById('summary').innerHTML = "<div> Could not find summary at this time</div> "
-              document.getElementById('wikiLink').innerHTML = "<a href='' target='blank'></a>"
+              document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
             }
           } else {
             document.getElementById('summary').innerHTML = "<div> </div> "
-            document.getElementById('wikiLink').innerHTML = "<a href='' target='blank'></a>"
+            document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
           }
         }, 
-        function wikiError(err) {});
+        function wikiError(err) {
+        });
       } 
       catch (err) {
       }
     }
   })
 </script>
-
-<div class="artist hidden">
-  <div id="thumbnail"> </div>
-  <div id="name"></div>
-  <div id="summary"></div>
-  <div id="medium"></div>
-  <div id="wikiLink"></div>
-</div>
-
 
 <% include partials/_art-movement-timeline.ejs %>
 
