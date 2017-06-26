@@ -110,11 +110,26 @@
     var thumbnailUrl = info._links.thumbnail.href;
     var mediumArtwork = info.medium;
     var nameTitle = info.name || info.title
+    var titleToSlug = info.title.replace(/\s/g, "-").toLowerCase()
+    console.log("titleToSlug", titleToSlug)
+    var artistName = info.slug.replace(titleToSlug, "").replace(/-/g, " ");
+
+    function makeTitle(artistName) {
+      var words = artistName.split(' ');
+
+      $.each(words, function(index, word){
+          words[index] = word.charAt(0).toUpperCase() + word.slice(1);
+      });
+
+      return words.join(' ');
+    }
+
     if (selectedId !== undefined){
       console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
       document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
       if(mediumArtwork){
         document.getElementById('medium').innerHTML = "<div>" + mediumArtwork + "</div> "
+        document.getElementById('artist').innerHTML = "<div>" + makeTitle(artistName) + "</div> "
       } else (
          document.getElementById('medium').innerHTML = "<div></div> "
         )

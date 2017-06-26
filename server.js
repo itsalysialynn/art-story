@@ -161,24 +161,7 @@ function getArtworksArtist(results) {
   });
 }
 
-function getArtworksArtist2(results) {
-  const artwork_id = results.id;
-  let artworksArtist
-  api
-    .newRequest()
-    .follow("artists")
-    .withTemplateParameters({ artwork_id: artwork_id })
-    .withRequestOptions({
-      headers: {
-        "X-Xapp-Token": xappToken,
-        Accept: "application/vnd.artsy-v2+json"
-      }
-    })
-    .getResource((error, artworks_artist) => {
-      artworksArtist = artworks_artist._embedded.artists;
-  });
-  return artworksArtist
-}
+
 
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
@@ -239,11 +222,15 @@ function getSimilarArtworks(results) {
 
 // Gets each artist ready for Vis
 function map_artists(artists) {
+
   return (
     Promise.resolve(artists)
       .then(artists => artists.map(normalizeBirthday).filter(has_birthday))
+
       .then(updateArtistsFromWiki)
+
       .then(artists => artists.map(artistForVis))
+
       // .then(logStep("after filtering artists"))
       .catch(err => {
         console.error("map_artists failure");
@@ -362,6 +349,7 @@ function composeArtworkArtist(artwork) {
   return ;
 }
 
+
 // Flattens arrays of similar artists, artworks, and searched artist
 function flatten(arr) {
   return arr.reduce(function(flat, toFlatten) {
@@ -414,11 +402,13 @@ app.get("/search", (req, res) => {
   search(req.query.search)
     // .then(logStep("search"))
     .then(getInfo)
+
     // .then(logStep("getInfo"))
     .then(({ type, info }) => {
       let ps;
       if (type === "artist") {
         let artistsArtwork = getArtistsArtwork(info).then(map_artworks);
+
         let similarArtists = getSimilarArtists(info).then(map_artists);
 
         ps = Promise.all([artistsArtwork, similarArtists, map_artists([info])])
@@ -436,7 +426,8 @@ app.get("/search", (req, res) => {
         throw new Error("unknown type: ", type);
       }
 
-      return ps.then(similars => {
+
+      return ps.then(similars => { console.log("info after similars", info.end)
         similars.sort(function(a, b) {
           if (a.id < b.id) {
             return -1;
@@ -446,10 +437,12 @@ app.get("/search", (req, res) => {
             return 1;
           }
         });
+        console.log("info end of sort", info.end)
         if (req.query.format === "json") {
           res.json({ info, similars });
         } else {
-          console.log("similars", similars)
+
+          console.log("info end of promise chain", info.end)
           res.render("timeline", { info, similars });
         }
       });
