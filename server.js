@@ -123,6 +123,7 @@ function getArtistsArtwork(results) {
         }
       })
       .getResource((error, artists_artworks) => {
+        console.log("artists_artworks", artists_artworks)
         const artistsArtworks = artists_artworks._embedded.artworks;
         if (error) {
           reject(error);
