@@ -31,7 +31,7 @@
 @keyframes bounce {
   from, 20%, 53%, 80%, to {
     animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
   }
 
   40%, 43% {
@@ -45,7 +45,7 @@
   }
 
   90% {
-    transform: translate3d(0,-4px,0);
+    transform: translate3d(0, -4px, 0);
   }
 }
 
@@ -568,7 +568,6 @@
 
 .fadeIn {
   animation-name: fadeIn;
-  
 }
 
 @keyframes fadeInDown {
@@ -840,12 +839,16 @@
   }
 
   40% {
-    transform: perspective(400px) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -190deg);
+    transform: perspective(400px)
+      translate3d(0, 0, 150px)
+      rotate3d(0, 1, 0, -190deg);
     animation-timing-function: ease-out;
   }
 
   50% {
-    transform: perspective(400px) translate3d(0, 0, 150px) rotate3d(0, 1, 0, -170deg);
+    transform: perspective(400px)
+      translate3d(0, 0, 150px)
+      rotate3d(0, 1, 0, -170deg);
     animation-timing-function: ease-in;
   }
 
