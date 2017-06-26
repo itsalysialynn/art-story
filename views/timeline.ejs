@@ -97,7 +97,11 @@
     document.getElementById('medium').innerHTML = "<div></div> "
     )
     var modfiedName = nameTitle.replace(/\s/g, "+")
+    if (mediumArtwork){
+    document.getElementById('name').innerHTML = "<div>" + nameTitle + "</div>"
+    } else {
     document.getElementById('name').innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
+    }
     function getById(datum){
     return datum.id === selectedId;
     }
