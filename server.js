@@ -72,7 +72,6 @@ function getInfo(results) {
     const details_link = results._embedded.results[0]._links.self.href.substring(
       api_path.length + 1
     );
-
     //determines what the search term is (artist, gene, art work etc.)
     let newApi = details_link.split("/")[0];
     newApi = newApi.substring(0, newApi.length - 1);
