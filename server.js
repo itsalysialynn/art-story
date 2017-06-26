@@ -26,7 +26,7 @@ const api = traverson.from(api_path).jsonHal();
 function logStep(label) {
   return function logIt(data) {
     console.log("\n\n*** LOGSTEP: ", label);
-    console.log(JSON.stringify(data, null, 2));
+    console.log(JSON.stringify(data, null, 2));````
     return data;
   };
 }
@@ -132,6 +132,36 @@ function getArtistsArtwork(results) {
   });
 }
 
+// gets an artworks artist using the artwork id
+function getArtworksArtist(results) {
+
+  return new Promise((resolve, reject) => {
+    const artwork_id = results.id;
+
+    // handles artwork specific searches
+    api
+      .newRequest()
+      .follow("artists")
+      .withTemplateParameters({ artwork_id: artwork_id })
+      .withRequestOptions({
+        headers: {
+          "X-Xapp-Token": xappToken,
+          Accept: "application/vnd.artsy-v2+json"
+        }
+      })
+      .getResource((error, artworks_artist) => {
+        const artworksArtist = artworks_artist._embedded.artists;
+        if (error) {
+          reject(error);
+        } else {
+          resolve(artworksArtist);
+        }
+      });
+  });
+}
+
+
+
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
   return new Promise((resolve, reject) => {
@@ -191,11 +221,15 @@ function getSimilarArtworks(results) {
 
 // Gets each artist ready for Vis
 function map_artists(artists) {
+
   return (
     Promise.resolve(artists)
       .then(artists => artists.map(normalizeBirthday).filter(has_birthday))
+
       .then(updateArtistsFromWiki)
+
       .then(artists => artists.map(artistForVis))
+
       // .then(logStep("after filtering artists"))
       .catch(err => {
         console.error("map_artists failure");
@@ -255,20 +289,65 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
-  return artworks.filter(has_date).map(function(x) {
-    const imageLink = x._links.image.href;
-    const largeImage = imageLink.replace("{image_version}", "large");
-    return {
-      id: x.id,
-      content: "&#9679" + x.title,
-      start: x.date.match(/\d+/)[0],
-      medium: x.medium,
-      thumbnail: largeImage,
-      group: "artwork",
-      type: "point"
-    };
-  });
+    if (!Array.isArray(artworks)) {
+    artworks = [artworks];
+  }
+
+  return (
+    // artworks
+    // artworks -> artist
+    // artworks + artist
+    // [a b c]
+    Promise.map(artworks.filter(has_date), artwork => composeArtworkArtist(artwork))
+      .catch(err => {
+        console.error("map_artworks failure");
+        console.error(err);
+        return [];
+      })
+  );
 }
+
+function composeArtworkArtist(artwork) {
+
+  return new Promise((resolve, reject) => {
+    const artwork_id = artwork.id;
+
+    // handles artwork specific searches
+    api
+      .newRequest()
+      .follow("artists")
+      .withTemplateParameters({ artwork_id: artwork_id })
+      .withRequestOptions({
+        headers: {
+          "X-Xapp-Token": xappToken,
+          Accept: "application/vnd.artsy-v2+json"
+        }
+      })
+      .getResource((error, artworks_artist) => {
+        const artworksArtist = artworks_artist._embedded.artists;
+        if (error) {
+          reject(error);
+        } else {
+          const imageLink = artwork._links.image.href;
+          const largeImage = imageLink.replace("{image_version}", "large");
+          // console.log("🐳🐳🐳")
+          // console.log(artworksArtist);
+          resolve({
+              id: artwork.id,
+              content: "&#9679" + artwork.title,
+              start: artwork.date.match(/\d+/)[0],
+              medium: artwork.medium,
+              thumbnail: largeImage,
+              group: "artwork",
+              type: "point",
+              artist: artworksArtist[0].name
+            });
+        }
+      });
+  });
+  return ;
+}
+
 
 // Flattens arrays of similar artists, artworks, and searched artist
 function flatten(arr) {
@@ -322,11 +401,13 @@ app.get("/search", (req, res) => {
   search(req.query.search)
     // .then(logStep("search"))
     .then(getInfo)
+
     // .then(logStep("getInfo"))
     .then(({ type, info }) => {
       let ps;
       if (type === "artist") {
         let artistsArtwork = getArtistsArtwork(info).then(map_artworks);
+
         let similarArtists = getSimilarArtists(info).then(map_artists);
 
         ps = Promise.all([artistsArtwork, similarArtists, map_artists([info])])
@@ -335,15 +416,17 @@ app.get("/search", (req, res) => {
       } else if (type === "artwork") {
         ps = Promise.all([
           getSimilarArtworks(info).then(map_artworks),
+          getArtworksArtist(info).then(map_artists),
           map_artworks(info)
-        ]).then(([results, results2]) => {
-          return flatten([results, results2]);
+        ]).then(([results, results2, results3]) => {
+          return flatten([results, results2, results3]);
         });
       } else {
         throw new Error("unknown type: ", type);
       }
 
-      return ps.then(similars => {
+
+      return ps.then(similars => { console.log("info after similars", info.end)
         similars.sort(function(a, b) {
           if (a.id < b.id) {
             return -1;
@@ -353,9 +436,12 @@ app.get("/search", (req, res) => {
             return 1;
           }
         });
+        console.log("info end of sort", info.end)
         if (req.query.format === "json") {
           res.json({ info, similars });
         } else {
+
+          console.log("info end of promise chain", info.end)
           res.render("timeline", { info, similars });
         }
       });
