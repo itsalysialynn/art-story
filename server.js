@@ -15,8 +15,6 @@ const traverson = require("traverson"),
   JsonHalAdapter = require("traverson-hal"),
   xappToken = process.env.ARTSY_TOLKEN;
 
-// const wikipediajs = require('./public/scripts/wikipedia.js');
-
 const api_path = "https://api.artsy.net/api";
 
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
@@ -27,7 +25,6 @@ function logStep(label) {
   return function logIt(data) {
     console.log("\n\n*** LOGSTEP: ", label);
     console.log(JSON.stringify(data, null, 2));
-    ````;
     return data;
   };
 }
@@ -221,8 +218,8 @@ function map_artists(artists) {
     Promise.resolve(artists)
       .then(artists => artists.map(normalizeBirthday).filter(has_birthday))
       .then(updateArtistsFromWiki)
+      // .then(logStep("before calling artistForVis"))
       .then(artists => artists.map(artistForVis))
-      // .then(logStep("after filtering artists"))
       .catch(err => {
         console.error("map_artists failure");
         console.error(err);
@@ -266,16 +263,26 @@ function updateArtistsFromWiki(artists) {
 
 // Gets artist ready to send to Vis
 function artistForVis(artist) {
-  const imageLink = artist._links.image.href;
-  const largeImage = imageLink.replace("{image_version}", "large");
-  return {
-    id: artist.id,
-    content: artist.name,
-    start: artist.birthday,
-    end: artist.end,
-    thumbnail: largeImage,
-    group: "artist"
-  };
+  if (artist._links.image) {
+    const imageLink = artist._links.image.href;
+    const largeImage = imageLink.replace("{image_version}", "large");
+    return {
+      id: artist.id,
+      content: artist.name,
+      start: artist.birthday,
+      end: artist.end,
+      thumbnail: largeImage,
+      group: "artist"
+    };
+  } else {
+    return {
+      id: artist.id,
+      content: artist.name,
+      start: artist.birthday,
+      end: artist.end,
+      group: "artist"
+    };
+  }
 }
 
 // Gets each artwork ready for Vis
@@ -315,8 +322,6 @@ function composeArtworkArtist(artwork) {
         } else {
           const imageLink = artwork._links.image.href;
           const largeImage = imageLink.replace("{image_version}", "large");
-          // console.log("🐳🐳🐳")
-          // console.log(artworksArtist);
           resolve({
             id: artwork.id,
             content: "&#9679" + artwork.title,
@@ -391,8 +396,11 @@ app.get("/search", (req, res) => {
 
         let similarArtists = getSimilarArtists(info).then(map_artists);
 
-        ps = Promise.all([artistsArtwork, similarArtists, map_artists([info])])
-          .then(flatten);
+        ps = Promise.all([
+          artistsArtwork,
+          similarArtists,
+          map_artists([info])
+        ]).then(flatten);
       } else if (type === "artwork") {
         ps = Promise.all([
           getSimilarArtworks(info).then(map_artworks),
