@@ -157,7 +157,6 @@ function getArtworksArtist(results) {
 }
 
 function getArtworksArtist2(results) {
-  console.log("hey I'm here woo");
   const artwork_id = results.id;
   let artworksArtist;
   api
@@ -174,7 +173,6 @@ function getArtworksArtist2(results) {
       artworksArtist = artworks_artist._embedded.artists;
       console.log("After", artworksArtist);
     });
-  console.log("☹️", artworksArtist);
   return artworksArtist;
 }
 
@@ -269,7 +267,6 @@ function updateArtistsFromWiki(artists) {
     getArtistFromWiki(artist)
       .catch(console.error)
       .then(wikiData => {
-        // console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
         let endDates = wikiData.summary.endDates;
         artist.end = normalizeDeathday(endDates);
         return artist;
