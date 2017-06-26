@@ -25,8 +25,6 @@ const api = traverson.from(api_path).jsonHal();
 // For debugging
 function logStep(label) {
   return function logIt(data) {
-    console.log("\n\n*** LOGSTEP: ", label);
-    console.log(JSON.stringify(data, null, 2));
     return data;
   };
 }
@@ -105,10 +103,10 @@ function getInfo(results) {
 function getArtistsArtwork(results) {
   return new Promise((resolve, reject) => {
     const artist_id = results.id;
-      if (results.birthday === "") {
-        reject("Error, please enter a valid artist or artwork");
-        return;
-      }
+    if (results.birthday === "") {
+      reject("Error, please enter a valid artist or artwork");
+      return;
+    }
 
     // handles artist specific searches
     api
@@ -134,7 +132,6 @@ function getArtistsArtwork(results) {
 
 // gets an artworks artist using the artwork id
 function getArtworksArtist(results) {
-
   return new Promise((resolve, reject) => {
     const artwork_id = results.id;
 
@@ -161,9 +158,9 @@ function getArtworksArtist(results) {
 }
 
 function getArtworksArtist2(results) {
-  console.log("hey I'm here woo")
+  console.log("hey I'm here woo");
   const artwork_id = results.id;
-  let artworksArtist
+  let artworksArtist;
   api
     .newRequest()
     .follow("artists")
@@ -177,9 +174,9 @@ function getArtworksArtist2(results) {
     .getResource((error, artworks_artist) => {
       artworksArtist = artworks_artist._embedded.artists;
       console.log("After", artworksArtist);
-  });
+    });
   console.log("☹️", artworksArtist);
-  return artworksArtist
+  return artworksArtist;
 }
 
 // Accesses similar artists with the artist id
@@ -305,14 +302,14 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
-    if (!Array.isArray(artworks)) {
+  if (!Array.isArray(artworks)) {
     artworks = [artworks];
   }
   return artworks.filter(has_date).map(function(x) {
     const imageLink = x._links.image.href;
     const largeImage = imageLink.replace("{image_version}", "large");
 
-  console.log("trying to call this function", getArtworksArtist2(x))
+    console.log("trying to call this function", getArtworksArtist2(x));
 
     return {
       id: x.id,
