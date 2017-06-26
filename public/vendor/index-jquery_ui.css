@@ -49,7 +49,7 @@
 }
 
 .ui-front {
-  z-index: 100;
+  z-index: 10001;
 }
 
 
@@ -66,9 +66,7 @@
   color: #ffffff;
 }
 
-.ui:hover {
-  color: red;
-}
+
 
 /******************STYLING FOR AUTOCOMPLETE TEXT**********/
 
@@ -135,7 +133,7 @@ input.ui-button.ui-button-icon-only {
 /* Component containers
 ----------------------------------*/
 .ui-widget {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: Helvetica;
   font-size: 1.1em;
 }
 .ui-widget .ui-widget {
@@ -145,7 +143,7 @@ input.ui-button.ui-button-icon-only {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: Helvetica;
   font-size: 1em;
 }
 .ui-widget.ui-widget-content {
@@ -160,8 +158,7 @@ input.ui-button.ui-button-icon-only {
   color: #ffffff;
 }
 .ui-widget-header {
-  /*border: 1px solid #aaaaaa;*/
-  background: #00adef url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
+
   color: #ffffff;
   font-weight: bold;
 }
@@ -195,8 +192,4 @@ a.ui-button:active,
   color: #ffffff;
   text-decoration: none;
 }
-
-/
-
-
 
