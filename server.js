@@ -133,15 +133,46 @@ function getArtistsArtwork(results) {
   });
 }
 
+// function getGenesArtworks(results) {
+
+//   return new Promise((resolve, reject) => {
+//     const gene_id = results.id;
+//     console.log("gene_id", gene_id)
+//     api
+//       .newRequest()
+//       .follow("artworks")
+//       .withTemplateParameters({ gene_id: gene_id })
+//       .withRequestOptions({
+//         headers: {
+//           "X-Xapp-Token": xappToken,
+//           Accept: "application/vnd.artsy-v2+json"
+//         }
+//       })
+//       .getResource((error, genes_artworks) => {
+//         console.log("genes_artworks", genes_artworks)
+//         const genesArtworks = genes_artworks._embedded.artworks;
+//         console.log("genesArtworks", genesArtworks)
+//         if (error) {
+//           reject(error);
+//         } else {
+//           resolve(genesArtworks);
+//         }
+//       });
+//   });
+// }
+
+
 function getGenesArtworks(results) {
 
   return new Promise((resolve, reject) => {
     const gene_id = results.id;
-    console.log("gene_id", gene_id)
-    api
-      .newRequest()
+    console.log("artworks gene_id", gene_id)
+    const cheating_URL_for_gene = `https://api.artsy.net/api/genes/${gene_id}`;   // holy crap this defeats the entire point of using Traverson427
+    traverson
+      .from(cheating_URL_for_gene)
+      .jsonHal()
       .follow("artworks")
-      .withTemplateParameters({ gene_id: gene_id })
+      // .withTemplateParameters({ id: gene_id })
       .withRequestOptions({
         headers: {
           "X-Xapp-Token": xappToken,
@@ -165,13 +196,12 @@ function getGenesArtists(results) {
 
   return new Promise((resolve, reject) => {
     const gene_id = results.id;
-    console.log("gene_id", gene_id)
-
-    // handles artwork specific searches
-    api
-      .newRequest()
+    console.log("artists gene_id", gene_id)
+    const cheating_URL_for_gene = `https://api.artsy.net/api/genes/${gene_id}`;  // holy crap this defeats the entire point of using Traverson
+    traverson
+      .from(cheating_URL_for_gene)
+      .jsonHal()
       .follow("artists")
-      .withTemplateParameters({ gene_id: gene_id})
       .withRequestOptions({
         headers: {
           "X-Xapp-Token": xappToken,
@@ -380,7 +410,8 @@ function composeArtworkArtist(artwork) {
         }
       })
       .getResource((error, artworks_artist) => {
-        const artworksArtist = artworks_artist._embedded.artists;
+        const artworksArtistsNames = artworks_artist._embedded.artists.map(a => a.name);
+        const oneArtistName = artworksArtistsNames[0] || "";
         if (error) {
           reject(error);
         } else {
@@ -394,7 +425,7 @@ function composeArtworkArtist(artwork) {
               start: artwork.date.match(/\d+/)[0],
               medium: artwork.medium,
               thumbnail: largeImage,
-              artist: artworksArtist[0].name,
+              artist: oneArtistName,
               group: "artwork",
               type: "point"
             });
