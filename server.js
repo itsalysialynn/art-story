@@ -25,8 +25,6 @@ const api = traverson.from(api_path).jsonHal();
 // For debugging
 function logStep(label) {
   return function logIt(data) {
-    console.log("\n\n*** LOGSTEP: ", label);
-    console.log(JSON.stringify(data, null, 2));````
     return data;
   };
 }
@@ -74,7 +72,6 @@ function getInfo(results) {
     const details_link = results._embedded.results[0]._links.self.href.substring(
       api_path.length + 1
     );
-
     //determines what the search term is (artist, gene, art work etc.)
     let newApi = details_link.split("/")[0];
     newApi = newApi.substring(0, newApi.length - 1);
@@ -103,13 +100,12 @@ function getInfo(results) {
 
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
-  if (results.birthday === "") {
-    reject("Error, please enter a valid artist or artwork");
-    return;
-  }
-
   return new Promise((resolve, reject) => {
     const artist_id = results.id;
+    if (results.birthday === "") {
+      reject("Error, please enter a valid artist or artwork");
+      return;
+    }
 
     // handles artist specific searches
     api
@@ -136,7 +132,6 @@ function getArtistsArtwork(results) {
 
 // gets an artworks artist using the artwork id
 function getArtworksArtist(results) {
-
   return new Promise((resolve, reject) => {
     const artwork_id = results.id;
 
@@ -163,7 +158,6 @@ function getArtworksArtist(results) {
 }
 
 
-
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
   return new Promise((resolve, reject) => {
@@ -185,7 +179,6 @@ function getSimilarArtists(results) {
         if (error) {
           reject(error);
         } else {
-          // console.log("similarArtists: ", similarArtists);
           resolve(similarArtists);
         }
       });
@@ -214,7 +207,6 @@ function getSimilarArtworks(results) {
           reject(error);
         } else {
           const similarArtworks = similar_artworks._embedded.artworks;
-          // console.log("similarArtworks: ", similarArtworks);
           resolve(similarArtworks);
         }
       });
@@ -259,7 +251,6 @@ function updateArtistsFromWiki(artists) {
     getArtistFromWiki(artist)
       .catch(console.error)
       .then(wikiData => {
-        // console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
         let endDates = wikiData.summary.endDates;
         artist.end = normalizeDeathday(endDates);
         return artist;
@@ -291,15 +282,11 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
-    if (!Array.isArray(artworks)) {
+  if (!Array.isArray(artworks)) {
     artworks = [artworks];
   }
 
   return (
-    // artworks
-    // artworks -> artist
-    // artworks + artist
-    // [a b c]
     Promise.map(artworks.filter(has_date), artwork => composeArtworkArtist(artwork))
       .catch(err => {
         console.error("map_artworks failure");
@@ -332,8 +319,6 @@ function composeArtworkArtist(artwork) {
         } else {
           const imageLink = artwork._links.image.href;
           const largeImage = imageLink.replace("{image_version}", "large");
-          // console.log("🐳🐳🐳")
-          // console.log(artworksArtist);
           resolve({
               id: artwork.id,
               content: "&#9679" + artwork.title,
@@ -428,7 +413,7 @@ app.get("/search", (req, res) => {
       }
 
 
-      return ps.then(similars => { console.log("info after similars", info.end)
+      return ps.then(similars => {
         similars.sort(function(a, b) {
           if (a.id < b.id) {
             return -1;
@@ -438,12 +423,10 @@ app.get("/search", (req, res) => {
             return 1;
           }
         });
-        console.log("info end of sort", info.end)
         if (req.query.format === "json") {
           res.json({ info, similars });
         } else {
 
-          console.log("info end of promise chain", info.end)
           res.render("timeline", { info, similars });
         }
       });
