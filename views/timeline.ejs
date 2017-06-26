@@ -38,7 +38,7 @@
       groups.add({id: g, content: groupNames[g]});
     }
     // DOM element where the Timeline will be attached
-    var container = document.getElementById('visualization');
+    var container = document.getElementById("visualization");
     var data = <%- JSON.stringify(similars, null, 2) %>;
     var info = <%- JSON.stringify(info)%>;
     var movements = <%- include partials/_art-movements.ejs %>;
@@ -73,7 +73,7 @@
           switch (scale) {
             case "year":
             output = Math.abs(date.format("YYYY"));
-            output += (year < 0) ? "BC" : '';
+            output += (year < 0) ? "BC" : "";
           break;
           }
           return output;
@@ -92,91 +92,91 @@
     var artistName = info.slug.replace(titleToSlug, "").replace(/-/g, " ");
 
     function makeTitle(artistName) {
-      var words = artistName.split(' ');
+      var words = artistName.split(" ");
       $.each(words, function(index, word){
         words[index] = word.charAt(0).toUpperCase() + word.slice(1);
       });
-      return words.join(' ');
+      return words.join(" ");
     }
     if(selectedId !== undefined){
-      document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
+      document.getElementById("thumbnail").innerHTML = "<img src='" + thumbnailUrl + "'> ";
 
       if(mediumArtwork){
-        document.getElementById('medium').innerHTML = "<div>" + mediumArtwork + "</div> "
-        document.getElementById('artist').innerHTML = "<div>" + makeTitle(artistName) + "</div> "
+        document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
+        document.getElementById("artist").innerHTML = "<div>" + makeTitle(artistName) + "</div> "
       } else {
-        document.getElementById('medium').innerHTML = "<div></div> "
+        document.getElementById("medium").innerHTML = "<div></div> "
       }
       var modfiedName = nameTitle.replace(/\s/g, "+")
 
       if(mediumArtwork){
-        document.getElementById('name').innerHTML = "<div>" + info.title + "</div>"
+        document.getElementById("name").innerHTML = "<div>" + info.title + "</div>"
       } else {
-        document.getElementById('name').innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
+        document.getElementById("name").innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
       }
 
       function getById(datum){
         return datum.id === selectedId;
       }
     }
-    var wikiQuery = (info.name || info.title).replace(/ /g, '_');
+    var wikiQuery = (info.name || info.title).replace(/ /g, "_");
 
-    WIKIPEDIA.getData('http://en.wikipedia.org/wiki/' + wikiQuery, function success(wikiData) {
+    WIKIPEDIA.getData("http://en.wikipedia.org/wiki/" + wikiQuery, function success(wikiData) {
       var artistSummary = wikiData.summary && wikiData.summary.summary
       if(artistSummary){
-        document.getElementById('summary').innerHTML = "<div>" + artistSummary + "</div> "
+        document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
         var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery
-        document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
+        document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
       } else {
-        document.getElementById('summary').innerHTML = "<div> Could not find summary at this time</div> "
-        document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
+        document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
+        document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
       }
     });
-    timeline.on('select', function (properties) {
-      var selected = $(properties.event.firstTarget).parents('[data-id]')[0];
+    timeline.on("select", function (properties) {
+      var selected = $(properties.event.firstTarget).parents("[data-id]")[0];
       var selectedId = selected.dataset.id;
       var thumbnailUrl = selected.dataset.thumbnail;
       var mediumArtwork = selected.dataset.medium;
       var nameTitle = selected.dataset.content;
 
       if(selectedId !== undefined){
-        document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
+        document.getElementById("thumbnail").innerHTML = "<img src='" + thumbnailUrl + "'> ";
 
         if(mediumArtwork){
-          document.getElementById('medium').innerHTML = "<div>" + mediumArtwork + "</div> "
+          document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
         } else {
-          document.getElementById('medium').innerHTML = "<div></div> "
+          document.getElementById("medium").innerHTML = "<div></div> "
         }
 
         var modfiedName = nameTitle.replace(/\s/g, "+");
 
         if(mediumArtwork){
-          document.getElementById('name').innerHTML = "<div>" + nameTitle + "</div>"
+          document.getElementById("name").innerHTML = "<div>" + nameTitle + "</div>"
         } else {
-          document.getElementById('name').innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
+          document.getElementById("name").innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
         }
 
         function getById(datum){
           return datum.id === selectedId;
         }
 
-        var wikiQuery = $(selected).find('.vis-item-content').text().replace(/ /g, '_');
+        var wikiQuery = $(selected).find(".vis-item-content").text().replace(/ /g, "_");
 
         try {
-          WIKIPEDIA.getData('http://en.wikipedia.org/wiki/' + wikiQuery, function success(wikiData) {
+          WIKIPEDIA.getData("http://en.wikipedia.org/wiki/" + wikiQuery, function success(wikiData) {
             var artistSummary = wikiData.summary && wikiData.summary.summary;
             if(selected.dataset.group === "1"){
               if(artistSummary){
-                document.getElementById('summary').innerHTML = "<div>" + artistSummary + "</div> "
+                document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
                 var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery;
-                document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "' target='_blank'>"+ "More Info" +"</a>"
+                document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "' target='_blank'>"+ "More Info" +"</a>"
               } else {
-                document.getElementById('summary').innerHTML = "<div> Could not find summary at this time</div> "
-                document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
+                document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
+                document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
               }
             } else {
-                document.getElementById('summary').innerHTML = "<div> </div> "
-                document.getElementById('wikiLink').innerHTML = "<a href=''></a>"
+                document.getElementById("summary").innerHTML = "<div> </div> "
+                document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
             }
           },
           function wikiError(err) {
