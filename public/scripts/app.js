@@ -65,7 +65,6 @@ $(document).ready(function() {
     },
     select: function(event, ui) {
       $("#autocomplete").val(ui.item.label);
-      $("#value").val(ui.item.value);
       return false;
     }
   });

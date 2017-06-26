@@ -103,13 +103,12 @@ function getInfo(results) {
 
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
-  if (results.birthday === "") {
-    reject("Error, please enter a valid artist or artwork");
-    return;
-  }
-
   return new Promise((resolve, reject) => {
     const artist_id = results.id;
+      if (results.birthday === "") {
+        reject("Error, please enter a valid artist or artwork");
+        return;
+      }
 
     // handles artist specific searches
     api
