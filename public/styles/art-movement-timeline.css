@@ -94,7 +94,7 @@ div.horizontal-accordion-item-details-content {
   padding-top: .4em;
 }
 
-div.horizontal-accordion-item-heading:hover {
+div.horizontal-accordion-item-heading a:hover {
   background: #e02f1c;
   transition: .3s all ease-in-out;
 }
