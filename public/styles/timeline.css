@@ -12,6 +12,7 @@ div#name {
 div#name a {
   text-decoration: none;
   color: black;
+  clear: both;
 }
 
 div#name a:hover {

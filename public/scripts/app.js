@@ -55,8 +55,7 @@ $(document).ready(function() {
               })
               .map(function(item) {
                 return {
-                  label: item.display,
-                  value: item.id
+                  label: item.display
                 };
               })
           );
@@ -68,6 +67,5 @@ $(document).ready(function() {
       return false;
     }
   });
-
   $("#value").keypress(function(e) {});
 });
