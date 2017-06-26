@@ -110,7 +110,7 @@
     var thumbnailUrl = info._links.thumbnail.href;
     var mediumArtwork = info.medium;
     var nameTitle = info.name || info.title
-    var titleToSlug = info.title.replace(/\s/g, "-").toLowerCase()
+    var titleToSlug = nameTitle.replace(/\s/g, "-").toLowerCase()
     console.log("titleToSlug", titleToSlug)
     var artistName = info.slug.replace(titleToSlug, "").replace(/-/g, " ");
 
