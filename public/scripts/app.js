@@ -51,7 +51,7 @@ $(document).ready(function() {
           response(
             data
               .filter(function(item) {
-                return item.label === "Artist" || item.label === "Artwork";
+                return item.label === "Artist" || item.label === "Artwork" || item.label === "Gene";
               })
               .map(function(item) {
                 return {

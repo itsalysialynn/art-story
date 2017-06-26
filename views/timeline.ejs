@@ -68,10 +68,12 @@
     var all_data = new vis.DataSet (full_data);
     console.log("yitems", all_data);
     // console.log("full data", full_data)
-    var start =   (+info.birthday || +info.date) - 50 ;
-    console.log("start", start)
+     console.log("this is a date?", all_data._data)
+    var start =   (+info.birthday || +info.date || +all_data[7].start) - 50 ;
 
-    var end = +info.end + 50 || +info.date + 50
+
+
+    var end = (+info.end  || +info.date || +all_data[7].start)+ 50
     console.log('end', end)
     // Configuration for the Timeline
     var options = {
