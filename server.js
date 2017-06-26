@@ -26,7 +26,8 @@ const api = traverson.from(api_path).jsonHal();
 function logStep(label) {
   return function logIt(data) {
     console.log("\n\n*** LOGSTEP: ", label);
-    console.log(JSON.stringify(data, null, 2));````
+    console.log(JSON.stringify(data, null, 2));
+    ````;
     return data;
   };
 }
@@ -103,7 +104,6 @@ function getInfo(results) {
 
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
-
   return new Promise((resolve, reject) => {
     if (results.birthday === "") {
       reject("Error, please enter a valid artist or artwork");
@@ -135,7 +135,6 @@ function getArtistsArtwork(results) {
 
 // gets an artworks artist using the artwork id
 function getArtworksArtist(results) {
-
   return new Promise((resolve, reject) => {
     const artwork_id = results.id;
 
@@ -161,8 +160,6 @@ function getArtworksArtist(results) {
   });
 }
 
-
-
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
   return new Promise((resolve, reject) => {
@@ -184,7 +181,6 @@ function getSimilarArtists(results) {
         if (error) {
           reject(error);
         } else {
-          // console.log("similarArtists: ", similarArtists);
           resolve(similarArtists);
         }
       });
@@ -213,7 +209,6 @@ function getSimilarArtworks(results) {
           reject(error);
         } else {
           const similarArtworks = similar_artworks._embedded.artworks;
-          // console.log("similarArtworks: ", similarArtworks);
           resolve(similarArtworks);
         }
       });
@@ -222,15 +217,11 @@ function getSimilarArtworks(results) {
 
 // Gets each artist ready for Vis
 function map_artists(artists) {
-
   return (
     Promise.resolve(artists)
       .then(artists => artists.map(normalizeBirthday).filter(has_birthday))
-
       .then(updateArtistsFromWiki)
-
       .then(artists => artists.map(artistForVis))
-
       // .then(logStep("after filtering artists"))
       .catch(err => {
         console.error("map_artists failure");
@@ -258,7 +249,6 @@ function updateArtistsFromWiki(artists) {
     getArtistFromWiki(artist)
       .catch(console.error)
       .then(wikiData => {
-        // console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
         let endDates = wikiData.summary.endDates;
         artist.end = normalizeDeathday(endDates);
         return artist;
@@ -290,26 +280,20 @@ function artistForVis(artist) {
 
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
-    if (!Array.isArray(artworks)) {
+  if (!Array.isArray(artworks)) {
     artworks = [artworks];
   }
 
-  return (
-    // artworks
-    // artworks -> artist
-    // artworks + artist
-    // [a b c]
-    Promise.map(artworks.filter(has_date), artwork => composeArtworkArtist(artwork))
-      .catch(err => {
-        console.error("map_artworks failure");
-        console.error(err);
-        return [];
-      })
-  );
+  return Promise.map(artworks.filter(has_date), artwork =>
+    composeArtworkArtist(artwork)
+  ).catch(err => {
+    console.error("map_artworks failure");
+    console.error(err);
+    return [];
+  });
 }
 
 function composeArtworkArtist(artwork) {
-
   return new Promise((resolve, reject) => {
     const artwork_id = artwork.id;
 
@@ -334,21 +318,20 @@ function composeArtworkArtist(artwork) {
           // console.log("🐳🐳🐳")
           // console.log(artworksArtist);
           resolve({
-              id: artwork.id,
-              content: "&#9679" + artwork.title,
-              start: artwork.date.match(/\d+/)[0],
-              medium: artwork.medium,
-              thumbnail: largeImage,
-              group: "artwork",
-              type: "point",
-              artist: artworksArtist[0].name
-            });
+            id: artwork.id,
+            content: "&#9679" + artwork.title,
+            start: artwork.date.match(/\d+/)[0],
+            medium: artwork.medium,
+            thumbnail: largeImage,
+            group: "artwork",
+            type: "point",
+            artist: artworksArtist[0].name
+          });
         }
       });
   });
-  return ;
+  return;
 }
-
 
 // Flattens arrays of similar artists, artworks, and searched artist
 function flatten(arr) {
@@ -372,7 +355,7 @@ function hasDeathDay(artist) {
 // Normalizes birthday so it is only a year
 function normalizeBirthday(artist) {
   if (artist.birthday) {
-    var m = artist.birthday.match(/\d{3,4}/);
+    let m = artist.birthday.match(/\d{3,4}/);
     if (m) {
       artist.birthday = m[0];
     } else {
@@ -400,10 +383,7 @@ function modifyNameForWiki(artist) {
 // get request to the api using the search bar (1st request)
 app.get("/search", (req, res) => {
   search(req.query.search)
-    // .then(logStep("search"))
     .then(getInfo)
-
-    // .then(logStep("getInfo"))
     .then(({ type, info }) => {
       let ps;
       if (type === "artist") {
@@ -412,7 +392,6 @@ app.get("/search", (req, res) => {
         let similarArtists = getSimilarArtists(info).then(map_artists);
 
         ps = Promise.all([artistsArtwork, similarArtists, map_artists([info])])
-          // .then(logStep("process artist"))
           .then(flatten);
       } else if (type === "artwork") {
         ps = Promise.all([
@@ -426,8 +405,7 @@ app.get("/search", (req, res) => {
         throw new Error("unknown type: ", type);
       }
 
-
-      return ps.then(similars => { console.log("info after similars", info.end)
+      return ps.then(similars => {
         similars.sort(function(a, b) {
           if (a.id < b.id) {
             return -1;
@@ -437,12 +415,9 @@ app.get("/search", (req, res) => {
             return 1;
           }
         });
-        console.log("info end of sort", info.end)
         if (req.query.format === "json") {
           res.json({ info, similars });
         } else {
-
-          console.log("info end of promise chain", info.end)
           res.render("timeline", { info, similars });
         }
       });

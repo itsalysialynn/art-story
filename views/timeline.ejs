@@ -156,7 +156,7 @@
               console.log("artistSummary", artistSummary)
               // if (selected.dataset.group === "1"){
                 if (artistSummary){
-                  console.log("what is happening!")
+                  // console.log("what is happening!")
                   document.getElementById('summary').innerHTML = "<div>" + artistSummary + "</div> "
                   var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery
                   document.getElementById('wikiLink').innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
@@ -183,15 +183,15 @@
     // timeline.setGroups(groups);
     timeline.on('select', function (properties) {
       var selected = $(properties.event.firstTarget).parents('[data-id]')[0];
-      console.log('item selected:', selected.dataset.id);
+      // console.log('item selected:', selected.dataset.id);
     var selectedId = selected.dataset.id;
     var thumbnailUrl = selected.dataset.thumbnail;
     var mediumArtwork = selected.dataset.medium;
     var nameTitle = selected.dataset.content.replace(/&#9679/g, '');
     var artworkArtist = selected.dataset.artist
-    console.log("nametitle", nameTitle)
+    // console.log("nametitle", nameTitle)
     if (selectedId !== undefined){
-      console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
+      // console.log("thumbnailUrl", thumbnailUrl, "medium", mediumArtwork)
       document.getElementById('thumbnail').innerHTML = "<img src='" + thumbnailUrl + "'> ";
       if(mediumArtwork){
         document.getElementById('medium').innerHTML = "<div>" + mediumArtwork + "</div> "
@@ -210,7 +210,7 @@
       function getById(datum){
         return datum.id === selectedId;
       }
-      console.log("find", data.filter(getById))
+      // console.log("find", data.filter(getById))
       // console.log("find", data.filter(function(datum){return datum.id === selectedId;}))
       // console.log("find", data.filter(datum => datum.id === selectedId));
       let wikiQuery = $(selected).find('.vis-item-content').text().replace(/ /g, '_');
