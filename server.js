@@ -15,8 +15,6 @@ const traverson = require("traverson"),
   JsonHalAdapter = require("traverson-hal"),
   xappToken = process.env.ARTSY_TOLKEN;
 
-// const wikipediajs = require('./public/scripts/wikipedia.js');
-
 const api_path = "https://api.artsy.net/api";
 
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
@@ -157,7 +155,6 @@ function getArtworksArtist(results) {
 }
 
 function getArtworksArtist2(results) {
-  console.log("hey I'm here woo");
   const artwork_id = results.id;
   let artworksArtist;
   api
@@ -172,9 +169,7 @@ function getArtworksArtist2(results) {
     })
     .getResource((error, artworks_artist) => {
       artworksArtist = artworks_artist._embedded.artists;
-      console.log("After", artworksArtist);
     });
-  console.log("☹️", artworksArtist);
   return artworksArtist;
 }
 
@@ -199,7 +194,6 @@ function getSimilarArtists(results) {
         if (error) {
           reject(error);
         } else {
-          // console.log("similarArtists: ", similarArtists);
           resolve(similarArtists);
         }
       });
@@ -228,7 +222,6 @@ function getSimilarArtworks(results) {
           reject(error);
         } else {
           const similarArtworks = similar_artworks._embedded.artworks;
-          // console.log("similarArtworks: ", similarArtworks);
           resolve(similarArtworks);
         }
       });
@@ -244,8 +237,6 @@ function map_artists(artists) {
       .then(artists => artists.map(artistForVis))
       // .then(logStep("after filtering artists"))
       .catch(err => {
-        console.error("map_artists failure");
-        console.error(err);
         return [];
       })
   );
@@ -269,7 +260,6 @@ function updateArtistsFromWiki(artists) {
     getArtistFromWiki(artist)
       .catch(console.error)
       .then(wikiData => {
-        // console.log("ARTIST AND WIKIDATA *************** ", { artist, wikiData });
         let endDates = wikiData.summary.endDates;
         artist.end = normalizeDeathday(endDates);
         return artist;
@@ -308,8 +298,6 @@ function map_artworks(artworks) {
     const imageLink = x._links.image.href;
     const largeImage = imageLink.replace("{image_version}", "large");
 
-    console.log("trying to call this function", getArtworksArtist2(x));
-
     return {
       id: x.id,
       content: "&#9679" + x.title,
@@ -344,7 +332,7 @@ function hasDeathDay(artist) {
 // Normalizes birthday so it is only a year
 function normalizeBirthday(artist) {
   if (artist.birthday) {
-    var m = artist.birthday.match(/\d{3,4}/);
+    const m = artist.birthday.match(/\d{3,4}/);
     if (m) {
       artist.birthday = m[0];
     } else {
@@ -414,8 +402,6 @@ app.get("/search", (req, res) => {
       });
     })
     .catch(err => {
-      console.log("This is an error");
-      console.log(err);
       res.send(
         "Error, please enter a valid artist or artwork. Return to <a href='/'>Search.</a>"
       );
