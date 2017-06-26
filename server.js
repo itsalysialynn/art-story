@@ -15,8 +15,6 @@ const traverson = require("traverson"),
   JsonHalAdapter = require("traverson-hal"),
   xappToken = process.env.ARTSY_TOLKEN;
 
-// const wikipediajs = require('./public/scripts/wikipedia.js');
-
 const api_path = "https://api.artsy.net/api";
 
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
@@ -25,6 +23,8 @@ const api = traverson.from(api_path).jsonHal();
 // For debugging
 function logStep(label) {
   return function logIt(data) {
+    console.log("\n\n*** LOGSTEP: ", label);
+    console.log(JSON.stringify(data, null, 2));
     return data;
   };
 }
