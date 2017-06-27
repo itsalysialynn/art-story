@@ -51,14 +51,14 @@
       }, []);
     }
 
-    var full_data = flatten([data, movements])
+    var full_data = flatten([data, movements]);
     for(var thing_id in full_data) {
       full_data[thing_id].group = groupNames.indexOf(full_data[thing_id].group);
     }
     
     var all_data = new vis.DataSet (full_data);
-    var start =   (+info.birthday || +info.date) - 50 ;
-    var end = +info.end + 50 || +info.date + 50
+    var start =   (+info.birthday || +info.date) - 50;
+    var end = +info.end + 50 || +info.date + 50;
     var options = {
       verticalScroll: false,
       zoomMin: 31556952000,
@@ -87,8 +87,8 @@
     var selectedId = info.id;
     var thumbnailUrl = info._links.thumbnail.href;
     var mediumArtwork = info.medium;
-    var nameTitle = info.name || info.title
-    var titleToSlug = nameTitle.replace(/\s/g, "-").toLowerCase()
+    var nameTitle = info.name || info.title;
+    var titleToSlug = nameTitle.replace(/\s/g, "-").toLowerCase();
     var artistName = info.slug.replace(titleToSlug, "").replace(/-/g, " ");
 
     function makeTitle(artistName) {
@@ -122,10 +122,10 @@
     var wikiQuery = (info.name || info.title).replace(/ /g, "_");
 
     WIKIPEDIA.getData("http://en.wikipedia.org/wiki/" + wikiQuery, function success(wikiData) {
-      var artistSummary = wikiData.summary && wikiData.summary.summary
+      var artistSummary = wikiData.summary && wikiData.summary.summary;
       if(artistSummary){
         document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
-        var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery
+        var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery;
         document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
       } else {
         document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
@@ -194,8 +194,4 @@
   <script src="/scripts/timeline-searchbar.js"></script>
 
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> f98f3b25fdd1185a857acb877601838c3256dd8c
