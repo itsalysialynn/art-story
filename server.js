@@ -89,7 +89,11 @@ function getSimilarArtists(results) {
   return artsyAPI("artists", {
     similar_to_artist_id: artist_id
   }).then(similar_artists => {
-    return similar_artists._embedded.artists;
+    if (similar_artists._embedded.artists.length > 6) {
+      return similar_artists._embedded.artists.slice(0, 5);
+    } else {
+      return similar_artists._embedded.artists;
+    }
   });
 }
 // Accesses similar artworks with the artwork id
