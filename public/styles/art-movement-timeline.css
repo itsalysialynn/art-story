@@ -135,6 +135,7 @@ div.horizontal-accordion-item-heading.contemporary {
 
 .active div.horizontal-accordion-item-heading.ancient-art {
   border-right: 2px #ee8012 solid;
+  border-left: 2px #ee8012 solid;
   background: #ee8012;
 }
 
