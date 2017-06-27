@@ -80,11 +80,11 @@ div#name a:hover {
 
 div#artist {
   font-family: Helvetica, sans-serif;
-  font-size: 95%;
-  margin-top: 1.7em;
   line-height: 1.4;
   font-weight: bold;
   padding-bottom: .4em;
+  font-size: 138%;
+  margin-top: 0.7em;
 }
 
 div#artist a:hover {
