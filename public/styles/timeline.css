@@ -1,12 +1,16 @@
 #visualization {
   font-family: Helvetica, sans-serif;
+  padding-bottom: 2em;
+  border-bottom: 2px solid black;
+  margin-top: 2em;
 }
 
 div#name {
   font-family: Helvetica, sans-serif;
   font-weight: bolder;
-  font-size: 450%;
+  font-size: 500%;
   line-height: .8em;
+  white-space: nowrap;
 }
 
 div#name a {
@@ -24,7 +28,7 @@ div#thumbnail {
   margin-right: 2em;
 }
 div#thumbnail img {
-  height: 22em;
+  height: 16em;
 }
 
 div#summary {
@@ -32,12 +36,12 @@ div#summary {
   font-size: 95%;
   margin-top: 1.7em;
   line-height: 1.4;
-  text-align: justify;
 }
 
 div#wikiLink {
   font-family: Helvetica, sans-serif;
   font-size: 90%;
+  padding-top: .5em;
 }
 
 div#wikiLink:link {
@@ -52,9 +56,9 @@ div#medium {
 
 .artist {
   padding-bottom: 3em;
-  padding-left: 6em;
-  padding-right: 6em;
   overflow: auto;
+  padding-top: 3em;
+  border-bottom: 2px solid;
 }
 
 .vis-item-content {
@@ -64,4 +68,27 @@ div#medium {
 div#name a:hover {
   color: #e02f1c;
   cursor: pointer;
+}
+
+.vis-timeline {
+  max-width: 100%;
+  margin: 0;
+}
+
+div#artist {
+  font-family: Helvetica, sans-serif;
+  font-size: 95%;
+  margin-top: 1.7em;
+  line-height: 1.4;
+}
+
+div#artist a:hover {
+  text-decoration: none;
+  color: #e02f1c;
+  cursor: pointer;
+}
+
+header.crops-header {
+  margin-left: -3.3em;
+  margin-right: -3.3em;
 }
