@@ -1,0 +1,20 @@
+<section class="error-wrap">
+  <main class="main-wrap">
+      <div class="search-wrap">
+        <button id="btn-search" class="btn btn--search"><svg class="icon icon--search"><use xlink:href="#icon-search"></use></svg></button>
+      </div>
+  </main>
+  <div class="search">
+    <button id="btn-search-close" class="btn btn--search-close" aria-label="Close search form"><svg class="icon icon--cross"><use xlink:href="#icon-cross"></use></svg></button>
+    <form class="search__form" action="/search" method="GET">
+      <input class="search__input" type="search" name="search" id="autocomplete" placeholder="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <span class="search__info">Hit enter to search</span>
+    </form>
+    <div class="search__related">
+      <span class="search__suggestion">
+        <h1>That artist or artwork is not available. Please search for a different artist or artwork.<br> Search results are restricted to the public domain.</h1>
+      </span>
+    </div>
+  </div>
+</section>
+

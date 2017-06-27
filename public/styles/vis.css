@@ -1307,6 +1307,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-foreground .vis-group:last-child {
   border-bottom: none;
+  cursor: ew-resize;
 }
 
 .vis-nesting-group {
@@ -1581,14 +1582,15 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-time-axis .vis-text {
   font-family: Helvetica, sans-serif;
-  font-size: xx-small;
-  color: #4d4d4d;
+  font-size: medium;
+  color: black;
   letter-spacing: 5px;
   position: absolute;
   padding: 0.5%;
   overflow: hidden;
   box-sizing: border-box;
   white-space: nowrap;
+  font-weight: bold;
 }
 
 .vis-time-axis .vis-text.vis-measure {

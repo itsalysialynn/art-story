@@ -1,9 +1,3 @@
-/*! jQuery UI - v1.12.0 - 2016-07-08
-* http://jqueryui.com
-* Includes: core.css, accordion.css, autocomplete.css, menu.css, button.css, controlgroup.css, checkboxradio.css, datepicker.css, dialog.css, draggable.css, resizable.css, progressbar.css, selectable.css, selectmenu.css, slider.css, sortable.css, spinner.css, tabs.css, tooltip.css, theme.css
-* To view and modify this theme, visit http://jqueryui.com/themeroller/?ffDefault=Verdana%2CArial%2Csans-serif&fwDefault=normal&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=cccccc&bgTextureHeader=highlight_soft&bgImgOpacityHeader=75&borderColorHeader=aaaaaa&fcHeader=222222&iconColorHeader=222222&bgColorContent=ffffff&bgTextureContent=flat&bgImgOpacityContent=75&borderColorContent=aaaaaa&fcContent=222222&iconColorContent=222222&bgColorDefault=e6e6e6&bgTextureDefault=glass&bgImgOpacityDefault=75&borderColorDefault=d3d3d3&fcDefault=555555&iconColorDefault=888888&bgColorHover=dadada&bgTextureHover=glass&bgImgOpacityHover=75&borderColorHover=999999&fcHover=212121&iconColorHover=454545&bgColorActive=ffffff&bgTextureActive=glass&bgImgOpacityActive=65&borderColorActive=aaaaaa&fcActive=212121&iconColorActive=454545&bgColorHighlight=fbf9ee&bgTextureHighlight=glass&bgImgOpacityHighlight=55&borderColorHighlight=fcefa1&fcHighlight=363636&iconColorHighlight=2e83ff&bgColorError=fef1ec&bgTextureError=glass&bgImgOpacityError=95&borderColorError=cd0a0a&fcError=cd0a0a&iconColorError=cd0a0a&bgColorOverlay=aaaaaa&bgTextureOverlay=flat&bgImgOpacityOverlay=0&opacityOverlay=30&bgColorShadow=aaaaaa&bgTextureShadow=flat&bgImgOpacityShadow=0&opacityShadow=30&thicknessShadow=8px&offsetTopShadow=-8px&offsetLeftShadow=-8px&cornerRadiusShadow=8px
-* Copyright jQuery Foundation and other contributors; Licensed MIT */
-
 /* Layout helpers
 ----------------------------------*/
 .ui-helper-hidden {
@@ -49,9 +43,8 @@
 }
 
 .ui-front {
-  z-index: 10001;
+  z-index: 10000;
 }
-
 
 /******************STYLING FOR AUTOCOMPLETE TEXT************/
 .ui-menu-item {
@@ -135,7 +128,7 @@ input.ui-button.ui-button-icon-only {
 /* Component containers
 ----------------------------------*/
 .ui-widget {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: Helvetica;
   font-size: 1.1em;
 }
 .ui-widget .ui-widget {
@@ -145,28 +138,27 @@ input.ui-button.ui-button-icon-only {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: Helvetica;
   font-size: 1em;
 }
 .ui-widget.ui-widget-content {
   padding-bottom: 100%;
+
 }
 .ui-widget-content {
-  background-color: #00adef;
-  color: #ffffff;
+  background-color: #db392c;
+  color: #00adef;
 }
 .ui-widget-content a {
-  background-color: #00adef;
-  color: #ffffff;
+  background-color: #db392c;
+  color: #00adef;
 }
 .ui-widget-header {
-  /*border: 1px solid #aaaaaa;*/
-  background: #00adef url("images/ui-bg_highlight-soft_75_cccccc_1x100.png") 50% 50% repeat-x;
-  color: #ffffff;
+  color: #00adef;
   font-weight: bold;
 }
 .ui-widget-header a {
-  color: #ffffff;
+  color: #00adef;
 }
 
 /* Interaction states
@@ -179,24 +171,14 @@ input.ui-button.ui-button-icon-only {
 a.ui-button:active,
 .ui-button:active,
 .ui-button.ui-state-active:hover {
-  background-color: #00adef;
-  color: #db392c;
+  background-color: #db392c;
+  color: #00adef;
 }
-.ui-icon-background,
-.ui-state-active .ui-icon-background {
-/*  border: #aaaaaa;*/
-  background-color: #00adef;
-  color: #db392c;
-}
+
 .ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited {
-  background-color: #00adef;
-  color: #ffffff;
+  background-color: #db392c;
+  color: #00adef;
   text-decoration: none;
 }
-
-/
-
-
-

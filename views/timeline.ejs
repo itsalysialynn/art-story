@@ -15,10 +15,9 @@
   <script src="/scripts/vis.js"></script>
   <script src="/scripts/wikipedia.js"></script>
 </head>
-<body></body>
 
-<%- include partials/_search-bar.ejs %>
-
+<body>
+  <%- include partials/_search-bar.ejs %>
   <div class="artist">
     <div id="thumbnail"> </div>
     <div id="name"></div>
@@ -130,38 +129,49 @@
       var mediumArtwork = selected.dataset.medium;
       var nameTitle = selected.dataset.content.replace(/&#9679/g, "");
       var artist = selected.dataset.artist
+      console.log("artist", artist)
       if(selectedId !== undefined){
         document.getElementById("thumbnail").innerHTML = "<img src='" + thumbnailUrl + "'> ";
         if(mediumArtwork){
           document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
           document.getElementById("artist").innerHTML = "<div>" + artist + "</div> "
+
+          document.getElementById("wikiLink").innerHTML = "<div></div> "
         } else {
           document.getElementById("medium").innerHTML = "<div></div> "
           document.getElementById("artist").innerHTML = "<div></div> "
+
         }
         var modfiedName = nameTitle.replace(/\s/g, "+");
         if(mediumArtwork){
           document.getElementById("name").innerHTML = "<div>" + nameTitle + "</div>"
+          document.getElementById("summary").innerHTML = "<div></div> "
+          document.getElementById("artist").innerHTML = "<div>" + artist + "</div> "
         } else {
           document.getElementById("name").innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
         }
         function getById(datum){
           return datum.id === selectedId;
         }
-        var wikiQuery = $(selected).find(".vis-item-content").text().replace(/ /g, "_");
-
+        if(selected.dataset.group !== "0"){
+          var wikiQuery = $(selected).find(".vis-item-content").text().replace(/ /g, "_")
+        }
         console.log("wikiQuery", wikiQuery)
         try {
           WIKIPEDIA.getData("http://en.wikipedia.org/wiki/" + wikiQuery, function success(wikiData) {
             console.log("wikidata", wikiData)
             var artistSummary = wikiData.summary && wikiData.summary.summary;
-            var wikiImage = wikiData.summary.image
+
             if(selected.dataset.group !== "0"){
               if(artistSummary){
+                var wikiImage = wikiData.summary.image
                 document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
                 var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery;
                 document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "' target='_blank'>"+ "More Info" +"</a>"
-                document.getElementById("thumbnail").innerHTML = "<img src='" + wikiImage + "'> ";
+                if (selected.dataset.group === "2"){
+                  document.getElementById("thumbnail").innerHTML = "<img src='" + wikiImage + "'> ";
+                }
+
               } else {
                 document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
                 document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
@@ -177,6 +187,7 @@
         catch (err) {
         }
       }
+
     })
   </script>
   <% include partials/_art-movement-timeline.ejs %>
