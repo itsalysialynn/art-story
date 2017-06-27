@@ -68,7 +68,7 @@ function getInfo(results) {
 function getArtistsArtwork(results) {
   const artist_id = results.id;
   if (results.birthday === "") {
-    return Promise.reject("Error, please enter a valid artist or artwork");
+    return Promise.res.redirect('/error');
   }
   // handles artist specific searches
   return artsyAPI("artworks", { artist_id }).then(artists_artworks => {
@@ -281,9 +281,7 @@ app.get("/search", (req, res) => {
       });
     })
     .catch(err => {
-      res.send(
-        "Error, please enter a valid artist or artwork. Return to <a href='/'>Search.</a>"
-      );
+      res.redirect('/error');
     });
 });
 app.set("view engine", "ejs");
@@ -300,6 +298,11 @@ app.get("/test/:query", function(req, res) {
 app.get("/", function(req, res) {
   res.render("index");
 });
+
+app.get("/error", function(req, res){
+  res.render("error");
+});
+
 app.listen(PORT, () => {
   console.log("Listening on port no." + PORT);
 });
