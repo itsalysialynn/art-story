@@ -61,7 +61,7 @@ p.art-movement-description {
   margin: 0;
   padding-left: 1em;
   padding-right: .25em;
-  margin-top: -2em;
+  margin-top: -2.3em;
 }
 
 img.art-movement-image {
@@ -74,7 +74,7 @@ img.art-movement-image {
   display: flex;
   padding-right: .5em;
   padding-left: .5em;
-  padding-top: 1em;
+  padding-top: 1.9em;
 }
 
 div.horizontal-accordion-item-details-content {
