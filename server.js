@@ -32,19 +32,20 @@ function logStep(label) {
 // Promise.map polyfill
 Promise.map = (arr, callback) => Promise.all(arr.map(callback));
 
-// Function for initial search
-function search(searchQuery) {
+
+
+function artsyAPI(endpoint, params){
   return new Promise((resolve, reject) => {
     api
       .newRequest()
-      .follow("search")
+      .follow(endpoint)
       .withRequestOptions({
         headers: {
           "X-Xapp-Token": xappToken,
           Accept: "application/vnd.artsy-v2+json"
         }
       })
-      .withTemplateParameters({ q: searchQuery })
+      .withTemplateParameters(params)
       .getResource((error, results) => {
         if (error) {
           reject(error);
@@ -54,163 +55,69 @@ function search(searchQuery) {
       });
   });
 }
+// Function for initial search
+function search(searchQuery) {
+  return artsyAPI("search", { q: searchQuery })
+}
 
 // Function to get info about search query
 function getInfo(results) {
-  return new Promise((resolve, reject) => {
-    if (
-      !results ||
-      !results._embedded ||
-      !results._embedded.results ||
-      !results._embedded.results[0]._links ||
-      !results._embedded.results[0]._links.self
-    ) {
-      reject("Error, please enter a valid artist or artwork");
-      return;
-    }
 
-    const details_link = results._embedded.results[0]._links.self.href.substring(
-      api_path.length + 1
-    );
-    //determines what the search term is (artist, gene, art work etc.)
-    let newApi = details_link.split("/")[0];
-    newApi = newApi.substring(0, newApi.length - 1);
-
-    // more detailed request from the info entered in search bar (2nd request)
-    api
-      .newRequest()
-      //search term is filled in here
-      .follow(newApi)
-      .withTemplateParameters({ id: details_link.split("/")[1] })
-      .withRequestOptions({
-        headers: {
-          "X-Xapp-Token": xappToken,
-          Accept: "application/vnd.artsy-v2+json"
-        }
-      })
-      .getResource(function(filtered_error, filtered_results) {
-        if (filtered_error) {
-          reject(filtered_error);
-        } else {
-          resolve({ type: newApi, info: filtered_results });
-        }
-      });
-  });
+  let details_link, endpoint, id;
+  try {
+     //determines what the search term is (artist, gene, art work etc.)
+    details_link = results._embedded.results[0]._links.self.href.substring(api_path.length + 1)
+    endpoint = details_link.split("/")[0]
+    endpoint = endpoint.substring(0, endpoint.length - 1);
+    id = details_link.split("/")[1]
+  } catch(e) {
+    return Promise.reject(e);
+  }
+  return artsyAPI(endpoint, { id }).then((filtered_results) => {
+    return { type: endpoint, info: filtered_results }
+  })
 }
 
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
-  return new Promise((resolve, reject) => {
-    const artist_id = results.id;
-    if (results.birthday === "") {
-      reject("Error, please enter a valid artist or artwork");
-      return;
-    }
+  const artist_id = results.id;
+  if (results.birthday === "") {
+    return Promise.reject("Error, please enter a valid artist or artwork");
+  }
 
-    // handles artist specific searches
-    api
-      .newRequest()
-      .follow("artworks")
-      .withTemplateParameters({ artist_id: artist_id })
-      .withRequestOptions({
-        headers: {
-          "X-Xapp-Token": xappToken,
-          Accept: "application/vnd.artsy-v2+json"
-        }
-      })
-      .getResource((error, artists_artworks) => {
-        console.log("artists_artworks", artists_artworks)
-        const artistsArtworks = artists_artworks._embedded.artworks;
-        if (error) {
-          reject(error);
-        } else {
-          resolve(artistsArtworks);
-        }
-      });
-  });
+  // handles artist specific searches
+  return artsyAPI("artworks", { artist_id}).then((artists_artworks)=>{
+    return artists_artworks._embedded.artworks
+  })
 }
 
 // gets an artworks artist using the artwork id
 function getArtworksArtist(results) {
-  return new Promise((resolve, reject) => {
-    const artwork_id = results.id;
+  const artwork_id = results.id;
 
-    // handles artwork specific searches
-    api
-      .newRequest()
-      .follow("artists")
-      .withTemplateParameters({ artwork_id: artwork_id })
-      .withRequestOptions({
-        headers: {
-          "X-Xapp-Token": xappToken,
-          Accept: "application/vnd.artsy-v2+json"
-        }
-      })
-      .getResource((error, artworks_artist) => {
-        const artworksArtist = artworks_artist._embedded.artists;
-        if (error) {
-          reject(error);
-        } else {
-          resolve(artworksArtist);
-        }
-      });
-  });
+  // handles artwork specific searches
+  return artsyAPI("artists", { artwork_id}).then((artworks_artists)=>{
+    return artworks_artist._embedded.artists
+  })
 }
 
 
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
-  return new Promise((resolve, reject) => {
-    const artist_id = results.id;
-
-    //handles artist specific searches
-    api
-      .newRequest()
-      .follow("artists")
-      .withTemplateParameters({ similar_to_artist_id: artist_id })
-      .withRequestOptions({
-        headers: {
-          "X-Xapp-Token": xappToken,
-          Accept: "application/vnd.artsy-v2+json"
-        }
-      })
-      .getResource((error, similar_artists) => {
-        const similarArtists = similar_artists._embedded.artists;
-        if (error) {
-          reject(error);
-        } else {
-          resolve(similarArtists);
-        }
-      });
-  });
+  const artist_id = results.id;
+  //handles artist specific searches
+  return artsyAPI("artists", { similar_to_artist_id: artist_id}).then((similar_artists)=>{
+    return similar_artists._embedded.artists
+  })
 }
 
 // Accesses similar artworks with the artwork id
 function getSimilarArtworks(results) {
-  return new Promise((resolve, reject) => {
-    const artwork_id = results.id;
-
-    //handles artist specific searches
-    api
-      .newRequest()
-      .follow("artworks")
-      .withTemplateParameters({ similar_to_artwork_id: artwork_id })
-      .withRequestOptions({
-        headers: {
-          "X-Xapp-Token": xappToken,
-          Accept: "application/vnd.artsy-v2+json"
-        }
-      })
-      .getResource((error, similar_artworks) => {
-        const similarArtworks = similar_artworks._embedded.artworks;
-        if (error) {
-          reject(error);
-        } else {
-          const similarArtworks = similar_artworks._embedded.artworks;
-          resolve(similarArtworks);
-        }
-      });
-  });
+  const artwork_id = results.id;
+  //handles artist specific searches
+  return artsyAPI("artworks", { similar_to_artwork_id: artwork_id }).then((similar_artworks)=>{
+    return similar_artworks._embedded.artworks
+  })
 }
 
 // Gets each artist ready for Vis
@@ -297,42 +204,24 @@ function map_artworks(artworks) {
 }
 
 function composeArtworkArtist(artwork) {
+  const artwork_id = artwork.id;
 
-  return new Promise((resolve, reject) => {
-    const artwork_id = artwork.id;
-
-    // handles artwork specific searches
-    api
-      .newRequest()
-      .follow("artists")
-      .withTemplateParameters({ artwork_id: artwork_id })
-      .withRequestOptions({
-        headers: {
-          "X-Xapp-Token": xappToken,
-          Accept: "application/vnd.artsy-v2+json"
+  // handles artwork specific searches
+  return artsyAPI("artists", { artwork_id: artwork_id }).then((artworks_artist)=>{
+    const artworksArtist = artworks_artist._embedded.artists;
+    const imageLink = artwork._links.image.href;
+    const largeImage = imageLink.replace("{image_version}", "large");
+    return {
+          id: artwork.id,
+          content: "&#9679" + artwork.title,
+          start: artwork.date.match(/\d+/)[0],
+          medium: artwork.medium,
+          thumbnail: largeImage,
+          group: "artwork",
+          type: "point",
+          artist: artworksArtist[0].name
         }
-      })
-      .getResource((error, artworks_artist) => {
-        const artworksArtist = artworks_artist._embedded.artists;
-        if (error) {
-          reject(error);
-        } else {
-          const imageLink = artwork._links.image.href;
-          const largeImage = imageLink.replace("{image_version}", "large");
-          resolve({
-              id: artwork.id,
-              content: "&#9679" + artwork.title,
-              start: artwork.date.match(/\d+/)[0],
-              medium: artwork.medium,
-              thumbnail: largeImage,
-              group: "artwork",
-              type: "point",
-              artist: artworksArtist[0].name
-            });
-        }
-      });
-  });
-  return ;
+  })
 }
 
 
@@ -388,15 +277,12 @@ app.get("/search", (req, res) => {
   search(req.query.search)
     // .then(logStep("search"))
     .then(getInfo)
-
     // .then(logStep("getInfo"))
     .then(({ type, info }) => {
       let ps;
       if (type === "artist") {
         let artistsArtwork = getArtistsArtwork(info).then(map_artworks);
-
         let similarArtists = getSimilarArtists(info).then(map_artists);
-
         ps = Promise.all([artistsArtwork, similarArtists, map_artists([info])])
           // .then(logStep("process artist"))
           .then(flatten);
@@ -411,8 +297,6 @@ app.get("/search", (req, res) => {
       } else {
         throw new Error("unknown type: ", type);
       }
-
-
       return ps.then(similars => {
         similars.sort(function(a, b) {
           if (a.id < b.id) {
