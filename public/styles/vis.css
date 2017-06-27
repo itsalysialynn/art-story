@@ -1047,13 +1047,14 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-item {
   position: absolute;
   color: #1A1A1A;
-  border-color: #97B0F8;
+  border-color: #a303a3;
   border-radius: 5%;
   display: inline-block;
   z-index: 1;
   overflow: hidden;
   font-family: Helvetica, sans-serif;
   font-size: xx-small;
+  opacity: 1;
 }
 
 /*.vis-item.circle:before{
@@ -1062,8 +1063,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }*/
 
 .vis-item.vis-selected {
-  border-color: #C4BEE9;
-  background-color: #E0EAF5;
+  border-color: #a303a3;
 
   /* z-index must be higher than the z-index of custom time bar and current time bar */
   z-index: 2;
@@ -1126,36 +1126,43 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   position: relative;
   display: inline-block;
   font-family: Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 171%;
   font-weight: bold;
+  margin: .5em;
 }
 
 .vis-item.ancient-art {
-  border-bottom: red;
+  border-bottom: #ee8012;
   border-bottom-style: solid;
+  border-bottom-width: 2px;
 }
 
 .vis-item.medieval-art {
-  border-bottom: orange;
+  border-bottom: #e02f1c;
   border-bottom-style: solid;
+  border-bottom-width: 2px;
 }
 
 .vis-item.the-renaissance {
-  border-bottom: yellow;
+  border-bottom: #fddf1f;
   border-bottom-style: solid;
+  border-bottom-width: 2px;
 }
 
 .vis-item.post-renaissance {
-  border-bottom: green;
+  border-bottom: #07b807;
   border-bottom-style: solid;
+  border-bottom-width: 2px;
 }
 .vis-item.modern-art {
-  border-bottom: blue;
+  border-bottom: #00adef;
   border-bottom-style: solid;
+  border-bottom-width: 2px;
 }
 .vis-item.contemporary-art {
-  border-bottom: purple;
+  border-bottom: #a303a3;
   border-bottom-style: solid;
+  border-bottom-width: 2px;
 }
 
 .vis-item.vis-background .vis-item-content {
@@ -1364,6 +1371,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-labelset .vis-label .vis-inner {
   display: inline-block;
   padding: 5px;
+  color: black;
+  font-weight: bold;
 }
 
 .vis-labelset .vis-label .vis-inner.vis-hidden {
