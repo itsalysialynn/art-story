@@ -33,13 +33,15 @@
 .btn--search-close {
   font-size: 2em;
   position: absolute;
-  top: 1.25em;
-  right: 1.25em;
+  top: 1.5em;
+  right: 2.5em;
   display: none;
 }
 
 .js .btn--search-close {
   display: block;
+  top: 1.5em;
+  right: 1.5em;
 }
 
 .search__form {

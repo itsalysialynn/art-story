@@ -209,6 +209,7 @@ a, .btn {
   margin: 0 auto;
   fill: currentColor;
   margin: -1em;
+  margin-top: .01em;
 }
 
 /* Header */
@@ -221,6 +222,7 @@ a, .btn {
   width: 100%;
   padding: 1.5em;
   text-align: left;
+  padding-bottom: 2.5em;
 }
 
 .codrops-header__title {
