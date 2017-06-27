@@ -108,6 +108,7 @@ section {
 body {
   line-height: 1;
 }
+
 ol, ul {
   list-style: none;
 }
@@ -132,6 +133,8 @@ body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin-left: 3.3em;
+  margin-right: 3.3em;
 }
 
 .main-wrap {

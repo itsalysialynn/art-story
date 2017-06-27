@@ -134,6 +134,8 @@ body {
   /*	background-color: #00adef;*/
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin-left: 3.3em;
+  margin-right: 3.3em;
 }
 
 .main-wrap {

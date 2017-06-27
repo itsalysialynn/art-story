@@ -91,3 +91,8 @@ header.crops-header {
   margin-left: -3.3em;
   margin-right: -3.3em;
 }
+
+.body {
+  margin-left: 3.3em;
+  margin-right: 3.3em;
+}
