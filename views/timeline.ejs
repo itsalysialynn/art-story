@@ -149,14 +149,19 @@
           return datum.id === selectedId;
         }
         var wikiQuery = $(selected).find(".vis-item-content").text().replace(/ /g, "_");
+
+        console.log("wikiQuery", wikiQuery)
         try {
           WIKIPEDIA.getData("http://en.wikipedia.org/wiki/" + wikiQuery, function success(wikiData) {
+            console.log("wikidata", wikiData)
             var artistSummary = wikiData.summary && wikiData.summary.summary;
-            if(selected.dataset.group === "1"){
+            var wikiImage = wikiData.summary.image
+            if(selected.dataset.group !== "0"){
               if(artistSummary){
                 document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
                 var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery;
                 document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "' target='_blank'>"+ "More Info" +"</a>"
+                document.getElementById("thumbnail").innerHTML = "<img src='" + wikiImage + "'> ";
               } else {
                 document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
                 document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
