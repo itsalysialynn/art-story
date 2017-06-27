@@ -79,7 +79,7 @@
     var selectedId = info.id;
     var thumbnailUrl = info._links.thumbnail.href;
     var mediumArtwork = info.medium;
-    var nameTitle = info.name || info.title;
+    var nameTitle = info.name || info.title.replace(/"&#9679"/g, "");
     var titleToSlug = nameTitle.replace(/\s/g, "-").toLowerCase();
     var artistName = info.slug.replace(titleToSlug, "").replace(/-/g, " ");
     function makeTitle(artistName) {
@@ -99,7 +99,7 @@
       }
       var modfiedName = nameTitle.replace(/\s/g, "+")
       if(mediumArtwork){
-        document.getElementById("name").innerHTML = "<div>" + info.title + "</div>"
+        document.getElementById("name").innerHTML = "<div>" + info.title; + "</div>"
       } else {
         document.getElementById("name").innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
       }
@@ -124,13 +124,16 @@
       var selectedId = selected.dataset.id;
       var thumbnailUrl = selected.dataset.thumbnail;
       var mediumArtwork = selected.dataset.medium;
-      var nameTitle = selected.dataset.content;
+      var nameTitle = selected.dataset.content.replace(/&#9679/g, "");
+      var artist = selected.dataset.artist
       if(selectedId !== undefined){
         document.getElementById("thumbnail").innerHTML = "<img src='" + thumbnailUrl + "'> ";
         if(mediumArtwork){
           document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
+          document.getElementById("artist").innerHTML = "<div>" + artist + "</div> "
         } else {
           document.getElementById("medium").innerHTML = "<div></div> "
+          document.getElementById("artist").innerHTML = "<div></div> "
         }
         var modfiedName = nameTitle.replace(/\s/g, "+");
         if(mediumArtwork){
