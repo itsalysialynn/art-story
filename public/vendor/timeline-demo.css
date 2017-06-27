@@ -202,24 +202,24 @@ a, .btn {
 /* Icons */
 
 .icon {
-  color: #ffffff;
+  color: black;
   display: block;
   width: 1.5em;
   height: 1.5em;
   margin: 0 auto;
   fill: currentColor;
+  margin: -1em;
 }
 
 /* Header */
 
 .codrops-header {
-  background-color: #00adef;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
   width: 100%;
-  padding: 2.5em 2.75em 2.5em 1.5em;
+  padding: 1.5em;
   text-align: left;
 }
 
@@ -342,4 +342,17 @@ a, .btn {
 		margin: 0 auto 1em;
 		text-align: center;
 	}*/
+}
+
+img.logo {
+  height: 2.1em;
+  margin-top: 1.4em;
+}
+
+div.header {
+  display: flex;
+}
+
+h1.story {
+  float: left;
 }
