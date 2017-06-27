@@ -113,7 +113,8 @@
       var artistSummary = wikiData.summary && wikiData.summary.summary;
       if(artistSummary){
         document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
-        var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery;
+        var newWikiQuery = wikiQuery.replace(/'/g, "%27");
+        var wikiLink = "http://en.wikipedia.org/wiki/"+ newWikiQuery;
         document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
       } else {
         document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "

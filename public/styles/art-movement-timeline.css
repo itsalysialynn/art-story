@@ -56,25 +56,22 @@
 
 p.art-movement-description {
   font-size: 85%;
-  height: 10em;
+  X: 10em;
   font-family: Helvetica, sans-serif;
-  margin: 0;
-  padding-left: 1em;
-  padding-right: .25em;
-  margin-top: -2.3em;
+  font-weight: 600;
+  padding-left: 2.2em;
 }
 
 img.art-movement-image {
-  height: 11em;
+  height: 16em;
   padding-left: 2em;
-  margin-top: -2em;
+  padding-right: 1em;
+  float: left;
 }
 
 .horizontal-accordion-item-details-flex {
-  display: flex;
   padding-right: .5em;
   padding-left: .5em;
-  padding-top: 1.9em;
 }
 
 div.horizontal-accordion-item-details-content {
@@ -91,11 +88,10 @@ div.horizontal-accordion-item-details-content {
   padding-right: 1em;
   font-family: Helvetica;
   font-weight: bolder;
-  padding-top: .4em;
+  padding-top: .2em;
 }
 
 div.horizontal-accordion-item-heading a:hover {
-  background: #e02f1c;
   transition: .3s all ease-in-out;
 }
 
@@ -106,8 +102,87 @@ div.horizontal-accordion-item-heading a:hover {
 
 .active div.horizontal-accordion-item-heading {
   background: #e02f1c;
+  border-bottom: 1px #e02f1c solid;
 }
 
 a {
   cursor: pointer;
+}
+
+div.horizontal-accordion-item-heading.ancient-art {
+  border-right: 2px #ee8012 solid;
+}
+
+div.horizontal-accordion-item-heading.medieval-art {
+  border-right: 2px #e02f1c solid;
+}
+
+div.horizontal-accordion-item-heading.renaissance {
+  border-right: 2px #fddf1f solid;
+}
+
+div.horizontal-accordion-item-heading.post-renaissance {
+  border-right: 2px #07b807 solid;
+}
+
+div.horizontal-accordion-item-heading.modern {
+  border-right: 2px #00adef solid;
+}
+
+div.horizontal-accordion-item-heading.contemporary {
+  border-right: 2px #a303a3 solid;
+}
+
+.active div.horizontal-accordion-item-heading.ancient-art {
+  border-right: 2px #ee8012 solid;
+  background: #ee8012;
+}
+
+.active div.horizontal-accordion-item-heading.medieval-art {
+  border-right: 2px #e02f1c solid;
+  background: #e02f1c;
+}
+
+.active div.horizontal-accordion-item-heading.renaissance {
+  border-right: 2px #fddf1f solid;
+  background: #fddf1f;
+}
+
+.active div.horizontal-accordion-item-heading.post-renaissance {
+  border-right: 2px #07b807 solid;
+  background: #07b807;
+}
+
+.active div.horizontal-accordion-item-heading.modern {
+  border-right: 2px #00adef solid;
+  background: #00adef;
+}
+
+.active div.horizontal-accordion-item-heading.contemporary {
+  border-right: 2px #a303a3 solid;
+  background: #a303a3;
+}
+
+div.horizontal-accordion-item-heading.ancient-art:hover {
+  background: #ee8012;
+}
+
+div.horizontal-accordion-item-heading.medieval-art:hover {
+  background: #e02f1c;
+}
+
+div.horizontal-accordion-item-heading.renaissance:hover {
+  background: #fddf1f;
+}
+
+div.horizontal-accordion-item-heading.post-renaissance:hover {
+  background: #07b807;
+}
+
+div.horizontal-accordion-item-heading.modern:hover {
+  background: #00adef;
+}
+
+div.horizontal-accordion-item-heading.contemporary:hover {
+  background: #a303a3;
 }
