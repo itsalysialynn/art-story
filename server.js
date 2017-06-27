@@ -60,6 +60,7 @@ function getInfo(results) {
     return Promise.reject(e);
   }
   return artsyAPI(endpoint, { id }).then(filtered_results => {
+    // console.log("endpoint", endpoint, "filtered_results", filtered_results)
     return { type: endpoint, info: filtered_results };
   });
 }
@@ -77,8 +78,9 @@ function getArtistsArtwork(results) {
 // gets an artworks artist using the artwork id
 function getArtworksArtist(results) {
   const artwork_id = results.id;
+  // console.log("artwork_id", artwork_id)
   // handles artwork specific searches
-  return artsyAPI("artists", { artwork_id }).then(artworks_artists => {
+  return artsyAPI("artists", { artwork_id }).then(artworks_artist => {
     return artworks_artist._embedded.artists;
   });
 }

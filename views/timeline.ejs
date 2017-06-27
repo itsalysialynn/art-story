@@ -14,10 +14,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
   <script src="/scripts/vis.js"></script>
   <script src="/scripts/wikipedia.js"></script>
+  <%- include partials/_search-bar.ejs %>
 </head>
 <body></body>
-
-  <%- include partials/_search-bar.ejs %>
   <div class="artist">
     <div id="thumbnail"> </div>
     <div id="name"></div>
@@ -114,7 +113,8 @@
       var artistSummary = wikiData.summary && wikiData.summary.summary;
       if(artistSummary){
         document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
-        var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery;
+        var newWikiQuery = wikiQuery.replace(/'/g, "%27");
+        var wikiLink = "http://en.wikipedia.org/wiki/"+ newWikiQuery;
         document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
       } else {
         document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
