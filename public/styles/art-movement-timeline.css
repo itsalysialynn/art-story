@@ -107,6 +107,7 @@ div.horizontal-accordion-item-heading a:hover {
 
 a {
   cursor: pointer;
+  color: #00adef;
 }
 
 div.horizontal-accordion-item-heading.ancient-art {
