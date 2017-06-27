@@ -1,7 +1,5 @@
 "use strict";
-
 require("dotenv").load();
-
 const ENV = process.env.ENV || "development";
 const PORT = process.env.PORT || 3000;
 const express = require("express");
@@ -11,12 +9,9 @@ const wikipedia = require("./lib/wikipedia");
 const traverson = require("traverson"),
   JsonHalAdapter = require("traverson-hal"),
   xappToken = process.env.ARTSY_TOLKEN;
-
 const api_path = "https://api.artsy.net/api";
-
 traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter);
 const api = traverson.from(api_path).jsonHal();
-
 // For debugging
 function logStep(label) {
   return function logIt(data) {
@@ -25,7 +20,6 @@ function logStep(label) {
 }
 // Promise.map polyfill
 Promise.map = (arr, callback) => Promise.all(arr.map(callback));
-
 function artsyAPI(endpoint, params) {
   return new Promise((resolve, reject) => {
     api
@@ -51,7 +45,6 @@ function artsyAPI(endpoint, params) {
 function search(searchQuery) {
   return artsyAPI("search", { q: searchQuery });
 }
-
 // Function to get info about search query
 function getInfo(results) {
   let details_link, endpoint, id;
@@ -70,7 +63,6 @@ function getInfo(results) {
     return { type: endpoint, info: filtered_results };
   });
 }
-
 // Accesses the artist's artworks using the artist id
 function getArtistsArtwork(results) {
   const artist_id = results.id;
@@ -82,7 +74,6 @@ function getArtistsArtwork(results) {
     return artists_artworks._embedded.artworks;
   });
 }
-
 // gets an artworks artist using the artwork id
 function getArtworksArtist(results) {
   const artwork_id = results.id;
@@ -91,7 +82,6 @@ function getArtworksArtist(results) {
     return artworks_artist._embedded.artists;
   });
 }
-
 // Accesses similar artists with the artist id
 function getSimilarArtists(results) {
   const artist_id = results.id;
@@ -102,7 +92,6 @@ function getSimilarArtists(results) {
     return similar_artists._embedded.artists;
   });
 }
-
 // Accesses similar artworks with the artwork id
 function getSimilarArtworks(results) {
   const artwork_id = results.id;
@@ -113,7 +102,6 @@ function getSimilarArtworks(results) {
     return similar_artworks._embedded.artworks;
   });
 }
-
 // Gets each artist ready for Vis
 function map_artists(artists) {
   return (
@@ -127,7 +115,6 @@ function map_artists(artists) {
       })
   );
 }
-
 // Gets artist info from wiki
 function getArtistFromWiki(artist) {
   return new Promise((resolve, reject) => {
@@ -138,7 +125,6 @@ function getArtistFromWiki(artist) {
     );
   });
 }
-
 // Gets info from wiki and takes death day (if present)
 // If death day is not present, takes the min of (artist's birthday + 75) or current year
 function updateArtistsFromWiki(artists) {
@@ -159,7 +145,6 @@ function updateArtistsFromWiki(artists) {
       })
   );
 }
-
 // Gets artist ready to send to Vis
 function artistForVis(artist) {
   const imageLink = artist._links.image.href;
@@ -173,7 +158,6 @@ function artistForVis(artist) {
     group: "artist"
   };
 }
-
 // Gets each artwork ready for Vis
 function map_artworks(artworks) {
   if (!Array.isArray(artworks)) {
@@ -187,7 +171,6 @@ function map_artworks(artworks) {
     return [];
   });
 }
-
 function composeArtworkArtist(artwork) {
   const artwork_id = artwork.id;
   // handles artwork specific searches
@@ -217,17 +200,14 @@ function flatten(arr) {
     );
   }, []);
 }
-
 // Checks if artist has birthday
 function has_birthday(x) {
   return !!x.birthday;
 }
-
 // Checks if artist has death day
 function hasDeathDay(artist) {
   return !!artist.end;
 }
-
 // Normalizes birthday so it is only a year
 function normalizeBirthday(artist) {
   if (artist.birthday) {
@@ -300,7 +280,6 @@ app.get("/search", (req, res) => {
       );
     });
 });
-
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.static("public"));
@@ -312,11 +291,9 @@ app.get("/test/:query", function(req, res) {
     }
   );
 });
-
 app.get("/", function(req, res) {
   res.render("index");
 });
-
 app.listen(PORT, () => {
-  console.log("Listening on port " + PORT);
+  console.log("Listening on port no." + PORT);
 });
