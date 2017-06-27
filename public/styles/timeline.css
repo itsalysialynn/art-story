@@ -10,6 +10,7 @@ div#name {
   font-weight: bolder;
   font-size: 500%;
   line-height: .8em;
+  white-space: nowrap;
 }
 
 div#name a {
@@ -90,9 +91,4 @@ div#artist a:hover {
 header.crops-header {
   margin-left: -3.3em;
   margin-right: -3.3em;
-}
-
-.body {
-  margin-left: 3.3em;
-  margin-right: 3.3em;
 }

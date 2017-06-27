@@ -1295,6 +1295,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-foreground .vis-group {
   position: relative;
   box-sizing: border-box;
+  border-bottom: 1px solid #bfbfbf;
 }
 
 .vis-foreground .vis-group:last-child {
