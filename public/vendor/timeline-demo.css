@@ -129,10 +129,9 @@ table {
 
 body {
   /*overflow: hidden;*/
+  margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-right: 3.3em;
-  margin-left: 3.3em;
 }
 
 .main-wrap {
@@ -325,4 +324,19 @@ a, .btn {
     top: 2.15em;
     right: 2em;
   }
+
+  /*.bottom-nav {
+		padding: 0.5em;
+	}
+	.codrops-demos {
+		text-align: center;
+	}
+	.codrops-demos a {
+		margin-bottom: 1em;
+	}
+	.codrops-demos span {
+		display: block;
+		margin: 0 auto 1em;
+		text-align: center;
+	}*/
 }
