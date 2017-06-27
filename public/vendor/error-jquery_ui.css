@@ -128,7 +128,7 @@ input.ui-button.ui-button-icon-only {
 /* Component containers
 ----------------------------------*/
 .ui-widget {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: Helvetica;
   font-size: 1.1em;
 }
 .ui-widget .ui-widget {
@@ -138,10 +138,11 @@ input.ui-button.ui-button-icon-only {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-  font-family: Verdana,Arial,sans-serif;
+  font-family: Helvetica;
   font-size: 1em;
 }
 .ui-widget.ui-widget-content {
+  padding-bottom: 10%;
 
 }
 .ui-widget-content {
