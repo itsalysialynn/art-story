@@ -187,8 +187,8 @@ a, .btn {
   height: 70%;
   opacity: 0.1;
   background: currentColor;
-  transform: rotate3d(0, 0, 1, 22.5deg);
-}
+/*  transform: rotate3d(0, 0, 1, 22.5deg);
+*/}
 
 .codrops-icon {
   display: inline-block;
