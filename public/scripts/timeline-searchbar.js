@@ -49,6 +49,3 @@
   init();
 })(window);
 
-a {
-  color: black;
-}
