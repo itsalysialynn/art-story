@@ -128,7 +128,7 @@
         var wikiLink = "http://en.wikipedia.org/wiki/"+ newWikiQuery;
         document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
       } else {
-
+        document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
         document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
       }
     });

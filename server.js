@@ -188,7 +188,7 @@ function composeArtworkArtist(artwork) {
     const largeImage = imageLink.replace("{image_version}", "large");
     return {
       id: artwork.id,
-      content: "&#9679" + artwork.title,
+      content: "&#9679   " + artwork.title,
       start: artwork.date.match(/\d+/)[0],
       medium: artwork.medium,
       thumbnail: largeImage,
