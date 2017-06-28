@@ -51,8 +51,8 @@
     }
 
     var all_data = new vis.DataSet (full_data);
-    var start =   (+info.birthday || +info.date) - 50;
-    var end = +info.end + 50 || +info.date + 50;
+    var start =   (+info.birthday || +info.date) - 15;
+    var end = +info.end + 15 || +info.date + 15;
     var options = {
       verticalScroll: false,
       zoomable: false,
@@ -116,6 +116,8 @@
     var wikiQuery = (info.name || info.title).replace(/ /g, "_");
     WIKIPEDIA.getData("http://en.wikipedia.org/wiki/" + wikiQuery, function success(wikiData) {
       var artistSummary = wikiData.summary && wikiData.summary.summary;
+      console.log("wikiData", wikiData)
+      console.log("artistSummary", artistSummary)
       if(artistSummary){
         document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
         var newWikiQuery = wikiQuery.replace(/'/g, "%27");

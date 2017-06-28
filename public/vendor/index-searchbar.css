@@ -64,18 +64,18 @@
 
 .search__input::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
-  color: #4a319e;
+  color: black;
 }
 
 .search__input::-moz-placeholder {
   opacity: 1;
   /* Mozilla Firefox 19+ */
-  color: #4a319e;
+  color: black;
 }
 
 .search__input:-ms-input-placeholder {
   /* Internet Explorer 10-11 */
-  color: #4a319e;
+  color: black;
 }
 
 .search__input::-webkit-search-cancel-button,
