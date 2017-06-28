@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" class="js gr__tympanus_net">
 <head>
-  <meta charset="UTF-8">
-  <title>ArtStory</title>
-  <link rel="shortcut icon" href="/images/favicon.ico">
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/styles/vis.css" >
   <link rel="stylesheet" href="/styles/timeline.css">
@@ -80,8 +78,7 @@
     // Create a Timeline
     var timeline = new vis.Timeline(container, all_data, groups, options);
     var selectedId = info.id;
-    // var thumbnailUrl = info._links.image.href;
-    var thumbnailUrl = info._links.image.href.replace("{image_version}", "large");
+    var thumbnailUrl = info._links.thumbnail.href;
     var mediumArtwork = info.medium;
     var nameTitle = info.name || info.title.replace(/"&#9679"/g, "");
     var titleToSlug = nameTitle.replace(/\s/g, "-").toLowerCase();
@@ -98,10 +95,8 @@
       if(mediumArtwork){
         document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
         document.getElementById("artist").innerHTML = "<div>" + makeTitle(artistName) + "</div> "
-        document.getElementById("summary").innerHTML = "<div></div> "
       } else {
         document.getElementById("medium").innerHTML = "<div></div> "
-        document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
       }
       var modfiedName = nameTitle.replace(/\s/g, "+");
       if(mediumArtwork){
@@ -122,7 +117,7 @@
         var wikiLink = "http://en.wikipedia.org/wiki/"+ newWikiQuery;
         document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
       } else {
-
+        document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
         document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
       }
     });

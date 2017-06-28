@@ -1075,7 +1075,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-item.vis-point.vis-selected {
   content: ' \25CF';
-  font-size: 10px;
+  color: #e02f1c;
 }
 
 .vis-item.vis-box {
@@ -1178,9 +1178,17 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-item .vis-item-content {
   white-space: nowrap;
-  font-size: 200%;
+  font-size: 170%;
   font-weight: bolder;
   font-family: Helvetica, sans-serif;
+}
+
+.vis-item .vis-item-content:hover {
+  white-space: nowrap;
+  font-size: 170%;
+  font-weight: bolder;
+  font-family: Helvetica, sans-serif;
+  color: #00adef;
 }
 
 .vis-item .vis-onUpdateTime-tooltip {
