@@ -39,7 +39,7 @@
   left: 0;
   position: absolute;
   opacity: 0;
-  filter:Alpha(Opacity=0); /* support: IE8 */
+  filter: Alpha(Opacity=0); /* support: IE8 */
 }
 
 .ui-front {
@@ -64,7 +64,6 @@
 }
 
 /******************STYLING FOR AUTOCOMPLETE TEXT**********/
-
 
 .ui-menu .ui-state-focus,
 .ui-menu .ui-state-active {
@@ -124,7 +123,6 @@ input.ui-button.ui-button-icon-only {
   text-indent: 0;
 }
 
-
 /* Component containers
 ----------------------------------*/
 .ui-widget {
@@ -143,7 +141,6 @@ input.ui-button.ui-button-icon-only {
 }
 .ui-widget.ui-widget-content {
   padding-bottom: 100%;
-
 }
 .ui-widget-content {
   background-color: #db392c;
@@ -163,7 +160,6 @@ input.ui-button.ui-button-icon-only {
 
 /* Interaction states
 ----------------------------------*/
-
 
 .ui-state-active,
 .ui-widget-content .ui-state-active,

@@ -344,7 +344,8 @@ input.vis-configuration.vis-config-range:focus::-ms-fill-upper {
   -moz-transition: opacity 1s ease-in-out;
   transition: opacity 1s ease-in-out;
 }
-.vis-configuration-popup:after, .vis-configuration-popup:before {
+.vis-configuration-popup:after,
+.vis-configuration-popup:before {
   left: 100%;
   top: 50%;
   content: " ";
@@ -919,7 +920,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 /**/
 .vis-current-time {
-  background-color: #FF7F6E;
+  background-color: #ff7f6e;
   width: 2px;
   z-index: 1;
   pointer-events: none;
@@ -947,7 +948,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   opacity: 1;
 }
 .vis-custom-time {
-  background-color: #6E94FF;
+  background-color: #6e94ff;
   width: 2px;
   cursor: move;
   z-index: 1;
@@ -1046,7 +1047,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 
 .vis-item {
   position: absolute;
-  color: #1A1A1A;
+  color: #1a1a1a;
   border-color: #a303a3;
   border-radius: 5%;
   display: inline-block;
@@ -1131,15 +1132,13 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   margin: .5em;
 }
 
-
-
-.vis-item.vis-range.selected-artist{
+.vis-item.vis-range.selected-artist {
   border-bottom: red;
   border-bottom-style: solid;
   border-bottom-width: 2px;
 }
 
-.vis-item.vis-range.similar-artists{
+.vis-item.vis-range.similar-artists {
   border-bottom: grey;
   border-bottom-style: dotted;
   border-bottom-width: 2px;
@@ -1149,7 +1148,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   font-weight: lighter;
   color: grey;
 }
-
 
 .vis-item.ancient-art {
   border-bottom: #ee8012;
@@ -1223,7 +1221,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   -webkit-transition: 0.4s;
 }
 
-.vis-item .vis-delete, .vis-item .vis-delete-rtl {
+.vis-item .vis-delete,
+.vis-item .vis-delete-rtl {
   position: absolute;
   box-sizing: border-box;
   padding: 0px 5px;
@@ -1244,7 +1243,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   left: -24px;
 }
 
-.vis-item .vis-delete:after, .vis-item .vis-delete-rtl:after {
+.vis-item .vis-delete:after,
+.vis-item .vis-delete-rtl:after {
   content: "\00D7"; /* MULTIPLICATION SIGN */
   color: red;
   font-family: Helvetica, sans-serif;
@@ -1258,11 +1258,13 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   transition: color 0.2s linear;
 }
 
-.vis-item .vis-delete:hover, .vis-item .vis-delete-rtl:hover {
+.vis-item .vis-delete:hover,
+.vis-item .vis-delete-rtl:hover {
   background: red;
 }
 
-.vis-item .vis-delete:hover:after, .vis-item .vis-delete-rtl:hover:after {
+.vis-item .vis-delete:hover:after,
+.vis-item .vis-delete-rtl:hover:after {
   color: white;
 }
 
@@ -1312,10 +1314,11 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   box-sizing: border-box;
 }
 
-.vis-itemset .vis-background, .vis-itemset .vis-foreground {
+.vis-itemset .vis-background,
+.vis-itemset .vis-foreground {
   position: absolute;
   width: 90%;
-
+  cursor: ew-resize;
   overflow: visible;
 }
 
@@ -1343,7 +1346,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 }
 
 .vis-nested-group {
-  background: #F4F5FB;
+  background: #f4f5fb;
 }
 
 .vis-label.vis-nesting-group.expanded:before {
@@ -1401,8 +1404,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   display: inline-block;
   padding: 5px;
   color: black;
-  font-weight: normal;
-  font-style: italic;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .vis-labelset .vis-label .vis-inner.vis-hidden {
@@ -1425,7 +1428,9 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-panel.vis-bottom {
 }
 
-.vis-panel.vis-center, .vis-panel.vis-left, .vis-panel.vis-right {
+.vis-panel.vis-center,
+.vis-panel.vis-left,
+.vis-panel.vis-right {
   border-top-style: solid;
   border-bottom-style: solid;
   overflow: hidden;
@@ -1454,7 +1459,9 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   direction: rtl;
 }
 
-.vis-panel.vis-center, .vis-panel.vis-top, .vis-panel.vis-bottom {
+.vis-panel.vis-center,
+.vis-panel.vis-top,
+.vis-panel.vis-bottom {
   border-left-style: solid;
   border-right-style: solid;
 }
@@ -1619,8 +1626,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   overflow: hidden;
   box-sizing: border-box;
   white-space: nowrap;
-  font-style: italic;
-  font-weight: lighter;
 }
 
 .vis-time-axis .vis-text.vis-measure {
