@@ -81,6 +81,12 @@ body {
   background-size: 75% auto;
 }
 
+.logo {
+  height: 2.1em;
+  margin-top: 1.4em;
+  z-index: 200;
+}
+
 /* Buttons */
 
 .btn {
