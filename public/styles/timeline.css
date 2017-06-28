@@ -28,12 +28,12 @@ div#thumbnail {
   margin-right: 2em;
 }
 div#thumbnail img {
-  height: 19em;
+  height: 15em;
 }
 
 div#summary {
   font-family: Helvetica, sans-serif;
-  font-size: 95%;
+  font-size: 105%;
   line-height: 1.4;
   font-weight: bold;
 }

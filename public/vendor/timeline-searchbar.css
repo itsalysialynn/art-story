@@ -76,7 +76,7 @@
   background-color: #ffffff;
   border-bottom: solid 2px #000000;
   color: #000000;
-  font-size: 90%;
+  font-size: 1.5em;
   font-family: Helvetica;
   font-weight: bolder;
   display: block;
@@ -88,6 +88,7 @@
 
 .search__related {
   font-family: Helvetica;
+  font-size: 1.75em;
   color: #ffffff;
   display: flex;
   width: 75%;
