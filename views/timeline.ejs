@@ -78,13 +78,13 @@
       },
       dataAttributes: ["id", "content", "thumbnail", "medium", "group", "artist"]
     };
+    console.log("info", info);
     // Create a Timeline
     var timeline = new vis.Timeline(container, all_data, groups, options);
     var selectedId = info.id;
     var thumbnailUrl = info._links.thumbnail.href;
     var mediumArtwork = info.medium;
     var artworkDate = info.date;
-    var artworkDimensions = info.dimensions.cm.text;
     var nameTitle = info.name || info.title.replace(/"&#9679"/g, "");
     var titleToSlug = nameTitle.replace(/\s/g, "-").toLowerCase();
     var artistName = info.slug.replace(titleToSlug, "").replace(/-/g, " ");
@@ -96,17 +96,20 @@
       return words.join(" ");
     }
     if(selectedId !== undefined){
+      if (info.dimensions === undefined) {
+        document.getElementById("dimensions").innerHTML = "<div></div> "
+      } else {
+        document.getElementById("dimensions").innerHTML = "<div>" + info.dimensions.cm.text + "</div> "
+      }
       document.getElementById("thumbnail").innerHTML = "<img src='" + thumbnailUrl + "'> ";
       if(mediumArtwork){
         document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
         document.getElementById("artist").innerHTML = "<div>" + makeTitle(artistName) + "</div> "
         document.getElementById("date").innerHTML = "<div>" + artworkDate + "</div> "
         document.getElementById("summary").innerHTML = "<div></div> "
-        document.getElementById("dimensions").innerHTML = "<div>" + artworkDimensions + "</div> "
       } else {
         document.getElementById("medium").innerHTML = "<div></div> "
-        document.getElementById("date").innerHTML = "<div>" + artworkDate + "</div> "
-        document.getElementById("dimensions").innerHTML = "<div>" + artworkDimensions + "</div> "
+        document.getElementById("date").innerHTML = "<div></div> "
       }
       var modfiedName = nameTitle.replace(/\s/g, "+");
       if(mediumArtwork){
@@ -147,6 +150,8 @@
         } else {
           document.getElementById("medium").innerHTML = "<div></div> "
           document.getElementById("artist").innerHTML = "<div></div> "
+          document.getElementById("dimensions").innerHTML = "<div></div> "
+          document.getElementById("date").innerHTML = "<div></div> "
 
         }
         var modfiedName = nameTitle.replace(/\s/g, "+");
@@ -154,6 +159,8 @@
           document.getElementById("name").innerHTML = "<div>" + nameTitle + "</div>"
           document.getElementById("summary").innerHTML = "<div></div> "
           document.getElementById("artist").innerHTML = "<div>" + artist + "</div> "
+          // document.getElementById("dimensions").innerHTML = "<div></div> "
+          // document.getElementById("date").innerHTML = "<div></div> "
         } else {
           document.getElementById("name").innerHTML = "<div><a href='/search?search=" + modfiedName + "'>" + nameTitle + "</a></div>"
         }
@@ -180,10 +187,14 @@
               } else {
                 document.getElementById("summary").innerHTML = "<div> Could not find summary at this time.</div> "
                 document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
+                // document.getElementById("dimensions").innerHTML = "<div></div> "
+                // document.getElementById("date").innerHTML = "<div></div> "
               }
             } else {
                 document.getElementById("summary").innerHTML = "<div> </div> "
                 document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
+                // document.getElementById("dimensions").innerHTML = "<div></div> "
+                // document.getElementById("date").innerHTML = "<div></div> "
             }
           },
           function wikiError(err) {
