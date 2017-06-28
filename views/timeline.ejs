@@ -22,6 +22,8 @@
     <div id="thumbnail"> </div>
     <div id="name"></div>
     <div id="artist"></div>
+    <div id="date"></div>
+    <div id="dimensions"></div>
     <div id="summary"></div>
     <div id="medium"></div>
     <div id="wikiLink"></div>
@@ -81,6 +83,8 @@
     var selectedId = info.id;
     var thumbnailUrl = info._links.thumbnail.href;
     var mediumArtwork = info.medium;
+    var artworkDate = info.date;
+    var artworkDimensions = info.dimensions.cm.text;
     var nameTitle = info.name || info.title.replace(/"&#9679"/g, "");
     var titleToSlug = nameTitle.replace(/\s/g, "-").toLowerCase();
     var artistName = info.slug.replace(titleToSlug, "").replace(/-/g, " ");
@@ -96,10 +100,14 @@
       if(mediumArtwork){
         document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
         document.getElementById("artist").innerHTML = "<div>" + makeTitle(artistName) + "</div> "
+        document.getElementById("date").innerHTML = "<div>" + artworkDate + "</div> "
         document.getElementById("summary").innerHTML = "<div></div> "
+        document.getElementById("dimensions").innerHTML = "<div>" + artworkDimensions + "</div> "
       } else {
         document.getElementById("medium").innerHTML = "<div></div> "
-        document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
+        document.getElementById("date").innerHTML = "<div>" + artworkDate + "</div> "
+        document.getElementById("summary").innerHTML = "<div> Could not find summary at this time.</div> "
+        document.getElementById("dimensions").innerHTML = "<div>" + artworkDimensions + "</div> "
       }
       var modfiedName = nameTitle.replace(/\s/g, "+");
       if(mediumArtwork){
@@ -130,14 +138,12 @@
       var thumbnailUrl = selected.dataset.thumbnail;
       var mediumArtwork = selected.dataset.medium;
       var nameTitle = selected.dataset.content.replace(/&#9679/g, "");
-      var artist = selected.dataset.artist
-      console.log("artist", artist)
+      var artist = selected.dataset.artist;
       if(selectedId !== undefined){
         document.getElementById("thumbnail").innerHTML = "<img src='" + thumbnailUrl + "'> ";
         if(mediumArtwork){
           document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
           document.getElementById("artist").innerHTML = "<div>" + artist + "</div> "
-
           document.getElementById("wikiLink").innerHTML = "<div></div> "
         } else {
           document.getElementById("medium").innerHTML = "<div></div> "
@@ -158,10 +164,8 @@
         if(selected.dataset.group !== "0"){
           var wikiQuery = $(selected).find(".vis-item-content").text().replace(/ /g, "_")
         }
-        console.log("wikiQuery", wikiQuery)
         try {
           WIKIPEDIA.getData("http://en.wikipedia.org/wiki/" + wikiQuery, function success(wikiData) {
-            console.log("wikidata", wikiData)
             var artistSummary = wikiData.summary && wikiData.summary.summary;
 
             if(selected.dataset.group !== "0"){
@@ -175,7 +179,7 @@
                 }
 
               } else {
-                document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
+                document.getElementById("summary").innerHTML = "<div> Could not find summary at this time.</div> "
                 document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
               }
             } else {
