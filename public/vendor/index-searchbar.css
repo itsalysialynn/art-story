@@ -91,7 +91,7 @@
   background-color: #00adef;
   border-bottom: solid 2px #ffffff;
   color: #ffffff;
-  font-size: 90%;
+  font-size: 1.5em;
   font-family: Helvetica;
   font-weight: bolder;
   display: block;
@@ -105,6 +105,7 @@
   font-family: Helvetica;
   color: #ffffff;
   display: flex;
+  font-size: 1.75em;
   width: 75%;
   text-align: left;
   pointer-events: none;
