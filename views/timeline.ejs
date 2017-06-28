@@ -95,8 +95,10 @@
       if(mediumArtwork){
         document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
         document.getElementById("artist").innerHTML = "<div>" + makeTitle(artistName) + "</div> "
+        document.getElementById("summary").innerHTML = "<div></div> "
       } else {
         document.getElementById("medium").innerHTML = "<div></div> "
+        document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
       }
       var modfiedName = nameTitle.replace(/\s/g, "+");
       if(mediumArtwork){
@@ -117,7 +119,7 @@
         var wikiLink = "http://en.wikipedia.org/wiki/"+ newWikiQuery;
         document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
       } else {
-        document.getElementById("summary").innerHTML = "<div> Could not find summary at this time</div> "
+
         document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
       }
     });
