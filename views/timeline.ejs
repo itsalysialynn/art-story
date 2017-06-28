@@ -52,9 +52,14 @@
       full_data[thing_id].group = groupNames.indexOf(full_data[thing_id].group);
     }
 
+    // Normalizes date so it is only a year
+    function normalizeDate(date) {
+      return (String(date)).match(/\d{4}/)[0];
+    }
     var all_data = new vis.DataSet (full_data);
-    var start =   (+info.birthday || +info.date) - 50;
-    var end = +info.end + 50 || +info.date + 50;
+    var start = +(normalizeDate(info.birthday || info.date)) - 50;
+    var end = +(normalizeDate(info.end || info.date)) + 50;
+
     var options = {
       verticalScroll: false,
       zoomable: false,
@@ -78,7 +83,7 @@
       },
       dataAttributes: ["id", "content", "thumbnail", "medium", "group", "artist"]
     };
-    console.log("info", info);
+
     // Create a Timeline
     var timeline = new vis.Timeline(container, all_data, groups, options);
     var selectedId = info.id;
