@@ -1131,6 +1131,26 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   margin: .5em;
 }
 
+
+
+.vis-item.vis-range.selected-artist{
+  border-bottom: red;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+}
+
+.vis-item.vis-range.similar-artists{
+  border-bottom: grey;
+  border-bottom-style: dotted;
+  border-bottom-width: 2px;
+}
+
+.vis-item.vis-range.similar-artists .vis-item-content {
+  font-weight: lighter;
+  color: grey;
+}
+
+
 .vis-item.ancient-art {
   border-bottom: #ee8012;
   border-bottom-style: solid;
@@ -1381,7 +1401,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   display: inline-block;
   padding: 5px;
   color: black;
-  font-weight: bold;
+  font-weight: normal;
+  font-style: italic;
 }
 
 .vis-labelset .vis-label .vis-inner.vis-hidden {
@@ -1598,7 +1619,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   overflow: hidden;
   box-sizing: border-box;
   white-space: nowrap;
-  font-weight: bold;
+  font-style: italic;
+  font-weight: lighter;
 }
 
 .vis-time-axis .vis-text.vis-measure {

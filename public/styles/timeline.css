@@ -29,6 +29,8 @@ div#thumbnail {
 }
 div#thumbnail img {
   height: 15em;
+  box-shadow: 0 10px 10px #999999;
+
 }
 
 div#summary {
