@@ -80,7 +80,8 @@
     // Create a Timeline
     var timeline = new vis.Timeline(container, all_data, groups, options);
     var selectedId = info.id;
-    var thumbnailUrl = info._links.thumbnail.href;
+    // var thumbnailUrl = info._links.image.href;
+    var thumbnailUrl = info._links.image.href.replace("{image_version}", "large");
     var mediumArtwork = info.medium;
     var nameTitle = info.name || info.title.replace(/"&#9679"/g, "");
     var titleToSlug = nameTitle.replace(/\s/g, "-").toLowerCase();
