@@ -132,7 +132,7 @@
         document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
         var newWikiQuery = wikiQuery.replace(/'/g, "%27");
         var wikiLink = "http://en.wikipedia.org/wiki/"+ newWikiQuery;
-        document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "'>"+ "More Info" +"</a>"
+        document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "'>"+ "...More Info" +"</a>"
       } else {
         document.getElementById("summary").innerHTML = "<div> Could not find summary at this time.</div> "
         document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
@@ -145,13 +145,17 @@
       var mediumArtwork = selected.dataset.medium;
       var nameTitle = selected.dataset.content.replace(/&#9679/g, "");
       var artist = selected.dataset.artist;
+      console.log("nameTitle", nameTitle)
+
       if(selectedId !== undefined){
         document.getElementById("thumbnail").innerHTML = "<img src='" + thumbnailUrl + "'> ";
         if(mediumArtwork){
           document.getElementById("medium").innerHTML = "<div>" + mediumArtwork + "</div> "
           document.getElementById("artist").innerHTML = "<div>" + artist + "</div> "
           document.getElementById("wikiLink").innerHTML = "<div></div> "
-        } else {
+        } else if (nameTitle === "Post-Renaissance art"){
+            document.getElementById("summary").innerHTML = "<div> Period of artistic style that used exaggerated motion and clear, easily interpreted detail to produce drama, tension, exuberance, and grandeur in sculpture, painting, architecture, literature, dance, and music.</div> "
+         } else {
           document.getElementById("medium").innerHTML = "<div></div> "
           document.getElementById("artist").innerHTML = "<div></div> "
           document.getElementById("dimensions").innerHTML = "<div></div> "
@@ -183,11 +187,14 @@
                 var wikiImage = wikiData.summary.image
                 document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
                 var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery;
-                document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "' target='_blank'>"+ "More Info" +"</a>"
+                document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "' target='_blank'>"+ "...More Info" +"</a>"
                 if (selected.dataset.group === "3"){
                   document.getElementById("thumbnail").innerHTML = "<img src='" + wikiImage + "'> ";
                 }
 
+              } else if (nameTitle === "Post-Renaissance art"){
+                  document.getElementById("thumbnail").innerHTML = "<img src='https://larvalsubjects.files.wordpress.com/2013/05/renaissance-the-school-of-athens-classic-art-paitings-raphael-painter-rafael-philosophers-hd-wallpapers.jpg'> "
+                  document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
               } else {
                 document.getElementById("summary").innerHTML = "<div> Could not find summary at this time.</div> "
                 document.getElementById("wikiLink").innerHTML = "<a href=''></a>"
