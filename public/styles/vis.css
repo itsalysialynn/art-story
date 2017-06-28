@@ -1132,15 +1132,13 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   margin: .5em;
 }
 
-
-
-.vis-item.vis-range.selected-artist{
+.vis-item.vis-range.selected-artist {
   border-bottom: red;
   border-bottom-style: solid;
   border-bottom-width: 2px;
 }
 
-.vis-item.vis-range.similar-artists{
+.vis-item.vis-range.similar-artists {
   border-bottom: grey;
   border-bottom-style: dotted;
   border-bottom-width: 2px;
@@ -1150,7 +1148,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   font-weight: lighter;
   color: grey;
 }
-
 
 .vis-item.ancient-art {
   border-bottom: #ee8012;
@@ -1321,7 +1318,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-itemset .vis-foreground {
   position: absolute;
   width: 90%;
-
+  cursor: ew-resize;
   overflow: visible;
 }
 
@@ -1407,8 +1404,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   display: inline-block;
   padding: 5px;
   color: black;
-  font-weight: normal;
-  font-style: italic;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
 .vis-labelset .vis-label .vis-inner.vis-hidden {
@@ -1629,8 +1626,6 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   overflow: hidden;
   box-sizing: border-box;
   white-space: nowrap;
-  font-style: italic;
-  font-weight: lighter;
 }
 
 .vis-time-axis .vis-text.vis-measure {
