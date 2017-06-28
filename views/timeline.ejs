@@ -54,8 +54,8 @@
     }
 
     var all_data = new vis.DataSet (full_data);
-    var start =   (+info.birthday || +info.date) - 15;
-    var end = +info.end + 15 || +info.date + 15;
+    var start =   +info.birthday - 15 || +info.date - 50
+    var end = +info.end + 15 || +info.date + 50;
     var options = {
       verticalScroll: false,
       zoomable: false,
