@@ -29,6 +29,7 @@ div#thumbnail {
 }
 div#thumbnail img {
   height: 15em;
+  box-shadow: 0 10px 10px #999999;
 }
 
 div#summary {
@@ -52,7 +53,8 @@ div#wikiLink:link {
 
 div#medium {
   font-family: Helvetica, sans-serif;
-  font-size: 90%;
+  font-size: 105%;
+  line-height: 1.4;
   font-weight: bold;
 }
 
@@ -96,4 +98,18 @@ div#artist a:hover {
 header.crops-header {
   margin-left: -3.3em;
   margin-right: -3.3em;
+}
+
+div#dimensions {
+  font-family: Helvetica, sans-serif;
+  font-size: 105%;
+  line-height: 1.4;
+  font-weight: bold;
+}
+
+div#date {
+  font-family: Helvetica, sans-serif;
+  font-size: 105%;
+  line-height: 1.4;
+  font-weight: bold;
 }

@@ -30,7 +30,7 @@
   </div>
   <div id="visualization"></div>
   <script type="text/javascript">
-    var groupNames = ["artwork","artist","movement"];
+    var groupNames = ["Artwork","Artist", "Similar Artists","Periods"];
     var groups = new vis.DataSet();
     for(var g = 0; g < groupNames.length; g++) {
       groups.add({id: g, content: groupNames[g]});
@@ -81,7 +81,7 @@
           return output;
         }
       },
-      dataAttributes: ["id", "content", "thumbnail", "medium", "group", "artist", "dimensions", "date"]
+      dataAttributes: ["id", "content", "thumbnail", "medium", "group", "artist", "dimensions", "date", "className"]
     };
 
     // Create a Timeline
@@ -194,7 +194,7 @@
                 document.getElementById("summary").innerHTML = "<div>" + artistSummary + "</div> "
                 var wikiLink = "http://en.wikipedia.org/wiki/"+ wikiQuery;
                 document.getElementById("wikiLink").innerHTML = "<a href='" + wikiLink + "' target='_blank'>"+ "More Info" +"</a>"
-                if (selected.dataset.group === "2"){
+                if (selected.dataset.group === "3"){
                   document.getElementById("thumbnail").innerHTML = "<img src='" + wikiImage + "'> ";
                 }
 

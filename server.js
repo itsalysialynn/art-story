@@ -159,7 +159,9 @@ function artistForVis(artist) {
     start: artist.birthday,
     end: artist.end,
     thumbnail: largeImage,
-    group: "artist"
+    group: "Similar Artists",
+    className: "similar-artists"
+
   };
 }
 // Gets each artwork ready for Vis
@@ -190,7 +192,7 @@ function composeArtworkArtist(artwork) {
       start: artwork.date.match(/\d+/)[0],
       medium: artwork.medium,
       thumbnail: largeImage,
-      group: "artwork",
+      group: "Artwork",
       type: "point",
       date: artwork.date,
       dimensions: artwork.dimensions.cm.text,
@@ -264,6 +266,29 @@ app.get("/search", (req, res) => {
         throw new Error("unknown type: ", type);
       }
       return ps.then(similars => {
+          var nameTitle = info.name || info.title.replace(/"&#9679"/g, "");
+          var titleToSlug = nameTitle.replace(/\s/g, "-").toLowerCase();
+          var artistName = info.slug.replace(titleToSlug, "").replace(/-/g, " ");
+
+          function makeTitle(artistName) {
+            var words = artistName.split(" ");
+            for (var i = 0; i < words.length; i++) {
+              words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1);
+            };
+            return words.join(" ");
+          }
+          var title = makeTitle(artistName)
+
+          var foundArtist = similars.find(function(similarObj){
+            if(similarObj.group === "Similar Artists" ){
+              return similarObj.content === info.name || similarObj.content.trim() === title.toString().trim()
+            }
+        });
+        if (foundArtist !== undefined) {
+          foundArtist.group = "Artist"
+          foundArtist.className = "selected-artist";
+        }
+
         similars.sort(function(a, b) {
           if (a.id < b.id) {
             return -1;
@@ -281,6 +306,7 @@ app.get("/search", (req, res) => {
       });
     })
     .catch(err => {
+      console.log("err", err)
       res.redirect('/error');
     });
 });
