@@ -1141,11 +1141,11 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-item.vis-range.similar-artists {
   border-bottom: grey;
   border-bottom-style: dotted;
-  border-bottom-width: 2px;
+  border-bottom-width: 1px;
 }
 
 .vis-item.vis-range.similar-artists .vis-item-content {
-  font-weight: lighter;
+  font-weight: bold;
   color: grey;
 }
 
