@@ -196,6 +196,8 @@ function composeArtworkArtist(artwork) {
       thumbnail: largeImage,
       group: "Artwork",
       type: "point",
+      date: artwork.date,
+      dimensions: artwork.dimensions.cm.text,
       artist: artworksArtist[0].name
     };
   });

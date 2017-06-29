@@ -56,7 +56,7 @@
   box-sizing: border-box;
   width: 75%;
   padding: 0.05em 0;
-  color: #ffffff;
+  color: #db392c;
 }
 
 .ui:hover {
@@ -143,12 +143,12 @@ input.ui-button.ui-button-icon-only {
   padding-bottom: 100%;
 }
 .ui-widget-content {
-  background-color: #db392c;
+  background-color: #ffffff;
   color: #00adef;
 }
 .ui-widget-content a {
-  background-color: #db392c;
-  color: #00adef;
+  background-color: #ffffff;
+  color: #db392c;
 }
 .ui-widget-header {
   color: #00adef;
@@ -167,14 +167,14 @@ input.ui-button.ui-button-icon-only {
 a.ui-button:active,
 .ui-button:active,
 .ui-button.ui-state-active:hover {
-  background-color: #db392c;
+  background-color: #ffffff;
   color: #00adef;
 }
 
 .ui-state-active a,
 .ui-state-active a:link,
 .ui-state-active a:visited {
-  background-color: #db392c;
+  background-color: #ffffff;
   color: #00adef;
   text-decoration: none;
 }
