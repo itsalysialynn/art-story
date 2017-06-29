@@ -1141,11 +1141,11 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
 .vis-item.vis-range.similar-artists {
   border-bottom: grey;
   border-bottom-style: dotted;
-  border-bottom-width: 2px;
+  border-bottom-width: 1px;
 }
 
 .vis-item.vis-range.similar-artists .vis-item-content {
-  font-weight: lighter;
+  font-weight: bold;
   color: grey;
 }
 
@@ -1201,7 +1201,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   font-family: Helvetica, sans-serif;
 }
 
-.vis-item .vis-item-content:hover {
+.vis-item:hover .vis-item-content:hover {
   white-space: nowrap;
   font-size: 170%;
   font-weight: bolder;
@@ -1661,4 +1661,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   max-width: 90%;
   margin: 5%;
   overflow: hidden;
+}
+
+.vis-item-content a:hover {
+  color: #00adef;
 }

@@ -374,3 +374,11 @@ h1.story {
 a {
   color: #00adef;
 }
+
+
+.vis-item.vis-range.similar-artists:hover .vis-item-content:hover {
+  color: 00adef;
+}
+
+
+
