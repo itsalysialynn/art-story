@@ -70,6 +70,10 @@ div#medium {
   cursor: pointer;
 }
 
+.vis-item-content:hover {
+  color: #00adef;
+}
+
 div#name a:hover {
   color: #e02f1c;
   cursor: pointer;

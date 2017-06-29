@@ -1201,7 +1201,7 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   font-family: Helvetica, sans-serif;
 }
 
-.vis-item .vis-item-content:hover {
+.vis-item:hover .vis-item-content:hover {
   white-space: nowrap;
   font-size: 170%;
   font-weight: bolder;
@@ -1661,4 +1661,8 @@ div.vis-network div.vis-navigation div.vis-button.vis-zoomExtends {
   max-width: 90%;
   margin: 5%;
   overflow: hidden;
+}
+
+.vis-item-content a:hover {
+  color: #00adef;
 }
